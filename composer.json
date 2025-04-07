@@ -1,7 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "$schema": "https://getcomposer.org/schema.json",
+    "name": "everth/laravel-starter-kit",
     "type": "project",
-    "description": "The skeleton application for the Laravel framework.",
+    "description": "Plantilla de proyecto de laravel..",
     "keywords": ["laravel", "framework"],
     "license": "MIT",
     "require": {
