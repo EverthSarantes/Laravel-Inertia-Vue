@@ -1,6 +1,6 @@
 {
     "$schema": "https://getcomposer.org/schema.json",
-    "name": "everth/laravel-starter-kit",
+    "name": "everth/laravel-inertia-vue",
     "type": "project",
     "description": "Plantilla de proyecto de laravel..",
     "keywords": ["laravel", "framework"],
