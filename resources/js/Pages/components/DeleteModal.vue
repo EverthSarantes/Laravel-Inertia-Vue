@@ -1,3 +1,5 @@
+// This script sets up a modal for deleting records.
+// It uses Inertia.js for form handling and Bootstrap for modal functionality.
 <script setup>
     import { useForm } from '@inertiajs/vue3';
 
@@ -5,7 +7,6 @@
         _method: 'DELETE',
     });
 
-    
     const submit = () => {
         let form = document.getElementById('deleteForm');
         let delete_url = form.action;

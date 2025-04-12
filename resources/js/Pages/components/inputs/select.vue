@@ -1,3 +1,5 @@
+// This script defines a select input component.
+// It renders a dropdown menu with options and binds the selected value to a model.
 <script setup>
     defineProps({
         field: Object,

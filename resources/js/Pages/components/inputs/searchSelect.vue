@@ -1,3 +1,7 @@
+// This script defines a search and select input component.
+// It allows users to search for options dynamically and select one from the results.
+// The component fetches data from an API based on the search query and updates the options list.
+
 <script setup>
     import { ref, watch, computed } from 'vue';
 

@@ -1,4 +1,9 @@
+// This script handles the user listing page.
+// It imports components for displaying a table of users and a form for adding new users.
+// The template includes a form for creating users and a table for listing them.
+// Additional features include exporting data to Excel and printing user lists.
 <script setup>
+
     import dashboard from '../layouts/dashboard.vue';
     import SubNavbar from '../components/SubNavbar.vue';
     import DeleteModal from '../components/DeleteModal.vue';

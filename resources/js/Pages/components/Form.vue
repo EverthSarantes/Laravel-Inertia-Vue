@@ -1,3 +1,6 @@
+// This script defines a reusable form component.
+// It dynamically renders input fields based on the provided model.
+// The form supports custom submission methods and integrates with global table instances for refreshing data.
 <script setup>
     import { computed, reactive } from 'vue';
     import { useForm } from '@inertiajs/vue3';

@@ -1,4 +1,8 @@
+// This script defines a logo component.
+// It dynamically updates the logo based on the current theme (light or dark).
+// The logo's width and additional classes can be customized via props.
 <script setup>
+
     import { ref, watchEffect } from 'vue';
 
     const logoLightUrl = '/img/logo_light.svg';

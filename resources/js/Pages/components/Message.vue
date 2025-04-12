@@ -1,3 +1,6 @@
+// This script defines a message alert component.
+// It displays a dismissible alert message with a specified color.
+// The message and color are reactive and update dynamically based on props.
 <script setup>
     import { ref, watch } from 'vue';
 
