@@ -6,6 +6,13 @@ use App\Models\Users\UserModule;
 
 class UserServices
 {
+    /**
+     * Create a new user with the provided request data.
+     * If the user has a role of 1, modules can also be assigned.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return User|null The created user or null if creation fails.
+     */
     public static function makeUser($request)
     {
         if($request->role === 1)
@@ -42,6 +49,13 @@ class UserServices
         return null;
     }
 
+    /**
+     * Update an existing user's information.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param User $user
+     * @return User|null The updated user or null if update fails.
+     */
     public static function updateUser($request, User $user)
     {
         $user->name = $request['name'];
@@ -58,6 +72,13 @@ class UserServices
         return null;
     }
 
+    /**
+     * Add a module to a user if the user has the appropriate role.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param User $user
+     * @return UserModule|bool The created UserModule or false if addition fails.
+     */
     public static function addModule($request, User $user)
     {
         if($user->role === '0')

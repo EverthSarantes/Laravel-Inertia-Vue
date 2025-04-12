@@ -11,9 +11,12 @@ use App\Models\Users\UserModule;
 class CheckRoles
 {
     /**
-     * Handle an incoming request.
-     *@param  String $module
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * Handle an incoming request and check if the user has the required role for a module.
+     *
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware in the pipeline.
+     * @param string $module The module to check permissions for.
+     * @return Response The HTTP response or a redirect if the user lacks permissions.
      */
     public function handle(Request $request, Closure $next, $module): Response
     {
