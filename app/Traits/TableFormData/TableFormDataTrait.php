@@ -2,8 +2,17 @@
 
 namespace App\Traits\TableFormData;
 
+/**
+ * Trait TableFormDataTrait
+ * Provides shared functionality for managing table and form data across models and traits.
+ */
 trait TableFormDataTrait
 {
+    /**
+     * Retrieves static data properties defined in the implementing class.
+     *
+     * @return array<string, mixed> An associative array of static data properties.
+     */
     public static function getStaticData()
     {
         return [

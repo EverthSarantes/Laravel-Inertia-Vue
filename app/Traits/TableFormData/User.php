@@ -4,48 +4,71 @@ namespace App\Traits\TableFormData;
 
 use App\Traits\TableFormData\TableFormDataTrait;
 
+/**
+ * Trait User
+ * Provides functionality for managing user-related data in tables and forms.
+ */
 trait User
 {
     use TableFormDataTrait;
-    //modules that the user has permission to access this model in the search
+
+    /**
+     * @var array<string> Modules that the user has permission to access.
+     */
     public static $permisson_modules = [
         'users',
     ];
 
-    //options for the automatic table
-    //fields for the table
+    /**
+     * @var array<string> Fields to display in the table.
+     */
     public static $table_fields = [
         'name',
         'role',
     ];
 
-    //fields that can be searched
+    /**
+     * @var array<string> Fields in the table that can be searched.
+     */
     public static $table_fields_searchable = [
         'name',
         'role',
     ];
 
-    //fields names for the table
+    /**
+     * @var array<string, string> Field names for the table.
+     */
     public static $table_fields_names = [
         'name' => 'Nombre',
         'email' => 'Correo',
         'role' => 'Rol',
     ];
 
-    //fields that can be morphed
+    /**
+     * @var array<string, string> Fields that can be morphed.
+     */
     public static $morphable_fiels = [
         'role' => 'rol_name',
     ];
 
+    /**
+     * @var array<string, string> Role names mapped to their IDs.
+     */
     public static $rol_name = [
         '0' => 'Administrador',
         '1' => 'Usuario',
     ];
 
-    //field that is the name of the model
+    /**
+     * @var string The field name representing the model's name.
+     */
     public static $name_field = 'name';
 
-    //get the content of the field options of the table
+    /**
+     * Generates options for the field content in the table.
+     *
+     * @return array<string, array<string, mixed>> The options for the field content.
+     */
     public function getOptionsFieldContent()
     {
         return [
@@ -68,8 +91,10 @@ trait User
         ];
     }
 
-    //options for the automatic form
-    //fields for the form
+    /**
+     * @var array<string, array<string, mixed>> Form fields configuration.
+     * Defines the input type, validation rules, and other attributes for each field.
+     */
     public static $form_fields = [
         'name' => [
             'input_type' => 'input', //input, textarea, select
@@ -108,12 +133,21 @@ trait User
         ],
     ];
 
-
+    /**
+     * Retrieves the available roles.
+     *
+     * @return array<string, string> The roles mapped to their IDs.
+     */
     public static function getRoles()
     {
         return self::$rol_name;
     }
 
+    /**
+     * Retrieves the role name for the current user.
+     *
+     * @return string|null The role name, or null if not found.
+     */
     public function rol()
     {
         return self::$rol_name[$this->role] ?? null;
