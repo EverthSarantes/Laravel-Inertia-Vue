@@ -6,8 +6,18 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Http\Services\Api\SearchServices;
 
+/**
+ * Handles search-related API endpoints.
+ */
 class SearchController extends Controller
 {
+    /**
+     * Perform a search on a specified model.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param string $model
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function search(Request $request, string $model)
     {
         $model = config('model')[$model];
@@ -61,6 +71,13 @@ class SearchController extends Controller
         ], 200);
     }
 
+    /**
+     * Perform a search for select options on a specified model.
+     *
+     * @param string $model
+     * @param string $search
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function searchSelect(string $model, string $search)
     {
         $model = config('model')[$model];

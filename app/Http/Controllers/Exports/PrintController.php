@@ -5,8 +5,17 @@ namespace App\Http\Controllers\Exports;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BaseFormRequest;
 
+/**
+ * Handles exporting and printing functionality.
+ */
 class PrintController extends Controller
 {
+    /**
+     * Render a view for printing purposes.
+     *
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @return \Illuminate\View\View
+     */
     public function print(BaseFormRequest $request)
     {
         $request->validate([
