@@ -1,3 +1,7 @@
+// This script handles the user editing page.
+// It imports necessary components and sets up forms for updating user details and adding modules.
+// The template includes a form for editing user details and a table for displaying user modules.
+// A modal is used for adding new modules.
 <script setup>
     import dashboard from '../layouts/dashboard.vue';
     import SubNavbar from '../components/SubNavbar.vue';

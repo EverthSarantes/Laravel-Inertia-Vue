@@ -9,9 +9,11 @@ use Symfony\Component\HttpFoundation\Response;
 class NoCache
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request and add headers to prevent caching.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware in the pipeline.
+     * @return Response The HTTP response with no-cache headers.
      */
     public function handle(Request $request, Closure $next): Response
     {

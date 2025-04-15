@@ -1,3 +1,6 @@
+// This script defines a sub-navigation bar component.
+// It displays a list of links, highlighting the active link.
+// The links are passed as props and rendered dynamically.
 <script setup>
     import { Link } from '@inertiajs/vue3';
 

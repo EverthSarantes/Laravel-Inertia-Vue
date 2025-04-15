@@ -1,3 +1,6 @@
+// This script sets up the dashboard layout.
+// It includes navigation, theming options, and a slot for injecting page-specific content.
+// The template provides a sidebar for navigation and a header for user actions.
 <script setup>
     import { computed, onMounted } from 'vue';
     import { usePage, Link  } from '@inertiajs/vue3';

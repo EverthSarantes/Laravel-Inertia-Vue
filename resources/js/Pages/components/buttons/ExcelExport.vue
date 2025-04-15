@@ -1,3 +1,5 @@
+// This script defines an Excel export button component.
+// It triggers the export of a table's data to an Excel file.
 <script setup>
     import { onMounted } from 'vue';
 

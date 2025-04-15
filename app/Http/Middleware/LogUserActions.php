@@ -11,9 +11,11 @@ use Illuminate\Support\Facades\Auth;
 class LogUserActions
 {
     /**
-     * Handle an incoming request.
+     * Handle an incoming request and log user actions.
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Request $request The incoming HTTP request.
+     * @param Closure $next The next middleware in the pipeline.
+     * @return Response The HTTP response after logging user actions.
      */
     public function handle(Request $request, Closure $next): Response
     {
@@ -37,11 +39,11 @@ class LogUserActions
     }
 
     /**
-     * Truncate input values that are too long.
+     * Truncate input values that are too long to avoid excessive logging.
      *
-     * @param  array  $input
-     * @param  int  $maxLength
-     * @return array
+     * @param array $input The input data to truncate.
+     * @param int $maxLength The maximum length of input values.
+     * @return array The truncated input data.
      */
     protected function truncateInput(array $input, int $maxLength = 10000): array
     {

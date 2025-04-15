@@ -1,3 +1,5 @@
+// This script defines a print button component.
+// It generates a URL for printing a specific view with parameters.
 <script setup>
     import { computed } from 'vue';
 

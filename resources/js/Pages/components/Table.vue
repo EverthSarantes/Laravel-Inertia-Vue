@@ -1,3 +1,7 @@
+// This script defines a dynamic table component.
+// It supports search, pagination, and delete functionality.
+// The table data is fetched from an API, and the component allows adding or removing search options dynamically.
+// It also integrates with global table instances for refreshing and managing data.
 <script setup>
     import { ref, onMounted, watch } from 'vue';
     import { Link } from '@inertiajs/vue3';

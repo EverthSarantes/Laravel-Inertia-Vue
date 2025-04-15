@@ -1,3 +1,5 @@
+// This script defines a generic input field component.
+// It supports various input types and binds the value to a model.
 <script setup>
     defineProps({
         field: Object

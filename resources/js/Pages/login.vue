@@ -1,3 +1,6 @@
+// This script handles the login page.
+// It sets up a form for user authentication and displays error messages if login fails.
+// The template includes a form for entering username and password, styled with a centered layout.
 <script setup>
     import { useForm } from '@inertiajs/vue3';
     import { computed } from 'vue';

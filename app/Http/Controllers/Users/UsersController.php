@@ -12,8 +12,17 @@ use App\Models\Users\Module;
 use App\Models\Users\UserModule;
 use Inertia\Inertia;
 
+/**
+ * Manages user-related operations such as CRUD and module assignments.
+ */
 class UsersController extends Controller
 {
+    /**
+     * Display a paginated list of users.
+     *
+     * @param int $pagination
+     * @return \Inertia\Response
+     */
     public function index($pagination = 20)
     {
         $modules = Module::select('id', 'name')->get();
@@ -24,6 +33,12 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Display details of a specific user.
+     *
+     * @param \App\Models\User $user
+     * @return \Inertia\Response
+     */
     public function show(User $user)
     {
         return Inertia::render('users.show', [
@@ -32,6 +47,12 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Store a new user in the database.
+     *
+     * @param \App\Http\Requests\UsersStoreRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(UsersStoreRequest $request)
     {
         $request->validated();
@@ -56,6 +77,13 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Update an existing user's information.
+     *
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function update(BaseFormRequest $request, User $user)
     {
         $request->validate([
@@ -84,6 +112,12 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Delete a user from the database.
+     *
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function delete(User $user)
     {
         $user->delete();
@@ -96,6 +130,12 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Assign a module to a user.
+     *
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function addModule(BaseFormRequest $request)
     {
         $request->validate([
@@ -138,6 +178,13 @@ class UsersController extends Controller
         ]);
     }
 
+    /**
+     * Remove a module from a user.
+     *
+     * @param \App\Models\Users\UserModule $userModule
+     * @param \App\Models\User $user
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function deleteModule(UserModule $userModule, User $user)
     {
         $userModule->delete();
