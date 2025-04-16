@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "509248fe4d86e364df5793679234f7ed",
+    "content-hash": "a4140fd71d573773f0a9d8ded09a1fd2",
     "packages": [
         {
             "name": "brick/math",
@@ -669,6 +669,44 @@
                 }
             ],
             "time": "2024-12-27T00:36:43+00:00"
+        },
+        {
+            "name": "everth/rclonemanager",
+            "version": "dev-main",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EverthSarantes/rclonemanager.git",
+                "reference": "cde138b5b5036d38891d72db59d0eb616645765a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EverthSarantes/rclonemanager/zipball/cde138b5b5036d38891d72db59d0eb616645765a",
+                "reference": "cde138b5b5036d38891d72db59d0eb616645765a",
+                "shasum": ""
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Everth\\Rclonemanager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "mit"
+            ],
+            "authors": [
+                {
+                    "name": "Everth Sarantes",
+                    "email": "everthleonardosaran@gmail.com"
+                }
+            ],
+            "description": "A PHP library to manage Rclone configurations and operations.",
+            "support": {
+                "issues": "https://github.com/EverthSarantes/rclonemanager/issues",
+                "source": "https://github.com/EverthSarantes/rclonemanager/tree/main"
+            },
+            "time": "2025-04-15T23:29:48+00:00"
         },
         {
             "name": "everth/userstamps",
@@ -8834,6 +8872,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "everth/rclonemanager": 20,
         "everth/userstamps": 20
     },
     "prefer-stable": true,
