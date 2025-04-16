@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Users\Module;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -14,8 +15,18 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        User::truncate();
-        Module::truncate();
+        
+        if(env('DB_CONNECTION') == 'mysql')
+        {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+            User::truncate();
+            Module::truncate();
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        } 
+        else{
+            User::truncate();
+            Module::truncate();
+        }
 
         $user = User::factory()->create([
             'name' => 'admin',
