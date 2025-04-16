@@ -14,6 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        User::truncate();
+        Module::truncate();
+
         $user = User::factory()->create([
             'name' => 'admin',
             'password' => bcrypt('admin'),
@@ -26,6 +29,12 @@ class DatabaseSeeder extends Seeder
                 'internal_name' => 'users',
                 'access_route_name' => 'users.index',
                 'icon' => 'bx bx-group nav_icon',
+            ],
+            [
+                'name' => 'Respaldos',
+                'internal_name' => 'backups',
+                'access_route_name' => 'backups.index',
+                'icon' => 'bx bx-save nav_icon',
             ],
         ];
 
