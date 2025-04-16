@@ -56,12 +56,20 @@ class BackupsController extends Controller
                 ],
             ]);
         }
-        
+
         return redirect()->route('backups.index')->with([
             'message' => [
                 'message' => 'Error deleting backup',
                 'type' => 'error'
             ],
         ]);
+    }
+
+    public function download($name)
+    {
+        $backup = new Backup();
+        $path = $backup->download($name);
+        
+        return response()->download($path)->deleteFileAfterSend(true);
     }
 }

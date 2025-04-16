@@ -54,14 +54,14 @@ trait Backup
     public function getOptionsFieldContent()
     {
         return [
-            /* 'show' => [
-                'type' => 'link',
+            'show' => [
+                'type' => 'normal-link',
                 'attr' => [
-                    'href' => route('users.show', ['user' => $this]),
-                    'class' => 'btn btn-primary',
+                    'href' => route('backups.download', ['name' => $this->name]),
+                    'class' => 'btn btn-success',
                 ],
-                'inner' => '<i class=\'bx bxs-show\'></i>',
-            ], */
+                'inner' => '<i class=\'bx bxs-download\'></i>',
+            ],
             'delete' => [
                 'type' => 'button',
                 'attr' => [

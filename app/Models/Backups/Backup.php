@@ -163,4 +163,18 @@ class Backup
             throw new \Exception("Error deleting backup: " . implode("\n", $result['output']));
         }
     }
+
+    public function download($name)
+    {
+        $result = $this->rclone->exec("copy", [
+            $this->config_name . ": " . $this->backup_path . '/' . $name,
+            storage_path('backups/'),
+        ]);
+        
+        if ($result['exit_code'] === 0) {
+            return storage_path('backups/' . $name);
+        } else {
+            throw new \Exception("Error downloading backup: " . implode("\n", $result['output']));
+        }
+    }
 }
