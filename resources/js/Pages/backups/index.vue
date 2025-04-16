@@ -32,8 +32,8 @@
                         <i class="fa-solid fa-plus"></i> Crear Backup
                     </button>
 
-                    <ExcelExport :filename="''" :target="'backups'"/>
-                    <Print :view-name="''" :title="''" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/>
+                    <ExcelExport :filename="'backups'" :target="'backups_table'"/>
+                    <!-- <Print :view-name="''" :title="''" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/> -->
                 </div>
             </div>
 
