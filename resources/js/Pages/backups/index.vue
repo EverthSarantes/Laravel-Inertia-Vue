@@ -6,7 +6,7 @@
     import ExcelExport from '../components/buttons/ExcelExport.vue';
     import Print from '../components/buttons/Print.vue';
 
-    import { useForm } from '@inertiajs/vue3';
+    import { useForm, usePage } from '@inertiajs/vue3';
 
     const backupform = useForm();
 
@@ -14,6 +14,9 @@
         backupform.post(route('backups.store'), {
             onSuccess: () => {
                 backupform.reset();
+                window.atm_tables.forEach((table) => {
+                    table.refresh();
+                });
             },
         });
     };
@@ -38,7 +41,7 @@
                 <div class="col-lg-12 mt-4">
                     <h5>Backups</h5>
                     <hr>
-                    <!-- <Table :model="" :options="['delete']" :id="'backups'"/> -->
+                    <Table :model="usePage().props.model" :options="['delete']" :id="'backups'"/>
                 </div>
             </div>
         </div>

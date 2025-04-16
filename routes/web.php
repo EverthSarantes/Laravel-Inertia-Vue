@@ -45,6 +45,7 @@ Route::middleware('auth')->group(function () {
         Route::prefix('backups')->middleware('CheckRoles:backups')->group(function () {
             Route::get('index', [BackupsController::class, 'index'])->name('backups.index');
             Route::post('store', [BackupsController::class, 'store'])->name('backups.store');
+            Route::delete('delete/{name}', [BackupsController::class, 'delete'])->name('backups.delete');
         });
         
     });

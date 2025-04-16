@@ -61,15 +61,15 @@ trait Backup
                     'class' => 'btn btn-primary',
                 ],
                 'inner' => '<i class=\'bx bxs-show\'></i>',
-            ],
+            ], */
             'delete' => [
                 'type' => 'button',
                 'attr' => [
                     'class' => 'delete-button btn btn-danger',
-                    'data-url' => route('users.delete', ['user' => $this]),
+                    'data-url' => route('backups.delete', ['name' => $this->name]),
                 ],
                 'inner' => '<i class=\'bx bxs-trash-alt\'></i>',
-            ], */
+            ],
         ];
     }
 }

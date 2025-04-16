@@ -61,6 +61,8 @@ class Backup
     public function __construct()
     {
         $this->rclone = new Rclone(env('RCLONE_CONFIG_FILE_PATH'));
+        $this->config_name = env('RCLONE_CONFIG_NAME');
+        $this->backup_path = env('RCLONE_BACKUP_PATH');
     }
 
     /**
@@ -84,7 +86,7 @@ class Backup
      */
     public function get(): Collection
     {
-        $backups = $this->rclone->list(env('RCLONE_CONFIG_NAME') . ": " . env('RCLONE_BACKUP_PATH'));
+        $backups = $this->rclone->list($this->config_name . ": " . $this->backup_path);
         $backups = mb_split("\n", $backups['output']);
 
         // Apply filters
@@ -147,5 +149,18 @@ class Backup
     public static function query(): self
     {
         return new self();
+    }
+
+    public function delete($name)
+    {
+        $result = $this->rclone->exec("delete", [
+            $this->config_name . ": " . $this->backup_path . '/' . $name,
+        ]);
+        
+        if ($result['exit_code'] === 0) {
+            return true;
+        } else {
+            throw new \Exception("Error deleting backup: " . implode("\n", $result['output']));
+        }
     }
 }
