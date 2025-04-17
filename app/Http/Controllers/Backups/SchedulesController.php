@@ -34,10 +34,6 @@ class SchedulesController extends Controller
             $backup->active = $request->active ? true : false;
             $backup->save();
 
-            if($backup->active) {
-                Artisan::call('schedule:run');
-            }
-
             return back()->with([
                 'message' => [
                     'message' => 'La tarea de respaldo fue actualizada correctamente.',
