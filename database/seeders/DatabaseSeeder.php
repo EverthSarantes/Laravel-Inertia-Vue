@@ -38,7 +38,7 @@ class DatabaseSeeder extends Seeder
         ScheduledBackup::create([
             'days' => [0],
             'times' => ['17:00'],
-            'active' => true,
+            'active' => false,
         ]);
 
         $modules = [
