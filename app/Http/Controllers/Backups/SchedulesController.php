@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Backups;
 use App\Http\Controllers\Controller;
 use App\http\Requests\BaseFormRequest;
 use App\Models\Backups\ScheduledBackup;
-use Illuminate\Support\Facades\Artisan;
 
 class SchedulesController extends Controller
 {
