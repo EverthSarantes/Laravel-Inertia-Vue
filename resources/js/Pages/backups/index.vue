@@ -4,7 +4,6 @@
     import DeleteModal from '../components/DeleteModal.vue';
     import Table from '../components/Table.vue';
     import ExcelExport from '../components/buttons/ExcelExport.vue';
-    /* import Print from '../components/buttons/Print.vue'; */
 
     import { useForm, usePage } from '@inertiajs/vue3';
 
@@ -29,10 +28,12 @@
         updateScheduleForm.hours.splice(index, 1)
     }
 
+    const schedules = usePage().props.schedules;
+
     const updateScheduleForm = useForm({
-        days: [],
-        hours: [''],
-        active: true,
+        days: schedules.days,
+        hours: schedules.times,
+        active: schedules.active,
     });
 
     const updateSchedule = () => {
@@ -62,7 +63,6 @@
                         </button>
                         <ExcelExport :filename="'backups'" :target="'backups_table'"/>
                     </div>
-                    <!-- <Print :view-name="''" :title="''" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/> -->
                 </div>
             </div>
 

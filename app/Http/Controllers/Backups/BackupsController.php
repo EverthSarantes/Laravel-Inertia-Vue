@@ -7,13 +7,17 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Http\Services\BackupServices;
 use App\Models\Backups\Backup;
+use App\Models\Backups\ScheduledBackup;
 
 class BackupsController extends Controller
 {
     public function index()
     {
+        $scheduledBackup = ScheduledBackup::firstOrNew(['id' => 1]);
+
         return Inertia::render('backups.index', [
             'model' => Backup::getStaticData(),
+            'schedules' => $scheduledBackup,
         ]);
     }
 
