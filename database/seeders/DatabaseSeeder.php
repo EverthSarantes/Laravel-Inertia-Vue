@@ -6,6 +6,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Users\Module;
+use App\Models\Backups\ScheduledBackup;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -32,6 +33,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'password' => bcrypt('admin'),
             'role' => '0',
+        ]);
+
+        ScheduledBackup::create([
+            'days' => [0],
+            'times' => ['17:00'],
+            'active' => true,
         ]);
 
         $modules = [
