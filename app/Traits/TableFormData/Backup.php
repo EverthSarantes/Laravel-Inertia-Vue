@@ -53,6 +53,10 @@ trait Backup
      */
     public function getOptionsFieldContent()
     {
+        if(!$this->name) {
+            return [];
+        }
+
         return [
             'show' => [
                 'type' => 'normal-link',
