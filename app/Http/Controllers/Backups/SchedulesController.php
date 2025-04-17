@@ -12,15 +12,10 @@ class SchedulesController extends Controller
     {
         $request->validate([
             'days' => 'nullable|array',
-            'days.*' => 'nullable|integer|between:0,6',
             'hours' => 'nullable|array',
-            'hours.*' => ['nullable', 'regex:/^\d{2}:\d{2}$/'],
         ], [
             'days.array' => 'El campo de días debe ser un arreglo.',
-            'days.*.integer' => 'El campo de días debe ser un número entero.',
-            'days.*.between' => 'El campo de días debe ser un día de la semana válido (0-6).',
             'hours.array' => 'El campo de horas debe ser un arreglo.',
-            'hours.*.regex' => 'El campo de horas debe tener el formato HH:MM.',
         ]);
 
         try{
