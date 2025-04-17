@@ -23,14 +23,14 @@ class BackupsController extends Controller
             if(BackupServices::createBackup()){
                 return redirect()->route('backups.index')->with([
                     'message' => [
-                        'message' => 'Backup created successfully',
+                        'message' => 'Respaldo creado correctamente',
                         'type' => 'success'
                     ],
                 ]);
             }
             return redirect()->route('backups.index')->with([
                 'message' => [
-                    'message' => 'Error creating backup',
+                    'message' => 'Error al crear el respaldo',
                     'type' => 'error'
                 ],
             ]);
@@ -38,7 +38,7 @@ class BackupsController extends Controller
         catch(\Exception $e){
             return redirect()->route('backups.index')->with([
                 'message' => [
-                    'message' => 'Error creating backup',
+                    'message' => 'Error al crear el respaldo',
                     'type' => 'error'
                 ],
             ]);
@@ -51,7 +51,7 @@ class BackupsController extends Controller
         if ($backup->delete($name)) {
             return redirect()->route('backups.index')->with([
                 'message' => [
-                    'message' => 'Backup deleted successfully',
+                    'message' => 'Respaldo eliminado correctamente',
                     'type' => 'success'
                 ],
             ]);
@@ -59,7 +59,7 @@ class BackupsController extends Controller
 
         return redirect()->route('backups.index')->with([
             'message' => [
-                'message' => 'Error deleting backup',
+                'message' => 'Error al eliminar el respaldo',
                 'type' => 'error'
             ],
         ]);
