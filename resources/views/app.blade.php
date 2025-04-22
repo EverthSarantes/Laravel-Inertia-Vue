@@ -7,6 +7,7 @@
     <link href="/css/boxicons.min.css" rel="stylesheet">
     <script src="/js/theme.js"></script>
     <title>{{ config('app.name') }}</title>
+    <link rel="icon" type="image/svg" href="/img/logo_icon.svg">
     <script>
         window.api_url = '{{ env('APP_URL') }}/api/';
         window.csrf_token = '{{ csrf_token() }}';

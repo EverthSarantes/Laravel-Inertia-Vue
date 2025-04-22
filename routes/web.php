@@ -6,6 +6,8 @@ use Inertia\Inertia;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PanelController;
 use App\Http\Controllers\Users\UsersController;
+use App\Http\Controllers\Backups\BackupsController;
+use App\Http\Controllers\Backups\SchedulesController;
 
 use App\Http\Controllers\Api\SearchController;
 
@@ -39,6 +41,17 @@ Route::middleware('auth')->group(function () {
             Route::delete('delete/{user}', [UsersController::class, 'delete'])->name('users.delete');
             Route::post('addModule', [UsersController::class, 'addModule'])->name('users.addModule');
             Route::delete('deleteModule/{userModule}/{user}', [UsersController::class, 'deleteModule'])->name('users.deleteModule');
+        });
+
+        Route::prefix('backups')->middleware('CheckRoles:backups')->group(function () {
+            Route::get('index', [BackupsController::class, 'index'])->name('backups.index');
+            Route::post('store', [BackupsController::class, 'store'])->name('backups.store');
+            Route::delete('delete/{name}', [BackupsController::class, 'delete'])->name('backups.delete');
+            Route::get('download/{name}', [BackupsController::class, 'download'])->name('backups.download');
+
+            Route::prefix('schedules')->group(function () {
+                Route::put('update', [SchedulesController::class, 'update'])->name('backups.schedules.update');
+            });
         });
         
     });

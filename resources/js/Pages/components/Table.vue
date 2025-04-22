@@ -228,6 +228,9 @@
                                         @click="key === 'delete' && showDeleteModal(option.attr['data-url'])"
                                         v-html="option.inner">
                                     </button>
+                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr"
+                                        v-html="option.inner">
+                                    </a>
                                 </template>
                             </div>
                         </td>

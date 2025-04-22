@@ -8,6 +8,10 @@ use Illuminate\Foundation\Configuration\Middleware;
 use App\Http\Middleware\LogUserActions;
 use Illuminate\Http\Request;
 use App\Http\Middleware\HandleInertiaRequests;
+use Illuminate\Console\Scheduling\Schedule;
+use App\Models\Backups\ScheduledBackup;
+use App\Http\Services\BackupServices;
+use Illuminate\Support\Facades\Log;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,4 +31,24 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->withSchedule(function (Schedule $schedule) {
+        ScheduledBackup::where('active', true)->get()->each(function ($backup) use ($schedule) {
+            foreach ($backup->times as $time) {
+                $schedule->call(function  () {
+                    Log::channel('backups')->info('Iniciando backup...');
+                    BackupServices::createBackup();
+                })
+                ->days($backup->days)
+                ->at($time)
+                ->name("Backup-{$backup->id}-{$time}")
+                ->evenInMaintenanceMode()
+                ->after(function (Stringable $output) {
+                    Log::channel('backups')->info('Backup Finalizado...', [
+                        'output' => $output,
+                    ]);
+                });
+            }
+        });
+    })
+    ->create();
