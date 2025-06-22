@@ -28,6 +28,7 @@ class User extends Authenticatable
         'email',
         'password',
         'role', // 0: Administrator, 1: User
+        'can_login', // Indicates if the user can log in
     ];
 
     /**

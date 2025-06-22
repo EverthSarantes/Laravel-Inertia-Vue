@@ -25,6 +25,7 @@ trait User
     public static $table_fields = [
         'name',
         'role',
+        'can_login',
     ];
 
     /**
@@ -42,6 +43,7 @@ trait User
         'name' => 'Nombre',
         'email' => 'Correo',
         'role' => 'Rol',
+        'can_login' => 'Puede iniciar sesión',
     ];
 
     /**
@@ -49,6 +51,7 @@ trait User
      */
     public static $morphable_fiels = [
         'role' => 'rol_name',
+        'can_login' => 'can_login_name',
     ];
 
     /**
@@ -57,6 +60,11 @@ trait User
     public static $rol_name = [
         '0' => 'Administrador',
         '1' => 'Usuario',
+    ];
+
+    public static $can_login_name = [
+        '0' => 'No',
+        '1' => 'Sí',
     ];
 
     /**
@@ -129,6 +137,21 @@ trait User
             'options' => [
                 '0' => 'Administrador',
                 '1' => 'Usuario',
+            ],
+        ],
+        'can_login' => [
+            'input_type' => 'select',
+            'type' => 'text',
+            'required' => true,
+            'readonly' => false,
+            'label' => 'Puede iniciar sesión',
+            'name' => 'can_login',
+            'id' => 'can_login',
+            'placeholder' => 'Puede iniciar sesión',
+            'options_function' => 'getCanLoginOptions',
+            'options' => [
+                '1' => 'Sí',
+                '0' => 'No',
             ],
         ],
     ];
