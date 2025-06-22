@@ -10,6 +10,7 @@ use App\Models\Users\UserModule;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Users\Module;
 use App\Traits\TableFormData\User as TableFormDataUser;
+use App\Models\Users\UserModelFilter;
 
 /**
  * Class User
@@ -60,6 +61,16 @@ class User extends Authenticatable
     public function userModule()
     {
         return $this->hasMany(UserModule::class);
+    }
+
+    /**
+     * Defines a one-to-many relationship with the UserModelFilter model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userModelFilters()
+    {
+        return $this->hasMany(UserModelFilter::class);
     }
 
     /**
