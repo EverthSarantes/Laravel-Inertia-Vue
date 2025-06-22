@@ -10,14 +10,15 @@
     import ExcelExport from '../components/buttons/ExcelExport.vue';
     import Print from '../components/buttons/Print.vue';
     import searchSelect from '../components/inputs/searchSelect.vue';
-    import DeleteButton from '../components/buttons/DeleteButton.vue';
 
     import { usePage, useForm, Link } from '@inertiajs/vue3';
-    import { computed } from 'vue';
+    import { computed, ref, watch } from 'vue';
 
     const user = computed(() => {
         return usePage().props.user;
     });
+
+    const filters = usePage().props.available_user_filters;
 
     const links = [
         { route: 'users.index', name: 'Usuarios', active: true },
@@ -26,7 +27,7 @@
     const updateForm = useForm({
         name: user.value.name,
         password: null,
-        can_login: user.value.can_login,
+        can_login: user.value.can_login
     });
 
     const submitUpdateForm = () => {
@@ -42,16 +43,61 @@
     const submitAddModuleForm = () => {
         addModuleForm.post(route('users.addModule'), {
             onSuccess: () => {
-                addModuleForm.reset();
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modal_add_module'));
                 modal.hide();
-            },
-            onError: (errors) => {
-                showToast('Error al agregar el módulo');
             },
         });
     };
 
+    function showDeleteModal(url) {
+        document.querySelector('#delete_modal form').action = url;
+        let modalInstance = new bootstrap.Modal(document.getElementById('delete_modal'));
+        modalInstance.show();
+    }
+
+    const selected_filter = ref(null);
+    const available_filters = ref(null);
+    const selected_filter_type = ref(null);
+    
+    const searchFilters = () => {
+        if (!selected_filter.value) {
+            available_filters.value = null;
+            return;
+        }
+        fetch(route('api.modelFilters.getAvailableFilterByModel', {model: selected_filter.value}), {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+            },
+        })
+        .then(async response => {
+            if (!response.ok) throw new Error('No se encontraron filtros disponibles para el modelo seleccionado.');
+            const data = await response.json();
+            available_filters.value = data.data;
+        })
+        .catch(() => {
+            showToast('No se encontraron filtros disponibles para el modelo seleccionado.');
+        });
+    };
+
+    // Watch for changes in the selected filter to fetch available filters
+    watch(selected_filter, (newFilter) => {
+        searchFilters();
+    });
+
+    const selected_filter_field_data = ref(null);
+
+    function setSelectedFilterFieldData() {
+        let selected_field = document.getElementById('filter_field').value;
+        if (selected_filter_type.value === 'simple'){
+            let data = available_filters.value.simple.fields[selected_field];
+            if (data) {
+                selected_filter_field_data.value = data;
+            } else {
+                selected_filter_field_data.value = null;
+            }
+        }
+    }
 </script>
 
 <template>
@@ -59,7 +105,7 @@
         <SubNavbar :links="links" />
 
         <div class="container">
-            <div class="row">
+            <div class="col-12">
                 <div class="col-lg-12">
                     <h4>Editar Usuario</h4>
                     <hr class="dorado">
@@ -80,10 +126,10 @@
                                     <option value="0">No</option>
                                 </select>
                             </div>
+
                             <div class="col-md-12 mt-3 justify-content-between d-flex">
                                 <div class="d-flex gap-1">
                                     <button type="submit" class="btn btn-primary">Editar</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_add_module">Agregar Módulo</button>
                                 </div>
                                 <div class="d-flex justify-content-end gap-1">
                                     <ExcelExport :filename="user.name" :target="'modules_table'"/>
@@ -93,38 +139,105 @@
                         </div>
                     </form>
                 </div>
-                <div class="col-lg-12 mt-4">
-                    <h5>Módulos a los que posee acceso el Usuario</h5>
-                    <hr>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-hover m-0" id="modules_table">
-                            <thead>
-                                <tr class="table-primary">
-                                    <th>Nombre</th>
-                                    <th>Acciones</th>
-                                    <th>Opciones</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="userModule in user.user_module" :key="userModule.id">
-                                    <td>{{ userModule.module.name }}</td>
-                                    <td>
-                                        {{ userModule.actions.map(action => action.action_name).join(', ') }}
-                                    </td>
-                                    <td>
-                                        <div class="d-flex gap-1">
-                                            <Link class="btn btn-primary btn-sm" :href="route(userModule.module.access_route_name)">
-                                                <i class='bx bxs-show'></i>
-                                            </Link>
-                                            <DeleteButton class="btn btn-danger btn-sm" type="button" :url="route('users.deleteModule', {userModule: userModule.id, user: userModule.user_id})">
-                                                <i class='bx bxs-trash'></i>
-                                            </DeleteButton>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                     </div>
+            </div>
+        </div>
+
+        <div class="container p-3">
+            <ul class="nav nav-tabs flex-row justify-content-end" id="pills-tab" role="tablist" style="border: none;">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="pills-modules-tab" data-bs-toggle="pill" data-bs-target="#pills-modules" type="button" role="tab" aria-controls="pills-modules" aria-selected="true">Modulos</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-model-filters-tab" data-bs-toggle="pill" data-bs-target="#pills-model-filters" type="button" role="tab" aria-controls="pills-model-filters" aria-selected="false">Filtros de Información</button>
+                </li>
+            </ul>
+        </div>
+
+        <div class="tab-content container" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab" style="color: #000">
+                <div class="row">
+                    <div class="col-lg-12 mt-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Módulos a los que posee acceso el Usuario</h5>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_module">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover m-0" id="modules_table">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th>Nombre</th>
+                                        <th>Acciones</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="userModule in user.user_module" :key="userModule.id">
+                                        <td>{{ userModule.module.name }}</td>
+                                        <td>
+                                            {{ userModule.actions.map(action => action.action_name).join(', ') }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <Link class="btn btn-primary btn-sm" :href="route(userModule.module.access_route_name)">
+                                                    <i class='bx bxs-show'></i>
+                                                </Link>
+                                                <button class="btn btn-danger btn-sm" type="button" @click="showDeleteModal(route('users.deleteModule', {userModule: userModule.id, user: userModule.user_id}))">
+                                                    <i class='bx bxs-trash'></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-model-filters" role="tabpanel" aria-labelledby="pills-model-filters-tab" style="color: #000">
+                <div class="row">
+                    <div class="col-lg-12 mt-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Filtros de Información del Usuario</h5>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_filter">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </div>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover m-0" id="modules_table">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th>Descripción</th>
+                                        <th>Información Filtrada</th>
+                                        <th>Filtro</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- <tr v-for="userModule in user.user_module" :key="userModule.id">
+                                        <td>{{ userModule.module.name }}</td>
+                                        <td>
+                                            {{ userModule.actions.map(action => action.action_name).join(', ') }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <Link class="btn btn-primary btn-sm" :href="route(userModule.module.access_route_name)">
+                                                    <i class='bx bxs-show'></i>
+                                                </Link>
+                                                <button class="btn btn-danger btn-sm" type="button" @click="showDeleteModal(route('users.deleteModule', {userModule: userModule.id, user: userModule.user_id}))">
+                                                    <i class='bx bxs-trash'></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -193,7 +306,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
+                        <div class="modal-footer mt-3">
                             <button type="submit" class="btn btn-primary">Agregar</button>
                         </div>
                     </form>
@@ -201,6 +314,71 @@
             </div>
         </div>
 
-    <DeleteModal />
+        <!-- modal add filter -->
+        <div class="modal fade" id="modal_add_filter" tabindex="-1" aria-labelledby="modal_add_filter" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <form method="POST">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal_add_filter">Agregar Filtro</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body row">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label for="model" class="form-label">Seleccione Información a Filtrar</label>
+                                    <select name="model" id="model" class="form-select" v-model="selected_filter">
+                                        <option :value="null" selected>Seleccione un filtro</option>
+                                        <option :value="filter.model" v-for="filter in filters" v-html="filter.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6" v-if="available_filters">
+                                    <label for="filter_type" class="form-label">Tipo de Filtro</label>
+                                    <select name="filter_type" id="filter_type" class="form-select" v-model="selected_filter_type">
+                                        <option :value="null" selected>Seleccione un filtro</option>
+                                        <option :value="filter.type" v-for="filter in available_filters" v-html="filter.label"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <hr v-if="selected_filter_type" class="mt-3">
+                            <div class="row" v-if="selected_filter_type == 'simple'">
+                                <div class="col-md-4">
+                                    <label for="filter_field" class="form-label">Campo del Filtro</label>
+                                    <select name="filter_field" id="filter_field" class="form-select" @input="setSelectedFilterFieldData">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="fieldKey" v-for="(field, fieldKey) in available_filters.simple.fields" v-html="field.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="filter_operator" class="form-label">Operador</label>
+                                    <select name="filter_operator" id="filter_operator" class="form-select">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="operator.value" v-for="operator in available_filters.simple.operators" v-html="operator.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" v-if="selected_filter_field_data">
+                                    <label for="filter_value" class="form-label">Valor</label>
+
+
+                                    <select v-if="selected_filter_field_data && selected_filter_field_data.type == 'static_select'" class="form-select">
+                                        <option :value="null" selected>Seleccione un valor</option>
+                                        <option :value="valueKey" v-for="(label, valueKey) in selected_filter_field_data.values" v-html="label"></option>
+                                    </select>
+
+
+                                    <input v-else-if="selected_filter_field_data && selected_filter_field_data.type === 'open'"  type="text" class="form-control" />
+                                </div>
+                            </div>
+                            
+                        </div>
+                        <div class="modal-footer mt-3">
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <DeleteModal />
     </dashboard>
 </template>

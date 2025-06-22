@@ -75,6 +75,10 @@ class User extends Authenticatable
                         '0' => 'No',
                     ],
                 ],
+                'name' => [
+                    'label' => 'Nombre',
+                    'type' => self::TYPE_OPEN,
+                ],
             ],
             'operators' => [
                 self::OP_EQUAL => [
