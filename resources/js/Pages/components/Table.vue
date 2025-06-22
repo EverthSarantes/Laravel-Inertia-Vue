@@ -11,6 +11,10 @@
         options: Array,
         id: [String, Number],
         extraQueryParameter: [String, Number, Boolean],
+        small: {
+            type: Boolean,
+            default: false,
+        },
         defaultOptions: {
             type: Object,
             default: null,
@@ -117,15 +121,21 @@
     <div class="card p-3" :id="id">
         <div class="row d-flex justify-content-end">
             <div class="col-md" style="max-width: 460px">
-                <div class="input-group mb-3">
-                    <label class="input-group-text" :for="'pagination_' + id">Paginación</label>
-                    <input type="number" class="form-control" placeholder="Paginación" v-model.number="pagination"
+                <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
+                    <label class="input-group-text" :class="{ 'form-control-sm': small }" :for="'pagination_' + id">
+                        Paginación
+                    </label>
+
+                    <input type="number"  placeholder="Paginación" 
+                        class="form-control" :class="{ 'form-control-sm': small }"
+                        v-model.number="pagination"
                         :id="'pagination_' + id">
                 </div>
             </div>
             <div class="col-md-1">
                 <div class="d-flex justify-content-end">
-                    <button class="btn btn-secondary" data-bs-toggle="collapse"
+                    <button class="btn btn-secondary" :class="{ 'btn-sm': small }"
+                        data-bs-toggle="collapse"
                         :data-bs-target="'#search_options_' + id">
                         <i class='bx bx-cog'></i>
                     </button>
@@ -139,7 +149,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" @click="addNewSearchOption">
+                        <button class="btn btn-primary" :class="{ 'btn-sm': small }"
+                            @click="addNewSearchOption">
                             <i class='bx bx-plus'></i>
                         </button>
                     </div>
@@ -152,7 +163,7 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-lg">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
                                         <span class="input-group-text"><i class='bx bx-search'></i></span>
                                         <select class="form-control" v-model="option.field">
                                             <template v-for="(field, i) in props.model.table_fields_searchable" :key="i">
@@ -162,7 +173,7 @@
                                     </div>
                                 </div>
                                 <div class="col-lg">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
                                         <span class="input-group-text"><i class='bx bx-search'></i></span>
                                         <select class="form-control" v-model="option.search_type">
                                             <option value="like">Similar</option>
@@ -180,14 +191,15 @@
                         <div class="col-md-6">
                             <div class="row">
                                 <div class="col-lg">
-                                    <div class="input-group mb-3">
+                                    <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
                                         <span class="input-group-text"><i class='bx bx-search'></i></span>
                                         <input type="search" class="form-control" placeholder="Buscar" v-model="option.search" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="d-flex justify-content-end button-container">
-                                        <button class="btn btn-danger" @click="removeSearchOption(index)">
+                                        <button class="btn btn-danger" :class="{ 'btn-sm': small }"
+                                            @click="removeSearchOption(index)">
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </div>
@@ -201,7 +213,7 @@
 
         <!-- Tabla de datos -->
         <div class="table-responsive">
-            <table class="table table-striped table-hover m-0" :id="id + '_table'">
+            <table class="table table-striped table-hover m-0" :id="id + '_table'" :class="{ 'table-sm': small }">
                 <thead>
                     <tr>
                         <template v-for="(field, index) in props.model.table_fields" :key="index">
@@ -222,9 +234,9 @@
                         <td>
                             <div class="d-flex justify-content-center gap-1" v-if="!defaultOptions">
                                 <template v-for="(option, key) in row.options" :key="key">
-                                    <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner"></Link>
-                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner"></button>
-                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" v-html="option.inner"></a>
+                                    <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}"></Link>
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}"></button>
+                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}"></a>
                                 </template>
                             </div>
                             <div class="d-flex justify-content-center gap-1" v-if="defaultOptions">
@@ -235,19 +247,20 @@
                                             acc[field] = row[field];
                                             return acc;
                                         }, {})
-                                    )"></Link>
+                                    )" :class="{'btn-sm': small}"></Link>
 
-                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner"></button>
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}"></button>
 
-                                            <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" :href="route(
-                                                        option.attr.route_name,
-                                                        option.attr.route_params.reduce((acc, field) => {
-                                                        acc[field] = row[field];
-                                                        return acc;
-                                                    }, {})
-                                                )"
-                                                v-html="option.inner">
-                                            </a>
+                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" :href="route(
+                                            option.attr.route_name,
+                                            option.attr.route_params.reduce((acc, field) => {
+                                            acc[field] = row[field];
+                                            return acc;
+                                        }, {})
+                                    )"
+                                        v-html="option.inner"
+                                        :class="{'btn-sm': small}">
+                                    </a>
                                     </template>
                                 </div>
                         </td>
@@ -264,7 +277,7 @@
         <!-- Botones de paginación -->
         <div class="mt-3">
             <nav aria-label="Page navigation">
-                <ul class="pagination user-select-none">
+                <ul class="pagination user-select-none" :class="{ 'pagination-sm': small }">
                     <li class="page-item" :class="{ disabled: !prevUrl }">
                         <a class="page-link" href="#" @click.prevent="goToPage(prevUrl)">Anterior</a>
                     </li>
