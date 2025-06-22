@@ -3,7 +3,7 @@
 // The table data is fetched from an API, and the component allows adding or removing search options dynamically.
 // It also integrates with global table instances for refreshing and managing data.
 <script setup>
-    import { ref, onMounted, watch } from 'vue';
+    import { ref, onMounted, watch, onUnmounted } from 'vue';
     import { Link } from '@inertiajs/vue3';
 
     const props = defineProps({
@@ -13,10 +13,8 @@
         extraQueryParameter: [String, Number, Boolean],
     });
 
-    // Estado reactivo para la tabla
     const tableData = ref([]);
     const pagination = ref(20);
-    // Se inicializa con un objeto (puedes inicializar el primer campo según convenga)
     const searchOptions = ref([
         { field: props.model.table_fields_searchable?.[0] || '', search_type: 'like', search: '' }
     ]);
@@ -24,7 +22,6 @@
     const prevUrl = ref(null);
     const nextUrl = ref(null);
 
-    // Función para construir la URL de búsqueda a partir de los parámetros actuales
     function getUrl(page = null) {
         const base_url = `${api_url}search/${props.model.model}/`;
         const url = new URL(base_url);
@@ -42,11 +39,9 @@
         return url;
     }
 
-    // Función para obtener los datos (se asume que makeRequest es global)
     function searchData(url) {
         if (!url) return;
         closeToast();
-        // Opcional: podrías establecer un estado de "cargando" si lo requieres
         tableData.value = [];
 
         makeRequest(url, 'GET', (response) => {
@@ -62,54 +57,52 @@
         });
     }
 
+    let tableInstance = null;
+
     onMounted(() => {
-        // Llamada inicial a la búsqueda
         searchData(getUrl());
-        
-        // Exponemos un objeto con los métodos o propiedades que deseamos manipular globalmente.
-        const tableInstance = {
+        tableInstance = {
             refresh: () => searchData(getUrl()),
             getData: () => tableData.value,
             setData: (data) => { tableData.value = data },
             getPagination: () => pagination.value,
             setPagination: (value) => { pagination.value = value },
-            // Puedes agregar otros métodos según lo necesites.
         };
-
         if (!window.atm_tables) {
             window.atm_tables = [];
         }
         window.atm_tables.push(tableInstance);
     });
 
-    // Cada vez que cambie la paginación o algún campo de búsqueda, se dispara la consulta
+    onUnmounted(() => {
+        if (window.atm_tables && tableInstance) {
+            const idx = window.atm_tables.indexOf(tableInstance);
+            if (idx !== -1) window.atm_tables.splice(idx, 1);
+        }
+    });
+
     watch([pagination, searchOptions], () => {
         searchData(getUrl());
     }, { deep: true });
 
-    // Funciones para agregar o quitar opciones de búsqueda
     function addNewSearchOption() {
         searchOptions.value.push({ field: '', search_type: 'like', search: '' });
     }
 
     function removeSearchOption(index) {
-        // Permite quitar solo si hay más de una opción (para evitar tener cero)
         if (searchOptions.value.length > 1) {
             searchOptions.value.splice(index, 1);
         }
         searchData(getUrl());
     }
 
-    // Función para manejar la paginación
     function goToPage(url) {
         if (url) {
             searchData(url);
         }
     }
 
-    // Función para mostrar el modal de eliminar
     function showDeleteModal(url) {
-        // Asumiendo que existe el modal en el HTML y las funciones globales
         document.querySelector('#delete_modal form').action = url;
         let modalInstance = new bootstrap.Modal(document.getElementById('delete_modal'));
         modalInstance.show();
