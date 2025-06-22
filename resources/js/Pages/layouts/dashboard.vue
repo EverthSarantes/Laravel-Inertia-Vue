@@ -9,7 +9,10 @@
     import { useHead } from '@vueuse/head';
 
     const page = usePage();
-    const modules = computed(() => page.props.modules);
+    const modules = computed(() => {
+        console.log(page.props.modules);
+        return [...page.props.modules].sort((a, b) => a.order - b.order);
+    });
     const userName = computed(() => page.props.userName);
     const message = computed(() => page.props.flash.message);
 
