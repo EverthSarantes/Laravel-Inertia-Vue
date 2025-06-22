@@ -51,6 +51,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('users_modules_actions', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('user_module_id')->constrained('users_modules')
+            ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->enum('action', ['create', 'read', 'update', 'delete'])->nullable();
+
+            $table->nullableUserStamps();
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
