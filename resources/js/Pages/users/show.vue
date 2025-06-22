@@ -10,8 +10,9 @@
     import ExcelExport from '../components/buttons/ExcelExport.vue';
     import Print from '../components/buttons/Print.vue';
     import searchSelect from '../components/inputs/searchSelect.vue';
+    import DeleteButton from '../components/buttons/DeleteButton.vue';
 
-    import { usePage, useForm } from '@inertiajs/vue3';
+    import { usePage, useForm, Link } from '@inertiajs/vue3';
     import { computed } from 'vue';
 
     const user = computed(() => {
@@ -41,6 +42,7 @@
     const addModuleForm = useForm({
         user_id: user.value.id,
         module_id: null,
+        actions: [],
     });
 
     const submitAddModuleForm = () => {
@@ -49,10 +51,6 @@
                 addModuleForm.reset();
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modal_add_module'));
                 modal.hide();
-
-                window.atm_tables.forEach((table) => {
-                    table.refresh();
-                });
             },
             onError: (errors) => {
                 showToast('Error al agregar el módulo');
@@ -97,7 +95,35 @@
                 <div class="col-lg-12 mt-4">
                     <h5>Módulos a los que posee acceso el Usuario</h5>
                     <hr>
-                    <Table :model="usePage().props.model" :options="['delete']" :id="'modules'" :extraQueryParameter="user.id"/>
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover m-0" id="modules_table">
+                            <thead>
+                                <tr class="table-primary">
+                                    <th>Nombre</th>
+                                    <th>Acciones</th>
+                                    <th>Opciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="userModule in user.user_module" :key="userModule.id">
+                                    <td>{{ userModule.module.name }}</td>
+                                    <td>
+                                        {{ userModule.actions.map(action => action.action_name).join(', ') }}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex gap-1">
+                                            <Link class="btn btn-primary btn-sm" :href="route(userModule.module.access_route_name)">
+                                                <i class='bx bxs-show'></i>
+                                            </Link>
+                                            <DeleteButton class="btn btn-danger btn-sm" type="button" :url="route('users.deleteModule', {userModule: userModule.id, user: userModule.user_id})">
+                                                <i class='bx bxs-trash'></i>
+                                            </DeleteButton>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                     </div>
                 </div>
             </div>
         </div>
@@ -113,6 +139,58 @@
                         </div>
                         <div class="modal-body">
                              <searchSelect name="Módulos" input-name="module_id" :model="'Module'" :required="true" select_name="module_id" v-model:select_value="addModuleForm.module_id"/>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label d-flex gap-1">
+                                            <input type="checkbox"
+                                                name="actions[]"
+                                                v-model="addModuleForm.actions"
+                                                value="create"
+                                                class="form-check checkbox-modules-actions">
+                                            <small>Crear</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label d-flex gap-1">
+                                            <input type="checkbox"
+                                                name="actions[]"
+                                                v-model="addModuleForm.actions"
+                                                value="read"
+                                                class="form-check checkbox-modules-actions">
+                                            <small>Leer</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label d-flex gap-1">
+                                            <input type="checkbox"
+                                                name="actions[]"
+                                                v-model="addModuleForm.actions"
+                                                value="update"
+                                                class="form-check checkbox-modules-actions">
+                                            <small>Actualizar</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-check">
+                                        <label class="form-check-label d-flex gap-1">
+                                            <input type="checkbox"
+                                                name="actions[]"
+                                                v-model="addModuleForm.actions"
+                                                value="delete"
+                                                class="form-check checkbox-modules-actions">
+                                            <small>Eliminar</small>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary">Agregar</button>
