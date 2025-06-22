@@ -15,6 +15,7 @@ class UserModuleAction extends Model
         'user_module_id',
         'action',
     ];
+    
     public function userModule()
     {
         return $this->belongsTo(UserModule::class, 'user_module_id');
