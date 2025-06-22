@@ -3,6 +3,8 @@ namespace App\Http\Services;
 
 use App\Models\User;
 use App\Models\Users\UserModule;
+use App\Models\Users\UserModuleAction;
+use Illuminate\Support\Facades\DB;
 
 class UserServices
 {
@@ -15,38 +17,55 @@ class UserServices
      */
     public static function makeUser($request)
     {
-        if($request->role === 1)
-        {
-            $user = User::create([
-                'name' => $request['name'],
-                'password' => bcrypt($request['password']),
-                'role' => $request['role'],
-            ]); 
-
-            if($request->modules !== null)
+        DB::beginTransaction();
+        
+        try{
+            if($request->role === 1)
             {
-                foreach($request->modules as $module)
+                $user = User::create([
+                    'name' => $request['name'],
+                    'password' => bcrypt($request['password']),
+                    'role' => $request['role'],
+                ]); 
+
+                if($request->modules !== null)
                 {
-                    $user->userModule()->create([
-                        'module_id' => $module,
-                    ]);
+                    foreach($request->modules as $module)
+                    {
+                        $user_module = UserModule::create([
+                            'user_id' => $user->id,
+                            'module_id' => $module['module_id'],
+                        ]);
+                        foreach($module['actions'] as $action)
+                        {
+                            UserModuleAction::create([
+                                'user_module_id' => $user_module->id,
+                                'action' => $action,
+                            ]);
+                        }
+                    }
                 }
+
+                DB::commit();
+                return $user;
             }
+            else if($request->role === 0)
+            {
+                $user = User::create([
+                    'name' => $request['name'],
+                    'password' => bcrypt($request['password']),
+                    'role' => $request['role'],
+                ]);
 
-            return $user;
+                DB::commit();
+                return $user;
+            }
         }
-        else if($request->role === 0)
+        catch(\Exception $e)
         {
-            $user = User::create([
-                'name' => $request['name'],
-                'password' => bcrypt($request['password']),
-                'role' => $request['role'],
-            ]);
-
-            return $user;
+            DB::rollBack();
+            return null;
         }
-
-        return null;
     }
 
     /**
