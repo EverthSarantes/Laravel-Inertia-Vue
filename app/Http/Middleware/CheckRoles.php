@@ -20,13 +20,13 @@ class CheckRoles
      */
     public function handle(Request $request, Closure $next, $module): Response
     {
-        if(Auth::user()->role == '0') return $next($request);
+        if(Auth::user()->isAdmin()) return $next($request);
 
-        if(UserModule::where('user_id', Auth::user()->id)->whereHas('module', function($query) use ($module){$query->where('internal_name', $module);})->exists()) return $next($request);
+        if(Auth::user()->hasAccessToModule($module, $request->method())) return $next($request);
 
-        return redirect()->route('panel')->with([
+        return redirect()->back()->with([
             'message' => [
-                'message' => 'No tienes permisos para acceder a este módulo',
+                'message' => 'No tienes permisos para realizar esta acción.',
                 'type' => 'danger',
             ],
         ], 403);
