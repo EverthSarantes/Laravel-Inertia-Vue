@@ -24,7 +24,11 @@ class LoginController extends Controller
             'password' => 'required|string'
         ]);
 
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt([
+            'name' => $credentials['name'],
+            'password' => $credentials['password'],
+            'can_login' => true
+        ])) {
             $request->session()->regenerate();
             return redirect()->route('panel');
         }
