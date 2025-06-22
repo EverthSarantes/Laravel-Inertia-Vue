@@ -3,6 +3,14 @@
 <script setup>
     import { useForm } from '@inertiajs/vue3';
 
+    const props = defineProps({
+        callback: {
+            type: Function,
+            required: false,
+            default: null,
+        },
+    });
+
     const form_request = useForm({
         _method: 'DELETE',
     });
@@ -20,6 +28,10 @@
                 window.atm_tables.forEach((table) => {
                     table.refresh();
                 });
+
+                if (props.callback) {
+                    props.callback(response);
+                }
             },
             onError: () => {
                 showToast('Error al eliminar el registro');
