@@ -81,8 +81,13 @@
                     <template v-for="module in modules" :key="module.name">
                         <Link v-if="module.route" :href="module.route" class="nav_link">
                             <i :class="`bx ${module.icon} nav_icon`"></i>
-                            <span class="nav_name nav_module_name">{{ module.name }}</span>
-                        </Link>
+                                <span
+                                    class="nav_name nav_module_name"
+                                    :style="module.name.length > 15 ? 'font-size: 0.85em;' : ''"
+                                >
+                                {{ module.name }}
+                                </span>
+                            </Link>
                     </template>
                 </div>
             </div>
