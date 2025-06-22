@@ -25,9 +25,11 @@
                 const modal = bootstrap.Modal.getInstance(document.getElementById('delete_modal'));
                 modal.hide();
 
-                window.atm_tables.forEach((table) => {
-                    table.refresh();
-                });
+                if(window.atm_tables){
+                    window.atm_tables.forEach((table) => {
+                        table.refresh();
+                    });
+                }
 
                 if (props.callback) {
                     props.callback(response);
