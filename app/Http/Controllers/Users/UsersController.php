@@ -41,9 +41,9 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
+        $user->load(['userModule.actions', 'userModule.module']);
         return Inertia::render('users.show', [
             'user' => $user,
-            'model' => UserModule::getStaticData(),
         ]);
     }
 
