@@ -74,7 +74,7 @@ return new class extends Migration
             $table->string('description')->nullable(); // descripción del filtro
             $table->string('model'); // nombre del modelo al que se aplica el filtro
             $table->string('field'); // campo del modelo al que se aplica el filtro
-            $table->operator('operator'); // operador de comparación, por ejemplo: '=', '!=', '>', '<', 'LIKE', etc.
+            $table->string('operator'); // operador de comparación, por ejemplo: '=', '!=', '>', '<', 'LIKE', etc.
             $table->string('value')->nullable();
             $table->string('comparison_type')->default('simple'); // simple, relation, function
             $table->string('relation')->nullable(); // nombre de la relación si es un filtro de relación ejemplo: 'userModule.user'
