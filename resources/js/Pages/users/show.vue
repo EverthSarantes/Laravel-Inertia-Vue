@@ -26,17 +26,11 @@
     const updateForm = useForm({
         name: user.value.name,
         password: null,
+        can_login: user.value.can_login,
     });
 
     const submitUpdateForm = () => {
-        updateForm.put(route('users.update', user.value.id), {
-            onSuccess: () => {
-                updateForm.reset();
-            },
-            onError: (errors) => {
-                showToast('Error al actualizar el usuario');
-            },
-        });
+        updateForm.put(route('users.update', user.value.id));
     };
 
     const addModuleForm = useForm({
@@ -78,6 +72,13 @@
                             <div class="col-md-6 mt-3">
                                 <label for="password">Contraseña</label>
                                 <input type="password" name="password" id="password" class="form-control" v-model="updateForm.password">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="can_login">Puede Iniciar Sesión</label>
+                                <select name="can_login" id="can_login" class="form-select" v-model="updateForm.can_login">
+                                    <option value="1">Sí</option>
+                                    <option value="0">No</option>
+                                </select>
                             </div>
                             <div class="col-md-12 mt-3 justify-content-between d-flex">
                                 <div class="d-flex gap-1">
