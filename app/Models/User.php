@@ -82,6 +82,35 @@ class User extends Authenticatable
         return $modules;
     }
 
+    
+    /**
+     * Checks if the user has access to a specific module and method.
+     *
+     * @return bool True if the user is an administrator or has access to the module and method, false otherwise.
+     */
+    public function hasAccessToModule(string $module, string $method): bool
+    {
+        if($this->isAdmin()) return true;
+
+        $action_names = [
+            'GET' => 'read',
+            'HEAD' => 'read',
+            'OPTIONS' => 'read',
+            'POST' => 'create',
+            'PUT' => 'update',
+            'PATCH' => 'update',
+            'DELETE' => 'delete',
+        ];
+
+        return $this->userModule()->whereHas('module', function($query) use ($module) {
+            $query->where('internal_name', $module);          
+        })
+        ->whereHas('actions', function($query) use ($method, $action_names) {
+            $query->where('action', $action_names[$method]);
+        })
+        ->exists();
+    }
+
     /**
      * Checks if the user has an administrator role.
      *
