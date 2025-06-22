@@ -10,6 +10,7 @@ use App\Http\Requests\BaseFormRequest;
 use App\Http\Services\UserServices;
 use App\Models\Users\Module;
 use App\Models\Users\UserModule;
+use App\Models\Users\UserModelFilter;
 use Inertia\Inertia;
 
 /**
@@ -41,7 +42,7 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        $user->load(['userModule.actions', 'userModule.module']);
+        $user->load(['userModule.actions', 'userModule.module', 'userModelFilters']);
         $available_user_filters = config('modelFilters');
         return Inertia::render('users.show', [
             'user' => $user,
@@ -194,6 +195,52 @@ class UsersController extends Controller
         return redirect()->route('users.show', $user)->with([
             'message' => [
                 'message' => 'Módulo eliminado correctamente',
+                'type' => 'success',
+            ],
+        ]);
+    }
+
+    /**
+     * Store a user model filter.
+     *
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addUserModelFilter(BaseFormRequest $request, User $user)
+    {
+        $request->validate([
+            'comparison_type' => 'required',
+        ], [
+            'comparison_type.required' => 'El tipo de comparación es obligatorio',
+        ]);
+
+        $response = UserServices::addUserModelFilter($request, $user);
+
+        if($response === null)
+        {
+            return redirect()->back()->with([
+                'message' => [
+                    'message' => 'Error al agregar el filtro',
+                    'type' => 'danger',
+                ],
+            ]);
+        }
+
+        return redirect()->back()->with([
+            'message' => [
+                'message' => 'Filtro agregado correctamente',
+                'type' => 'success',
+            ],
+        ]);
+    }
+
+    public function removeUserModelFilter(UserModelFilter $userModelFilter, User $user)
+    {
+        $userModelFilter->delete();
+
+        return redirect()->route('users.show', $user)->with([
+            'message' => [
+                'message' => 'Filtro eliminado correctamente',
                 'type' => 'success',
             ],
         ]);

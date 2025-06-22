@@ -4,6 +4,7 @@ namespace App\Http\Services;
 use App\Models\User;
 use App\Models\Users\UserModule;
 use App\Models\Users\UserModuleAction;
+use App\Models\Users\UserModelFilter;
 use Illuminate\Support\Facades\DB;
 
 class UserServices
@@ -134,6 +135,34 @@ class UserServices
         } catch (\Exception $e) {
             DB::rollBack();
             return false;
+        }
+    }
+
+    public static function addUserModelFilter($request, User $user)
+    {
+        DB::beginTransaction();
+
+        try {
+            if($request->comparison_type == "simple")
+            {
+                $filter = UserModelFilter::create([
+                    'user_id' => $user->id,
+                    'comparison_type' => $request->comparison_type,
+                    'model' => $request->model,
+                    'field' => $request->field,
+                    'operator' => $request->operator,
+                    'value' => $request->value,
+                ]);
+
+                DB::commit();
+                return $filter;
+            }
+
+            DB::rollBack();
+            return null;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return null;
         }
     }
 }
