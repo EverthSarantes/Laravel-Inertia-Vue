@@ -10,6 +10,7 @@ use App\Http\Controllers\Backups\BackupsController;
 use App\Http\Controllers\Backups\SchedulesController;
 
 use App\Http\Controllers\Api\SearchController;
+use App\Http\Controllers\Api\ModelFilters\ModelFiltersController;
 
 use App\Http\Controllers\Exports\PrintController;
 
@@ -59,6 +60,10 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
     Route::prefix('api')->group(function () {
         Route::get('search/{model}', [SearchController::class, 'search']);
         Route::get('select/{model}/{search}', [SearchController::class, 'searchSelect']);
+
+        Route::prefix('modelFilters')->middleware('CheckRoles:users')->group(function () {
+            Route::get('getAvailableFilterByModel/{model}', [ModelFiltersController::class, 'getAvailableFilterByModel'])->name('api.modelFilters.getAvailableFilterByModel');
+        });
     });
 
     Route::prefix('exports')->group(function () {
