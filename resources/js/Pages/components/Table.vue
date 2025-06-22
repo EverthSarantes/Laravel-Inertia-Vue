@@ -11,6 +11,10 @@
         options: Array,
         id: [String, Number],
         extraQueryParameter: [String, Number, Boolean],
+        defaultOptions: {
+            type: Object,
+            default: null,
+        }
     });
 
     const tableData = ref([]);
@@ -213,20 +217,42 @@
                         <td v-for="(field, fieldIndex) in props.model.table_fields" :key="fieldIndex">
                             {{ row[field] }}
                         </td>
+
+                        
                         <td>
-                            <div class="d-flex justify-content-center gap-1">
+                            <div class="d-flex justify-content-center gap-1" v-if="!defaultOptions">
                                 <template v-for="(option, key) in row.options" :key="key">
                                     <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner"></Link>
-                                    <button v-else-if="option.type === 'button'" v-bind="option.attr"
-                                        @click="key === 'delete' && showDeleteModal(option.attr['data-url'])"
-                                        v-html="option.inner">
-                                    </button>
-                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr"
-                                        v-html="option.inner">
-                                    </a>
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner"></button>
+                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" v-html="option.inner"></a>
                                 </template>
                             </div>
+                            <div class="d-flex justify-content-center gap-1" v-if="defaultOptions">
+                                <template v-for="(option, key) in defaultOptions" :key="key">
+                                    <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner" :href="route(
+                                        option.route_name,
+                                        option.route_params.reduce((acc, field) => {
+                                            acc[field] = row[field];
+                                            return acc;
+                                        }, {})
+                                    )"></Link>
+
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner"></button>
+
+                                            <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" :href="route(
+                                                        option.attr.route_name,
+                                                        option.attr.route_params.reduce((acc, field) => {
+                                                        acc[field] = row[field];
+                                                        return acc;
+                                                    }, {})
+                                                )"
+                                                v-html="option.inner">
+                                            </a>
+                                    </template>
+                                </div>
                         </td>
+
+
                     </tr>
                     <tr v-if="tableData.length === 0">
                         <td :colspan="props.model.table_fields.length + 1" class="text-center">Cargando...</td>
