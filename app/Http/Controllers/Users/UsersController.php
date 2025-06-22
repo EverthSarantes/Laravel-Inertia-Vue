@@ -42,8 +42,10 @@ class UsersController extends Controller
     public function show(User $user)
     {
         $user->load(['userModule.actions', 'userModule.module']);
+        $available_user_filters = config('modelFilters');
         return Inertia::render('users.show', [
             'user' => $user,
+            'available_user_filters' => $available_user_filters,
         ]);
     }
 

@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 use App\Models\Users\Module;
 use App\Traits\TableFormData\User as TableFormDataUser;
 use App\Models\Users\UserModelFilter;
+use App\Traits\ModelFilters\HasUserModelFilters;
 
 /**
  * Class User
@@ -19,7 +20,7 @@ use App\Models\Users\UserModelFilter;
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, TableFormDataUser;
+    use HasFactory, Notifiable, TableFormDataUser, HasUserModelFilters;
 
     /**
      * @var array<int, string> The attributes that are mass assignable.
@@ -52,6 +53,74 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+        public static $available_model_filters = [
+        'simple' => [
+            'label' => 'Filtros simples',
+            'type' => self::TYPE_SIMPLE,
+            'fields' => [
+                'role' => [
+                    'label' => 'Rol del usuario',
+                    'type' => self::TYPE_STATIC_SELECT,
+                    'values' => [
+                        '0' => 'Administrador',
+                        '1' => 'Usuario',
+                    ],
+                ],
+                'can_login' => [
+                    'label' => 'Puede iniciar sesión',
+                    'type' => self::TYPE_STATIC_SELECT,
+                    'values' => [
+                        '1' => 'Sí',
+                        '0' => 'No',
+                    ],
+                ],
+            ],
+            'operators' => [
+                self::OP_EQUAL => [
+                    'label' => 'Igual',
+                    'value' => self::OP_EQUAL,
+                ],
+                self::OP_NOT_EQUAL => [
+                    'label' => 'Diferente',
+                    'value' => self::OP_NOT_EQUAL,
+                ],
+            ],
+        ],
+        //ejemplo de filtros que se van a poder usar en el futuro
+        /* 'relations' => [
+            'label' => 'Filtros por relaciones',
+            'type' => self::TYPE_RELATIONS,
+            'direction' => [
+                'fields' => [
+                    'name' => [
+                        'type' => self::TYPE_DYNAMIC_SELECT,
+                        'model' => 'Direction',
+                    ],
+                ],
+                'operators' => [
+                    self::OP_EQUAL => 'Igual',
+                    self::OP_NOT_EQUAL => 'Diferente',
+                ],
+            ],
+        ], */
+        /* 'functions' => [
+            'label' => 'Filtros por funciones',
+            'type' => self::TYPE_FUNCTIONS,
+            'salaryMayorThan' => [
+                'label' => 'Salario mayor que',
+                'method' => 'where',
+                'fields' => [
+                    'salary' => [
+                        'type' => self::TYPE_OPEN,
+                    ],
+                ],
+                'operators' => [
+                    self::OP_GREATER => 'Mayor que',
+                ],
+            ],
+        ], */
+    ];
 
     /**
      * Defines a one-to-many relationship with the UserModule model.
