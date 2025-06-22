@@ -89,14 +89,16 @@ class SearchServices
      */
     public static function verifyUsersHasPermission(string $model): bool
     {
-        $userModules = auth()->user()->modules();
-        $modelModules = $model::$permisson_modules;
+        if(!isset($model::$permisson_modules)) {
+            return false;
+        }
 
-        foreach ($modelModules as $module) {
-            if($userModules->contains('internal_name', $module)) {
+        foreach ($model::$permisson_modules as $module) {
+            if(auth()->user()->hasAccessToModule($module, 'GET')) {
                 return true;
             }
         }
+
         return false;
     }
 
