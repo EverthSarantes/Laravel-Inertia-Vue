@@ -10,7 +10,6 @@
 
     const page = usePage();
     const modules = computed(() => {
-        console.log(page.props.modules);
         return [...page.props.modules].sort((a, b) => a.order - b.order);
     });
     const userName = computed(() => page.props.userName);
