@@ -85,7 +85,6 @@
                         <div class="modal-body">
                         <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="true">
                             <template #extraContent>
-
                                 <div class="mt-3 col-md-12 mt-3" id="modules" v-show="role == 1">
                                     <h6>Módulos</h6>
                                     <div class="row user-select-none">
@@ -156,13 +155,6 @@
                                     </div>
                                 </div>
                             </template>
-
-
-
-                            <template #secondaryButtons>
-                                <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
-                                <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/>
-                            </template>
                         </Form>
                         </div>
                         <div class="modal-footer">
@@ -176,9 +168,13 @@
                 <div class="col-lg-12 mt-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Usuarios</h5>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal">
-                            <i class='bx bx-plus'></i>
-                        </button>
+                        <div class="d-flex gap-1">
+                            <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
+                            <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/>
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                                <i class='bx bx-plus'></i>
+                            </button>
+                        </div>
                     </div>
                     <Table :model="usePage().props.model" :options="['delete']" :id="'users'"/>
                 </div>

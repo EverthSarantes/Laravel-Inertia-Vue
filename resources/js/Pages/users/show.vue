@@ -81,8 +81,8 @@
                             </div>
                             <div class="col-md-12 mt-3 justify-content-between d-flex">
                                 <div class="d-flex gap-1">
-                                    <button type="submit" class="btn btn-outline-secondary">Editar</button>
-                                    <button type="button" class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modal_add_module">Agregar Módulo</button>
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#modal_add_module">Agregar Módulo</button>
                                 </div>
                                 <div class="d-flex justify-content-end gap-1">
                                     <ExcelExport :filename="user.name" :target="'modules_table'"/>
