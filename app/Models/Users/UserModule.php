@@ -51,4 +51,14 @@ class UserModule extends Model
     {
         return $this->belongsTo(Module::class);
     }
+
+    /**
+     * Defines a relationship to the UserModuleAction model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function actions()
+    {
+        return $this->hasMany(UserModuleAction::class, 'user_module_id');
+    }
 }

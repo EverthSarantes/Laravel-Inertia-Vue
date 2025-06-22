@@ -110,9 +110,27 @@ class UserServices
             return false;
         }
 
-        return UserModule::create([
-            'user_id' => $user->id,
-            'module_id' => $request->module_id,
-        ]);
+        DB::beginTransaction();
+
+        try {
+            $user_module = UserModule::create([
+                'user_id' => $user->id,
+                'module_id' => $request->module_id,
+            ]);
+
+            foreach($request->actions as $action)
+            {
+                UserModuleAction::create([
+                    'user_module_id' => $user_module->id,
+                    'action' => $action,
+                ]);
+            }
+
+            DB::commit();
+            return $user_module;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return false;
+        }
     }
 }

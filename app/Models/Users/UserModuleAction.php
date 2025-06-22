@@ -15,6 +15,28 @@ class UserModuleAction extends Model
         'user_module_id',
         'action',
     ];
+
+
+    protected $appends = [
+        'action_name',
+    ];
+
+    /**
+     * Get the name of the action.
+     *
+     * @return string
+     */
+    public function getActionNameAttribute()
+    {
+        $actionNames = [
+            'read' => 'Leer',
+            'create' => 'Crear',
+            'update' => 'Actualizar',
+            'delete' => 'Eliminar',
+        ];
+
+        return $actionNames[$this->action] ?? '';
+    }
     
     public function userModule()
     {
