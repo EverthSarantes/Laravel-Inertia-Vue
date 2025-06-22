@@ -27,7 +27,7 @@
 </script>
 
 <template>
-    <div style="position: fixed; top: 70px; z-index: 101; cursor: pointer;" id="message-alert" @click="remove()" v-if="reactiveMessage">
+    <div style="position: fixed; top: 70px; left: var(--nav-width); z-index: 1055; cursor: pointer;" id="message-alert" @click="remove()" v-if="reactiveMessage">
         <div class="alert fade show my-0 mx-2 p-2" :class="'alert-'+color || 'primary'" role="alert" style="min-width: 300px;">
             <strong>{{ message }}</strong>
         </div>
