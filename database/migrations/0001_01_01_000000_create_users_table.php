@@ -33,6 +33,7 @@ return new class extends Migration
             $table->string('internal_name')->nullable();
             $table->string('access_route_name')->nullable();
             $table->string('icon')->nullable();
+            $table->integer('order')->default(0)->nullable();
 
             $table->nullableUserStamps();
             $table->timestamps();

@@ -26,6 +26,7 @@ class Module extends Model
         'internal_name',
         'access_route_name',
         'icon',
+        'order',
     ];
 
     /**
