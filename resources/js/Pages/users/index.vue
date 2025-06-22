@@ -70,7 +70,7 @@
     });
 </script>
 
-<template>More actions
+<template>
     <dashboard>
         <SubNavbar :links="links" />
         <div class="container">
