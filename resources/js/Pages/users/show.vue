@@ -10,6 +10,7 @@
     import ExcelExport from '../components/buttons/ExcelExport.vue';
     import Print from '../components/buttons/Print.vue';
     import searchSelect from '../components/inputs/searchSelect.vue';
+    import DeleteButton from '../components/buttons/DeleteButton.vue';
 
     import { usePage, useForm, Link } from '@inertiajs/vue3';
     import { computed, ref, watch } from 'vue';
@@ -98,6 +99,29 @@
             }
         }
     }
+
+    const addUserModelFilterForm = useForm({
+        model: null,
+        comparison_type: null,
+        field: null,
+        operator: null,
+        value: null,
+    });
+
+    const submitAddUserModelFilterForm = () => {
+        addUserModelFilterForm.model = selected_filter.value;
+        addUserModelFilterForm.comparison_type = selected_filter_type.value;
+        addUserModelFilterForm.field = document.getElementById('filter_field').value || null;
+        addUserModelFilterForm.operator = document.getElementById('filter_operator').value || null;
+        addUserModelFilterForm.value = document.getElementById('filter_value').value || null;
+
+        addUserModelFilterForm.post(route('users.addUserModelFilter', {user: user.value.id}), {
+            onSuccess: () => {
+                const modal = bootstrap.Modal.getInstance(document.getElementById('modal_add_filter'));
+                modal.hide();
+            },
+        });
+    };
 </script>
 
 <template>
@@ -211,29 +235,30 @@
                             <table class="table table-striped table-hover m-0" id="modules_table">
                                 <thead>
                                     <tr class="table-primary">
-                                        <th>Descripción</th>
                                         <th>Información Filtrada</th>
                                         <th>Filtro</th>
                                         <th>Opciones</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <tr v-for="userModule in user.user_module" :key="userModule.id">
-                                        <td>{{ userModule.module.name }}</td>
+                                    <tr v-for="userModelFilter in user.user_model_filters">
+                                        <td>{{ userModelFilter.model }}</td>
                                         <td>
-                                            {{ userModule.actions.map(action => action.action_name).join(', ') }}
+                                            <span v-if="userModelFilter.comparison_type === 'simple'">
+                                                {{ userModelFilter.field }} {{ userModelFilter.operator }} {{ userModelFilter.value }}
+                                            </span>
+                                            <span v-else>
+                                                {{ userModelFilter.comparison_type }}
+                                            </span>
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">
-                                                <Link class="btn btn-primary btn-sm" :href="route(userModule.module.access_route_name)">
-                                                    <i class='bx bxs-show'></i>
-                                                </Link>
-                                                <button class="btn btn-danger btn-sm" type="button" @click="showDeleteModal(route('users.deleteModule', {userModule: userModule.id, user: userModule.user_id}))">
+                                                <DeleteButton class="btn btn-danger btn-sm" type="button" :url="route('users.removeUserModelFilter', {userModelFilter: userModelFilter.id, user: user.id})">
                                                     <i class='bx bxs-trash'></i>
-                                                </button>
+                                                </DeleteButton>
                                             </div>
                                         </td>
-                                    </tr> -->
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -318,7 +343,7 @@
         <div class="modal fade" id="modal_add_filter" tabindex="-1" aria-labelledby="modal_add_filter" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
-                    <form method="POST">
+                    <form method="POST" @submit.prevent="submitAddUserModelFilterForm">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modal_add_filter">Agregar Filtro</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -360,13 +385,13 @@
                                     <label for="filter_value" class="form-label">Valor</label>
 
 
-                                    <select v-if="selected_filter_field_data && selected_filter_field_data.type == 'static_select'" class="form-select">
+                                    <select v-if="selected_filter_field_data && selected_filter_field_data.type == 'static_select'" class="form-select" id="filter_value" name="filter_value">
                                         <option :value="null" selected>Seleccione un valor</option>
                                         <option :value="valueKey" v-for="(label, valueKey) in selected_filter_field_data.values" v-html="label"></option>
                                     </select>
 
 
-                                    <input v-else-if="selected_filter_field_data && selected_filter_field_data.type === 'open'"  type="text" class="form-control" />
+                                    <input v-else-if="selected_filter_field_data && selected_filter_field_data.type === 'open'"  type="text" class="form-control" id="filter_value" name="filter_value"/>
                                 </div>
                             </div>
                             

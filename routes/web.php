@@ -40,8 +40,12 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
             Route::post('store', [UsersController::class, 'store'])->name('users.store');
             Route::put('update/{user}', [UsersController::class, 'update'])->name('users.update');
             Route::delete('delete/{user}', [UsersController::class, 'delete'])->name('users.delete');
+
             Route::post('addModule', [UsersController::class, 'addModule'])->name('users.addModule');
             Route::delete('deleteModule/{userModule}/{user}', [UsersController::class, 'deleteModule'])->name('users.deleteModule');
+
+            Route::post('addUserModelFilter/{user}', [UsersController::class, 'addUserModelFilter'])->name('users.addUserModelFilter');
+            Route::delete('removeUserModelFilter/{userModelFilter}/{user}', [UsersController::class, 'removeUserModelFilter'])->name('users.removeUserModelFilter');
         });
 
         Route::prefix('backups')->middleware('CheckRoles:backups')->group(function () {
