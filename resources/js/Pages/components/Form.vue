@@ -17,6 +17,19 @@
         method: String,
         model: Object,
         form: Object,
+        id: {
+            type: String,
+            default: () => Math.random().toString(36).substr(2, 9),
+        },
+        isModal: {
+            type: Boolean,
+            default: false,
+        },
+        callback: {
+            type: Function,
+            required: false,
+            default: null,
+        },
     });
 
     const form = props.form ?? reactive({});
@@ -33,10 +46,23 @@
 
         send_form.submit(formMethod.value.toLowerCase(), props.route, {
             preserveScroll: true,
-            onSuccess: () => {
-                window.atm_tables.forEach((table) => {
-                    table.refresh();
-                });
+            onSuccess: (response) => {
+                if(props.isModal) {
+                    let form_element = document.getElementById('form-'+props.id);
+                    let modal = form_element.closest('.modal');
+                    let modalInstance = bootstrap.Modal.getInstance(modal);
+                    modalInstance.hide();
+                }
+
+                if(window.atm_tables && props.callback === null) {
+                    window.atm_tables.forEach((table) => {
+                        table.refresh();
+                    });
+                }
+                
+                if (props.callback) {
+                    props.callback(response);
+                }
             },
         });
     };
@@ -44,7 +70,7 @@
 </script>
 
 <template>
-    <form @submit.prevent="submitForm" class="p-3 mt-2">
+    <form @submit.prevent="submitForm" class="p-3 mt-2" :id="'form-'+id">
         <div class="row">
             <input type="hidden" name="_method" :value="props.method">
 
