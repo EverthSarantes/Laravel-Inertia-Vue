@@ -65,6 +65,25 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('user_model_filters', function (Blueprint $table) {
+            $table->id();
+
+            $table->foreignId('user_id')->constrained('users')
+            ->onDelete('cascade')->onUpdate('cascade');
+
+            $table->string('description')->nullable(); // descripción del filtro
+            $table->string('model'); // nombre del modelo al que se aplica el filtro
+            $table->string('field'); // campo del modelo al que se aplica el filtro
+            $table->operator('operator'); // operador de comparación, por ejemplo: '=', '!=', '>', '<', 'LIKE', etc.
+            $table->string('value')->nullable();
+            $table->string('comparison_type')->default('simple'); // simple, relation, function
+            $table->string('relation')->nullable(); // nombre de la relación si es un filtro de relación ejemplo: 'userModule.user'
+            $table->json('extra')->nullable(); // campo extra para almacenar información adicional del filtro
+
+            $table->nullableUserStamps();
+            $table->timestamps();
+        });
+
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
@@ -89,6 +108,8 @@ return new class extends Migration
         Schema::dropIfExists('modules');
         Schema::dropIfExists('users');
         Schema::dropIfExists('users_modules');
+        Schema::dropIfExists('users_modules_actions');
+        Schema::dropIfExists('user_model_filters');
         Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
     }
