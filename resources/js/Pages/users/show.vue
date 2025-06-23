@@ -178,7 +178,7 @@
         </div>
 
         <div class="tab-content container" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab" style="color: #000">
+            <div class="tab-pane fade show active text-primary" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab">
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
@@ -221,7 +221,7 @@
                 </div>
             </div>
 
-            <div class="tab-pane fade" id="pills-model-filters" role="tabpanel" aria-labelledby="pills-model-filters-tab" style="color: #000">
+            <div class="tab-pane fade text-primary" id="pills-model-filters" role="tabpanel" aria-labelledby="pills-model-filters-tab">
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
