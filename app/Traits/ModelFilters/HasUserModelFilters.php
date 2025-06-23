@@ -22,9 +22,20 @@ trait HasUserModelFilters
     public const OP_LESS = '<';
     public const OP_GREATER_OR_EQUAL = '>=';
 
+    protected static bool $shouldApplyUserFilters = false;
+
+    public static function enableUserModelFilters(): void
+    {
+        static::$shouldApplyUserFilters = true;
+    }
+
     protected static function bootHasUserModelFilters()
     {
         static::addGlobalScope('user_model_filters', function (Builder $builder) {
+
+            if (!static::$shouldApplyUserFilters) {
+                return;
+            }
 
             $className = static::getActualModelName();
             $userModelFilters = static::getUserModelFiltersByModel($className);
@@ -56,7 +67,7 @@ trait HasUserModelFilters
     {
         $userId = static::getAuthenticatedUserId();
 
-        if (!$userId) {
+        /* if (!$userId) {
             $modelFiltersConfig = config('modelFilters');
             $modelConfig = $modelFiltersConfig[static::getShortModelName()] ?? [];
             $behavior = $modelConfig['unauthenticated_behavior'] ?? 'exception';
@@ -70,7 +81,7 @@ trait HasUserModelFilters
                 'exception' => throw new \Exception('User not authenticated.'),
                 default => throw new \Exception('Invalid unauthenticated behavior specified.'),
             };
-        }
+        } */
 
         return collect(DB::table('user_model_filters')
             ->where('user_id', $userId)
