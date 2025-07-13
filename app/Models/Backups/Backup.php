@@ -145,6 +145,13 @@ class Backup
         return new self();
     }
 
+    /**
+     * Delete a backup file.
+     *
+     * @param string $name The name of the backup file to delete.
+     * @return bool
+     * @throws \Exception If the file does not exist.
+     */
     public function delete($name)
     {
         $file = $this->backup_path . $name;
@@ -154,6 +161,13 @@ class Backup
         throw new \Exception("File not found: $name");
     }
 
+    /**
+     * Download a backup file.
+     *
+     * @param string $name The name of the backup file to download.
+     * @return string The path to the downloaded file.
+     * @throws \Exception If the file does not exist.
+     */
     public function download($name)
     {
         $file = $this->backup_path . $name;
