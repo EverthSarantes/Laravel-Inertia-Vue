@@ -5,7 +5,10 @@ use Inertia\Inertia;
 
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PanelController;
+
 use App\Http\Controllers\Users\UsersController;
+use App\Http\Controllers\Users\UserTemplateController;
+
 use App\Http\Controllers\Backups\BackupsController;
 use App\Http\Controllers\Backups\SchedulesController;
 
@@ -46,6 +49,14 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
 
             Route::post('addUserModelFilter/{user}', [UsersController::class, 'addUserModelFilter'])->name('users.addUserModelFilter');
             Route::delete('removeUserModelFilter/{userModelFilter}/{user}', [UsersController::class, 'removeUserModelFilter'])->name('users.removeUserModelFilter');
+
+            Route::prefix('templates')->group(function () {
+                Route::get('index', [UserTemplateController::class, 'index'])->name('users.templates.index');
+                Route::get('show/{userTemplate}', [UserTemplateController::class, 'show'])->name('users.templates.show');
+                Route::post('store', [UserTemplateController::class, 'store'])->name('users.templates.store');
+                Route::put('update/{userTemplate}', [UserTemplateController::class, 'update'])->name('users.templates.update');
+                Route::delete('delete/{userTemplate}', [UserTemplateController::class, 'delete'])->name('users.templates.delete');
+            });
         });
 
         Route::prefix('backups')->middleware('CheckRoles:backups')->group(function () {

@@ -59,7 +59,7 @@ trait UserTemplate
             'show' => [
                 'type' => 'link',
                 'attr' => [
-                    'href' => route('users.show', ['user' => $this]),
+                    'href' => route('users.templates.show', ['userTemplate' => $this]),
                     'class' => 'btn btn-primary',
                 ],
                 'inner' => '<i class=\'bx bxs-show\'></i>',
@@ -68,7 +68,7 @@ trait UserTemplate
                 'type' => 'button',
                 'attr' => [
                     'class' => 'delete-button btn btn-danger',
-                    'data-url' => route('users.delete', ['user' => $this]),
+                    'data-url' => route('users.templates.delete', ['userTemplate' => $this]),
                 ],
                 'inner' => '<i class=\'bx bxs-trash-alt\'></i>',
             ],

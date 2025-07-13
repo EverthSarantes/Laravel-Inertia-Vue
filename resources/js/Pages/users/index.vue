@@ -17,6 +17,7 @@
     
     const links = [
         { route: 'users.index', name: 'Usuarios', active: true },
+        { route: 'users.templates.index', name: 'Plantillas de Usuarios', active: false },
     ];
 
     const form_modules = computed(() => {
