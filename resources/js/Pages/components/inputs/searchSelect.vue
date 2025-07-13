@@ -60,7 +60,7 @@
                 />
             </div>
             <div class="col-md-6">
-                <label class="form-label" :for="selectId">Seleccione una Opción</label>
+                <label class="form-label" :for="selectId">Seleccione una Opción <span class="text-danger" v-if="required">*</span></label>
                 <select
                     class="form-select"
                     :name="select_name ? select_name : inputName"

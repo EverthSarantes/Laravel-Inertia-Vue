@@ -10,7 +10,7 @@
 
 <template>
     <div class="form-group col-md-6 mt-3">
-        <label :for="field.id">{{field.label}}</label>
+        <label :for="field.id">{{field.label}} <span class="text-danger" v-if="field.required">*</span></label>
         <input :type="field.type" :name="field.name" :id="field.id" class="form-control" :required="field.required" :readonly="field.readonly"
         v-model="value">
     </div>
