@@ -2,7 +2,7 @@
 
 namespace App\Models\Backups;
 
-use Everth\Rclonemanager\Rclone;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
 use App\Traits\TableFormData\Backup as TableFormDataTrait;
 
@@ -10,7 +10,8 @@ class Backup
 {
     use TableFormDataTrait;
 
-    private Rclone $rclone;
+    private string $disk;
+    private string $backup_path;
     private array $filters = [];
 
     /**
@@ -60,9 +61,8 @@ class Backup
 
     public function __construct()
     {
-        $this->rclone = new Rclone(env('RCLONE_CONFIG_FILE_PATH'));
-        $this->config_name = env('RCLONE_CONFIG_NAME');
-        $this->backup_path = env('RCLONE_BACKUP_PATH');
+        $this->disk = config('filesystems.backup.driver', 'local');
+        $this->backup_path = 'backups/';
     }
 
     /**
@@ -86,30 +86,24 @@ class Backup
      */
     public function get(): Collection
     {
-        $backups = $this->rclone->list($this->config_name . ": " . $this->backup_path);
-        $backups = mb_split("\n", $backups['output']);
+        $files = Storage::disk($this->disk)->files($this->backup_path);
 
-        // Apply filters
+        // Aplica filtros simples por nombre
         foreach ($this->filters as $filter) {
-            $backups = array_filter($backups, function ($backup) use ($filter) {
-                [$field, $operator, $value] = array_values($filter);
-
-                // Example: Apply basic filtering logic
+            [$field, $operator, $value] = array_values($filter);
+            if ($field === 'name') {
                 if ($operator === '=') {
-                    return strpos($backup, $value) !== false;
+                    $files = array_filter($files, fn($file) => basename($file) === $value);
+                } elseif ($operator === 'like') {
+                    $files = array_filter($files, fn($file) => stripos(basename($file), $value) !== false);
                 }
-
-                if ($operator === 'like') {
-                    return stripos($backup, $value) !== false;
-                }
-
-                return true;
-            });
+            }
         }
 
-        return collect(array_values($backups))->map(function ($backup) {
+        return collect(array_values($files))->map(function ($file) {
             $model = new self();
-            $model->name = $backup;
+            $model->name = basename($file);
+            $model->path = $file;
             return $model;
         });
     }
@@ -153,28 +147,19 @@ class Backup
 
     public function delete($name)
     {
-        $result = $this->rclone->exec("delete", [
-            $this->config_name . ": " . $this->backup_path . '/' . $name,
-        ]);
-        
-        if ($result['exit_code'] === 0) {
-            return true;
-        } else {
-            throw new \Exception("Error deleting backup: " . implode("\n", $result['output']));
+        $file = $this->backup_path . $name;
+        if (Storage::disk($this->disk)->exists($file)) {
+            return Storage::disk($this->disk)->delete($file);
         }
+        throw new \Exception("File not found: $name");
     }
 
     public function download($name)
     {
-        $result = $this->rclone->exec("copy", [
-            $this->config_name . ": " . $this->backup_path . '/' . $name,
-            storage_path('backups/'),
-        ]);
-        
-        if ($result['exit_code'] === 0) {
-            return storage_path('backups/' . $name);
-        } else {
-            throw new \Exception("Error downloading backup: " . implode("\n", $result['output']));
+        $file = $this->backup_path . $name;
+        if (Storage::disk($this->disk)->exists($file)) {
+            return Storage::disk($this->disk)->path($file);
         }
+        throw new \Exception("File not found: $name");
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Services;
 
-use Everth\Rclonemanager\Rclone;
+use Illuminate\Support\Facades\Storage;
 
 class BackupServices
 {
@@ -78,7 +78,8 @@ class BackupServices
             mkdir($backupDir, 0755, true);
         }
 
-        $backupPath = storage_path(self::BACKUP_PATH . 'backup_' . date('Y-m-d_H-i-s') . '.sql');
+        $backupFileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $backupPath = storage_path(self::BACKUP_PATH . $backupFileName);
         $database = self::getActualDatabase();
 
         $backupMethod = self::available_databases[$database];
@@ -86,22 +87,17 @@ class BackupServices
         if (method_exists(__CLASS__, $backupMethod)) {
             self::$backupMethod($backupPath);
             if (file_exists($backupPath)) {
-                $rclone = new Rclone(env('RCLONE_CONFIG_FILE_PATH'));
-
-                $remotePath = env('RCLONE_CONFIG_NAME') . ': ' . env('RCLONE_BACKUP_PATH');
-
-                $result = $rclone->copy($backupPath, $remotePath);
-
-
-                if($result['exit_code'] != 0){
-                    unlink($backupPath);
-                    throw new \Exception("Error copying backup to remote: " . $result['output']);
-                }
-
+                $disk = config('filesystems.backup.driver', 'local');
+                $stream = fopen($backupPath, 'r');
+                $result = Storage::disk($disk)->put(self::BACKUP_PATH . $backupFileName, $stream);
+                fclose($stream);
                 unlink($backupPath);
+
+                if (!$result) {
+                    throw new \Exception("Error copying backup to remote disk: $disk");
+                }
                 return true;
             }
-
         } else {
             throw new \Exception("Backup method not found: $backupMethod");
         }
