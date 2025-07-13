@@ -13,7 +13,6 @@ use App\Models\Backups\ScheduledBackup;
 use App\Http\Services\BackupServices;
 use Illuminate\Support\Facades\Log;
 use App\Http\Middleware\CheckCanLogin;
-use App\Http\Middleware\EnableUserModelFilters;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -28,7 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
             'NoCache' => NoCache::class,
             'HandleInertiaRequests' => HandleInertiaRequests::class,
             'CheckCanLogin' => CheckCanLogin::class,
-            'EnableUserModelFilters' => EnableUserModelFilters::class,
         ]);
         $middleware->append([LogUserActions::class]);
         $middleware->redirectGuestsTo(fn (Request $request) => route('/'));
