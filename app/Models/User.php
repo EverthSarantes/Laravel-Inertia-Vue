@@ -54,30 +54,22 @@ class User extends Authenticatable
         ];
     }
 
-        public static $available_model_filters = [
+    /**
+     * @var string The available model filters.
+     * This array defines the filters that can be applied to the User model.
+     */
+    public static $available_model_filters = [
         'simple' => [
             'label' => 'Filtros simples',
             'type' => self::TYPE_SIMPLE,
             'fields' => [
                 'role' => [
-                    'label' => 'Rol del usuario',
+                    'label' => 'Rol',
                     'type' => self::TYPE_STATIC_SELECT,
                     'values' => [
                         '0' => 'Administrador',
                         '1' => 'Usuario',
                     ],
-                ],
-                'can_login' => [
-                    'label' => 'Puede iniciar sesión',
-                    'type' => self::TYPE_STATIC_SELECT,
-                    'values' => [
-                        '1' => 'Sí',
-                        '0' => 'No',
-                    ],
-                ],
-                'name' => [
-                    'label' => 'Nombre',
-                    'type' => self::TYPE_OPEN,
                 ],
             ],
             'operators' => [
@@ -91,39 +83,12 @@ class User extends Authenticatable
                 ],
             ],
         ],
-        //ejemplo de filtros que se van a poder usar en el futuro
-        /* 'relations' => [
-            'label' => 'Filtros por relaciones',
-            'type' => self::TYPE_RELATIONS,
-            'direction' => [
-                'fields' => [
-                    'name' => [
-                        'type' => self::TYPE_DYNAMIC_SELECT,
-                        'model' => 'Direction',
-                    ],
-                ],
-                'operators' => [
-                    self::OP_EQUAL => 'Igual',
-                    self::OP_NOT_EQUAL => 'Diferente',
-                ],
-            ],
-        ], */
-        /* 'functions' => [
-            'label' => 'Filtros por funciones',
-            'type' => self::TYPE_FUNCTIONS,
-            'salaryMayorThan' => [
-                'label' => 'Salario mayor que',
-                'method' => 'where',
-                'fields' => [
-                    'salary' => [
-                        'type' => self::TYPE_OPEN,
-                    ],
-                ],
-                'operators' => [
-                    self::OP_GREATER => 'Mayor que',
-                ],
-            ],
-        ], */
+        'user_own' => [
+            'label' => 'Pertenece al usuario',
+            'type' => self::TYPE_USER_OWN,
+            'relation_name' => null,
+            'foreign_key' => 'id',
+        ],
     ];
 
     /**
