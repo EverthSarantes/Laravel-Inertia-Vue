@@ -132,10 +132,12 @@
                         :id="'pagination_' + id">
                 </div>
             </div>
-            <div class="col-md-1">
-                <div class="d-flex justify-content-end">
-                    <button class="btn btn-secondary" :class="{ 'btn-sm': small }"
-                        data-bs-toggle="collapse"
+            <div class="col-md-2">
+                <div class="d-flex justify-content-end gap-1">
+                    <button class="btn btn-success" @click="searchData(getUrl())">
+                        <i class='bx bx-refresh'></i>
+                    </button>
+                    <button class="btn btn-secondary" data-bs-toggle="collapse"
                         :data-bs-target="'#search_options_' + id">
                         <i class='bx bx-cog'></i>
                     </button>
