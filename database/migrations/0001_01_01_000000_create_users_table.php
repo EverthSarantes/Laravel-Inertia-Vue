@@ -72,9 +72,9 @@ return new class extends Migration
             ->onDelete('cascade')->onUpdate('cascade');
 
             $table->string('description')->nullable(); // descripción del filtro
-            $table->string('model'); // nombre del modelo al que se aplica el filtro
-            $table->string('field'); // campo del modelo al que se aplica el filtro
-            $table->string('operator'); // operador de comparación, por ejemplo: '=', '!=', '>', '<', 'LIKE', etc.
+            $table->string('model')->nullable(); // nombre del modelo al que se aplica el filtro
+            $table->string('field')->nullable(); // campo del modelo al que se aplica el filtro
+            $table->string('operator')->nullable(); // operador de comparación, por ejemplo: '=', '!=', '>', '<', 'LIKE', etc.
             $table->string('value')->nullable();
             $table->string('comparison_type')->default('simple'); // simple, relation, function
             $table->string('relation')->nullable(); // nombre de la relación si es un filtro de relación ejemplo: 'userModule.user'
