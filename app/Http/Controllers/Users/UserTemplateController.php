@@ -63,7 +63,7 @@ class UserTemplateController extends Controller
         $userTemplate = UserTemplate::create($request->only(['name', 'description']));
 
         if($userTemplate) {
-            return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
+            return redirect()->back()->with([
                 'message' => [
                     'message' => 'Plantilla de usuario creada exitosamente.',
                     'type' => 'success',
