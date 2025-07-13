@@ -138,7 +138,7 @@ class UserServices
         }
     }
 
-    public static function addUserModelFilter($request, User $user)
+public static function addUserModelFilter($request, User $user)
     {
         DB::beginTransaction();
 
@@ -158,9 +158,56 @@ class UserServices
                 return $filter;
             }
 
+            if($request->comparison_type == "relations")
+            {
+                $filter = UserModelFilter::create([
+                    'user_id' => $user->id,
+                    'comparison_type' => $request->comparison_type,
+                    'model' => $request->model,
+                    'relation' => $request->relation,
+                    'field' => $request->field,
+                    'operator' => $request->operator,
+                    'value' => $request->value,
+                    'relation' => $request->relation,
+                ]);
+
+                DB::commit();
+                return $filter;
+            }
+
+            if($request->comparison_type == "functions")
+            {
+                $filter = UserModelFilter::create([
+                    'user_id' => $user->id,
+                    'comparison_type' => $request->comparison_type,
+                    'model' => $request->model,
+                    'field' => $request->field,
+                    'operator' => $request->operator,
+                    'value' => $request->value,
+                    'extra' => $request->extra,
+                ]);
+
+                DB::commit();
+                return $filter;
+            }
+
+            if($request->comparison_type == "user_own")
+            {
+                $filter = UserModelFilter::create([
+                    'user_id' => $user->id,
+                    'comparison_type' => $request->comparison_type,
+                    'model' => $request->model,
+                    'extra' => $request->extra,
+                ]);
+
+                DB::commit();
+                return $filter;
+            }
+
             DB::rollBack();
             return null;
         } catch (\Exception $e) {
+            dd($e->getMessage());
             DB::rollBack();
             return null;
         }
