@@ -4,32 +4,24 @@ Este proyecto es una plantilla de laravel que sirva como base para futuros proye
 
 Para utilizar el módulo de respaldos automáticos del sistema, siga los siguientes pasos:
 
-1. **Instalar Rclone**:
-   - Asegúrese de tener instalada la herramienta [Rclone](https://rclone.org/).
-   - Verifique que Rclone esté disponible en el PATH de su sistema.
-
-2. **Configurar la conexión remota**:
-   - Cree una conexión con el remoto que vaya a utilizar siguiendo la [documentación oficial de Rclone](https://rclone.org/docs/).
-
-3. **Configurar las variables de entorno**:
-   - Añada las siguientes variables en su archivo `.env` con los valores correspondientes:
+1. **Configurar las variables de entorno**:
+   - Añade la siguiente variable en tu archivo `.env` para definir el disco de almacenamiento de respaldos:
      ```env
-     RCLONE_CONFIG_FILE_PATH=
-     RCLONE_CONFIG_NAME=
-     RCLONE_BACKUP_PATH=
+     BACKUP_FILESYSTEM_DISK=local
      ```
-     - `RCLONE_CONFIG_FILE_PATH`: Ruta al archivo de configuración de Rclone.
-     - `RCLONE_CONFIG_NAME`: Nombre de la configuración remota creada.
-     - `RCLONE_BACKUP_PATH`: Ruta en el remoto donde se almacenarán los respaldos.
+     - Puedes usar cualquier disco configurado en `config/filesystems.php` (por ejemplo: `local`, `public`, `s3`, etc.).
+     - Si usas S3 u otro servicio, asegúrate de configurar también las variables correspondientes (por ejemplo, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, etc.).
 
-4. **Verificar la ruta del archivo de configuración de Rclone**:
-   - Puede utilizar el siguiente comando para obtener la ruta del archivo de configuración de Rclone:
-     ```bash
-     rclone config file
+2. **Configurar el disco de respaldos en Laravel**:
+   - En el archivo `config/filesystems.php` ya existe una sección llamada `backup`. Asegúrate de que esté así:
+     ```php
+     'backup' => [
+         'driver' => env('BACKUP_FILESYSTEM_DISK', 'local'),
+     ],
      ```
-   - Esto mostrará la ubicación del archivo de configuración que debe usar en la variable `RCLONE_CONFIG_FILE_PATH`.
+   - Puedes personalizar los parámetros según el driver que elijas.
 
-5. **Activar el Task Scheduler de Laravel**:
+3. **Activar el Task Scheduler de Laravel**:
    - Para que los respaldos automáticos se ejecuten, es necesario activar el Task Scheduler de Laravel.
    - Puede hacerlo de las siguientes maneras:
      - **En entornos de desarrollo** (no recomendado en producción):
@@ -42,4 +34,3 @@ Para utilizar el módulo de respaldos automáticos del sistema, siga los siguien
        ```bash
        * * * * * cd /path-to-your-project && php artisan schedule:run >> /dev/null 2>&1
        ```
-
