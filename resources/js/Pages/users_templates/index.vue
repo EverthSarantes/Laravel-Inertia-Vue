@@ -43,7 +43,7 @@
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h5>Plantillas de Usuarios</h5>
                         <div class="d-flex gap-1">
-                            <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
+                            <ExcelExport :filename="'Plantillas de Usuarios'" :target="'users_table'"/>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal">
                                 <i class='bx bx-plus'></i>
                             </button>
