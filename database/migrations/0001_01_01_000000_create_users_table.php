@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('access_route_name')->nullable();
             $table->string('icon')->nullable();
             $table->integer('order')->default(0)->nullable();
+            $table->boolean('show_in_menu')->default(true)->nullable();
 
             $table->nullableUserStamps();
             $table->timestamps();

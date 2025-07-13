@@ -41,7 +41,9 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'appName' => config('app.name'),
             'userName' => $user ? $user->name : null,
-            'modules' => $user ? $user->modules()->map(function ($module) {
+            'modules' => $user ? $user->modules()
+            ->where('show_in_menu', true)
+            ->map(function ($module) {
                 return [
                     'name' => $module->name,
                     'icon' => $module->icon,

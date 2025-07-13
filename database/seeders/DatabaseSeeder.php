@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder
                 'access_route_name' => 'users.index',
                 'icon' => 'bx bx-group nav_icon',
                 'order' => 1,
+                'show_in_menu' => true,
             ],
             [
                 'name' => 'Respaldos',
@@ -55,6 +56,7 @@ class DatabaseSeeder extends Seeder
                 'access_route_name' => 'backups.index',
                 'icon' => 'bx bx-save nav_icon',
                 'order' => 2,
+                'show_in_menu' => true,
             ],
         ];
 
