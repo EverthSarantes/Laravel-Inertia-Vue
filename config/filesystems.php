@@ -73,4 +73,15 @@ return [
         public_path('storage') => storage_path('app/public'),
     ],
 
+    /*|--------------------------------------------------------------------------
+    | Backup Filesystem Disk
+    |--------------------------------------------------------------------------
+    | This disk is used specifically for storing backups. You can configure
+    | it to use any driver supported by Laravel, such as local, s3, etc.
+    | Make sure to set the environment variable BACKUP_FILESYSTEM_DISK
+    | to the desired disk name.
+    |*/
+    'backup' => [
+        'driver' => env('BACKUP_FILESYSTEM_DISK', 'local'),
+    ],
 ];
