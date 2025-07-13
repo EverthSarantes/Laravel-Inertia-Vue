@@ -2,10 +2,12 @@
 namespace App\Http\Services;
 
 use App\Models\User;
+use App\Models\Users\Templates\UserTemplate;
 use App\Models\Users\UserModule;
 use App\Models\Users\UserModuleAction;
 use App\Models\Users\UserModelFilter;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class UserServices
 {
@@ -25,7 +27,7 @@ class UserServices
             {
                 $user = User::create([
                     'name' => $request['name'],
-                    'password' => bcrypt($request['password']),
+                    'password' =>  Hash::make($request['password']),
                     'role' => $request['role'],
                     'can_login' => $request['can_login'] == 1 ? true : false,
                 ]); 
@@ -65,6 +67,74 @@ class UserServices
         }
         catch(\Exception $e)
         {
+            DB::rollBack();
+            return null;
+        }
+    }
+
+    /**
+     * Create a new user from a template.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return User|null The created user or null if creation fails.
+     */
+    public static function makeUserFromTemplate($request)
+    {
+        $template = UserTemplate::find($request->user_template_id);
+
+        if(!$template)
+        {
+            return null;
+        }
+
+        DB::beginTransaction();
+
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'password' => Hash::make($template->password),
+                'role' => 1,
+                'can_login' => $request->can_login,
+            ]);
+
+            if($template->modules)
+            {
+                foreach($template->modules as $module)
+                {
+                    $user_module = UserModule::create([
+                        'user_id' => $user->id,
+                        'module_id' => $module->module_id,
+                    ]);
+                    foreach($module->actions as $action)
+                    {
+                        UserModuleAction::create([
+                            'user_module_id' => $user_module->id,
+                            'action' => $action->action,
+                        ]);
+                    }
+                }
+            }
+
+            if($template->filters)
+            {
+                foreach($template->filters as $filter)
+                {
+                    UserModelFilter::create([
+                        'user_id' => $user->id,
+                        'comparison_type' => $filter->comparison_type,
+                        'model' => $filter->model,
+                        'field' => $filter->field,
+                        'operator' => $filter->operator,
+                        'value' => $filter->value,
+                        'relation' => $filter->relation,
+                        'extra' => $filter->extra,
+                    ]);
+                }
+            }
+
+            DB::commit();
+            return $user;
+        } catch (\Exception $e) {
             DB::rollBack();
             return null;
         }

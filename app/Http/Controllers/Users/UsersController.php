@@ -58,9 +58,16 @@ class UsersController extends Controller
      */
     public function store(UsersStoreRequest $request)
     {
-        $request->validated();
-
-        $response = UserServices::makeUser($request);
+        $response = null;
+        if($request->user_template_id)
+        {
+            $response = UserServices::makeUserFromTemplate($request);
+        }
+        else
+        {
+            $request->validated();
+            $response = UserServices::makeUser($request);
+        }
 
         if($response === null)
         {

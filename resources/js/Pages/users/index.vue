@@ -11,9 +11,10 @@
     import Form from '../components/Form.vue';
     import ExcelExport from '../components/buttons/ExcelExport.vue';
     import Print from '../components/buttons/Print.vue';
+    import SearchSelect from '../components/inputs/searchSelect.vue';
 
     import { usePage } from '@inertiajs/vue3';
-    import { computed, onMounted, ref, reactive } from 'vue';
+    import { computed, onMounted, ref, reactive, watch } from 'vue';
     
     const links = [
         { route: 'users.index', name: 'Usuarios', active: true },
@@ -30,8 +31,18 @@
 
     const form = reactive({
         modules: [],
+        user_template_id: null,
     });
 
+    const user_template = ref(false);
+
+    watch(user_template, (newValue) => {
+        document.getElementById('role').disabled = newValue;
+        document.getElementById('role').required = !newValue;
+        if (!newValue) {
+            form.user_template_id = null;
+        }
+    });
 
     function updateSelectedModules() {
         let data = [];
@@ -86,7 +97,26 @@
                         <div class="modal-body">
                         <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="true">
                             <template #extraContent>
-                                <div class="mt-3 col-md-12 mt-3" id="modules" v-show="role == 1">
+                                <div class="mt-3 col-md-12 mt-3">
+                                    <label for="role">Usar Plantilla de Usuario</label>
+                                    <select name="user_template" class="form-select" v-model="user_template">
+                                        <option :value="false">No</option>
+                                        <option :value="true">Sí</option>
+                                    </select>
+                                </div>
+
+                                <div class="mt-3 col-md-12 mt-3" v-if="user_template">
+                                    <searchSelect 
+                                        name="Plantilla de Usuario" 
+                                        input-name="user_template_id" 
+                                        :model="'UserTemplate'" 
+                                        :required="true" 
+                                        select_name="user_template_id" 
+                                        v-model:select_value="form.user_template_id"
+                                    />
+                                </div>
+
+                                <div class="mt-3 col-md-12 mt-3" id="modules" v-show="role == 1 && !user_template">
                                     <h6>Módulos</h6>
                                     <div class="row user-select-none">
                                         <template v-for="(module, index) in form_modules" :key="index">
