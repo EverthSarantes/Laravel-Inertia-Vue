@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\BaseFormRequest;
 use Inertia\Inertia;
 use App\Models\Users\Templates\UserTemplate;
+use App\Models\Users\Templates\UserTemplateModule;
+use App\Models\Users\Templates\UserTemplateModuleAction;
+use Illuminate\Support\Facades\DB;
 
 class UserTemplateController extends Controller
 {
@@ -30,7 +33,12 @@ class UserTemplateController extends Controller
      */
     public function show(UserTemplate $userTemplate)
     {
-        return true;
+        $userTemplate->load(['modules.module', 'modules.actions']);
+        $available_user_filters = config('modelFilters');
+        return Inertia::render('users_templates.show', [
+            'user_template' => $userTemplate,
+            'available_user_filters' => $available_user_filters,
+        ]);
     }
 
     /**
@@ -123,6 +131,93 @@ class UserTemplateController extends Controller
         return redirect()->route('users.templates.index')->with([
             'message' => [
                 'message' => 'Error al eliminar la plantilla de usuario.',
+                'type' => 'error',
+            ],
+        ]);
+    }
+
+    /**
+     * Assign a module to a user template.
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addModule(BaseFormRequest $request)
+    {
+        $request->validate([
+            'module_id' => 'required|exists:modules,id',
+            'user_template_id' => 'required|exists:user_templates,id',
+        ], [
+            'module_id.required' => 'El módulo es obligatorio.',
+            'module_id.exists' => 'El módulo seleccionado no existe.',
+            'user_template_id.required' => 'La plantilla de usuario es obligatoria.',
+            'user_template_id.exists' => 'La plantilla de usuario seleccionada no existe.',
+        ]);
+
+        if(UserTemplateModule::where('user_template_id', $request->user_template_id)
+            ->where('module_id', $request->module_id)->exists()) {
+            return redirect()->back()->with([
+                'message' => [
+                    'message' => 'El módulo ya está asignado a la plantilla de usuario.',
+                    'type' => 'warning',
+                ],
+            ]);
+        }
+
+        DB::beginTransaction();
+        try{
+            $userTemplateModule = UserTemplateModule::create([
+                'user_template_id' => $request->user_template_id,
+                'module_id' => $request->module_id,
+            ]);
+
+            foreach($request->actions as $action)
+            {
+                UserTemplateModuleAction::create([
+                    'user_template_module_id' => $userTemplateModule->id,
+                    'action' => $action,
+                ]);
+            }
+
+            DB::commit();
+            return redirect()->route('users.templates.show', ['userTemplate' => $request->user_template_id])->with([
+                'message' => [
+                    'message' => 'Módulo asignado a la plantilla de usuario exitosamente.',
+                    'type' => 'success',
+                ],
+            ]);
+        }
+        catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with([
+                'message' => [
+                    'message' => 'Error al asignar el módulo a la plantilla de usuario: ' . $e->getMessage(),
+                    'type' => 'error',
+                ],
+            ]);
+        }
+    }
+
+    /**
+     * Remove a module from a user template.
+     *
+     * @param \App\Models\Users\Templates\UserTemplateModule $userTemplateModule
+     * @param \App\Models\Users\Templates\UserTemplate $userTemplate
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function deleteModule(UserTemplateModule $userTemplateModule, UserTemplate $userTemplate)
+    {
+        if($userTemplateModule->delete()){
+            return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
+                'message' => [
+                    'message' => 'Módulo eliminado de la plantilla de usuario exitosamente.',
+                    'type' => 'success',
+                ],
+            ]);
+        }
+
+        return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
+            'message' => [
+                'message' => 'Error al eliminar el módulo de la plantilla de usuario.',
                 'type' => 'error',
             ],
         ]);

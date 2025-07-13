@@ -56,6 +56,9 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
                 Route::post('store', [UserTemplateController::class, 'store'])->name('users.templates.store');
                 Route::put('update/{userTemplate}', [UserTemplateController::class, 'update'])->name('users.templates.update');
                 Route::delete('delete/{userTemplate}', [UserTemplateController::class, 'delete'])->name('users.templates.delete');
+
+                Route::post('addModule', [UserTemplateController::class, 'addModule'])->name('users.templates.addModule');
+                Route::delete('deleteModule/{userTemplateModule}/{userTemplate}', [UserTemplateController::class, 'deleteModule'])->name('users.templates.deleteModule');
             });
         });
 

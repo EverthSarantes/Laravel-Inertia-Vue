@@ -29,7 +29,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <Form :route="route('users.templates.store')" :method="'POST'" :model="usePage().props.model" :isModal="true"></Form>
+                            <Form :route="route('users.templates.store')" :method="'POST'" :model="usePage().props.model"></Form>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
