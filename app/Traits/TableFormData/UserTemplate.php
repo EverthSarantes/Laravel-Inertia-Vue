@@ -91,7 +91,7 @@ trait UserTemplate
             'placeholder' => 'Nombre',
         ],
         'description' => [
-            'input_type' => 'textarea',
+            'input_type' => 'input',
             'type' => 'text',
             'required' => false,
             'readonly' => false,
