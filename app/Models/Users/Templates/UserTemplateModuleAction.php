@@ -14,6 +14,10 @@ class UserTemplateModuleAction extends Model
         'action',
     ];
 
+    protected $appends = [
+        'action_name',
+    ];
+
     /**
      * Defines a many-to-one relationship with the UserTemplateModule model.
      *
@@ -22,5 +26,22 @@ class UserTemplateModuleAction extends Model
     public function userTemplateModule()
     {
         return $this->belongsTo(UserTemplateModule::class);
+    }
+
+    /**
+     * Get the name of the action.
+     *
+     * @return string
+     */
+    public function getActionNameAttribute()
+    {
+        $actionNames = [
+            'read' => 'Leer',
+            'create' => 'Crear',
+            'update' => 'Actualizar',
+            'delete' => 'Eliminar',
+        ];
+
+        return $actionNames[$this->action] ?? '';
     }
 }
