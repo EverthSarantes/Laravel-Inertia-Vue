@@ -56,8 +56,11 @@
         modalInstance.show();
     }
 
+    //Filtro según modelo
     const selected_filter = ref(null);
+    // Almacena los filtros disponibles para el modelo seleccionado
     const available_filters = ref(null);
+    // Almacena el tipo de filtro seleccionado (simple, relations, etc.)
     const selected_filter_type = ref(null);
     
     const searchFilters = () => {
@@ -81,11 +84,11 @@
         });
     };
 
-    // Watch for changes in the selected filter to fetch available filters
     watch(selected_filter, (newFilter) => {
         searchFilters();
     });
 
+    // Almacena los datos del campo seleccionado para el filtro simple
     const selected_filter_field_data = ref(null);
 
     function setSelectedFilterFieldData() {
@@ -100,20 +103,97 @@
         }
     }
 
+    // Almacena el valor de la relación seleccionada para el filtro de relaciones
+    const selected_relation = ref(null);
+    // Almacena los datos del campo seleccionado para el filtro de relaciones
+    const selected_relation_field_data = ref(null);
+    // Almacena el valor de la relación seleccionada
+    const selected_relation_value = ref(null);
+
+    function setSelectedRelation() {
+        let selected_relation_value = document.getElementById('filter_relation').value;
+        if (available_filters.value && available_filters.value.relations) {
+            let relation = available_filters.value.relations.relations[selected_relation_value];
+            if (relation) {
+                selected_relation.value = relation;
+            } else {
+                selected_relation.value = null;
+            }
+        }
+    }
+
+    function setSelectedRelationFieldData() {
+        let selected_field = document.getElementById('filter_field').value;
+        if (selected_relation.value && selected_relation.value.fields) {
+            let data = selected_relation.value.fields[selected_field];
+            if (data) {
+                selected_relation_field_data.value = data;
+            } else {
+                selected_relation_field_data.value = null;
+            }
+        }
+    }
+
+    // Almacena el valor de la función seleccionada para el filtro de funciones
+    const selected_function = ref(null);
+
+    function setSelectedFunction() {
+        let selected_function_value = document.getElementById('filter_relation').value;
+        if (available_filters.value && available_filters.value.functions) {
+            let functionData = available_filters.value.functions.functions[selected_function_value];
+            if (functionData) {
+                selected_function.value = functionData;
+            } else {
+                selected_function.value = null;
+            }
+            console.log(selected_function.value);
+        }
+    }
+
     const addUserModelFilterForm = useForm({
         model: null,
         comparison_type: null,
         field: null,
         operator: null,
         value: null,
+        relation: null,
+        extra: null,
     });
 
     const submitAddUserModelFilterForm = () => {
-        addUserModelFilterForm.model = selected_filter.value;
-        addUserModelFilterForm.comparison_type = selected_filter_type.value;
-        addUserModelFilterForm.field = document.getElementById('filter_field').value || null;
-        addUserModelFilterForm.operator = document.getElementById('filter_operator').value || null;
-        addUserModelFilterForm.value = document.getElementById('filter_value').value || null;
+        if(selected_filter_type.value === 'simple') {
+            addUserModelFilterForm.comparison_type = selected_filter_type.value;
+            addUserModelFilterForm.model = selected_filter.value;
+            addUserModelFilterForm.field = document.getElementById('filter_field').value || null;
+            addUserModelFilterForm.operator = document.getElementById('filter_operator').value || null;
+            addUserModelFilterForm.value = document.getElementById('filter_value').value || null;
+        }
+        if(selected_filter_type.value === 'relations') {
+            addUserModelFilterForm.comparison_type = selected_filter_type.value;
+            addUserModelFilterForm.model = selected_filter.value;
+            addUserModelFilterForm.field = document.getElementById('filter_field').value || null;
+            addUserModelFilterForm.operator = document.getElementById('filter_operator').value || null;
+            addUserModelFilterForm.value = selected_relation_value.value || null;
+            addUserModelFilterForm.relation = selected_relation.value.relation_name || null;
+        }
+        if(selected_filter_type.value === 'functions') {
+            addUserModelFilterForm.comparison_type = selected_filter_type.value;
+            addUserModelFilterForm.model = selected_filter.value;
+            addUserModelFilterForm.field = selected_function.value.field.name || null;
+            addUserModelFilterForm.operator = selected_function.value.operator || null;
+            addUserModelFilterForm.value = document.getElementById('filter_value').value || null;
+            addUserModelFilterForm.extra = JSON.stringify({
+                method: selected_function.value.method,
+            });
+        }
+        if(selected_filter_type.value === 'user_own') {
+            addUserModelFilterForm.comparison_type = selected_filter_type.value;
+            addUserModelFilterForm.model = selected_filter.value;
+            addUserModelFilterForm.extra = JSON.stringify({
+                relation_name: available_filters.value.user_own.relation_name,
+                foreign_key: available_filters.value.user_own.foreign_key,
+            });
+        }
 
         addUserModelFilterForm.post(route('users.addUserModelFilter', {user: user.value.id}), {
             onSuccess: () => {
@@ -247,8 +327,14 @@
                                             <span v-if="userModelFilter.comparison_type === 'simple'">
                                                 {{ userModelFilter.field }} {{ userModelFilter.operator }} {{ userModelFilter.value }}
                                             </span>
-                                            <span v-else>
-                                                {{ userModelFilter.comparison_type }}
+                                            <span v-if="userModelFilter.comparison_type === 'relations'">
+                                                {{ userModelFilter.relation }} {{ userModelFilter.field }} {{ userModelFilter.operator }} {{ userModelFilter.value }}
+                                            </span>
+                                            <span v-if="userModelFilter.comparison_type === 'functions'">
+                                                {{ userModelFilter.field }} {{ userModelFilter.operator }} {{ userModelFilter.value }}
+                                            </span>
+                                            <span v-if="userModelFilter.comparison_type === 'user_own'">
+                                                Pertenece al usuario
                                             </span>
                                         </td>
                                         <td>
@@ -365,7 +451,10 @@
                                     </select>
                                 </div>
                             </div>
+
                             <hr v-if="selected_filter_type" class="mt-3">
+
+
                             <div class="row" v-if="selected_filter_type == 'simple'">
                                 <div class="col-md-4">
                                     <label for="filter_field" class="form-label">Campo del Filtro</label>
@@ -394,7 +483,47 @@
                                     <input v-else-if="selected_filter_field_data && selected_filter_field_data.type === 'open'"  type="text" class="form-control" id="filter_value" name="filter_value"/>
                                 </div>
                             </div>
-                            
+
+                            <div class="row" v-if="selected_filter_type == 'relations'">
+                                <div class="col-md-12">
+                                    <label for="filter_relation" class="form-label">Relación con</label>
+                                    <select name="filter_relation" id="filter_relation" class="form-select" @input="setSelectedRelation">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="relationKey" v-for="(relation, relationKey) in available_filters.relations.relations" v-html="relation.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" v-if="selected_relation">
+                                    <label for="filter_field" class="form-label">Campo del Filtro</label>
+                                    <select name="filter_field" id="filter_field" class="form-select" @input="setSelectedRelationFieldData">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="fieldKey" v-for="(field, fieldKey) in selected_relation.fields" v-html="field.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4" v-if="selected_relation">
+                                    <label for="filter_operator" class="form-label">Operador</label>
+                                    <select name="filter_operator" id="filter_operator" class="form-select">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="operator.value" v-for="operator in selected_relation.operators" v-html="operator.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12" v-if="selected_relation_field_data">
+                                    <searchSelect name="Valor" input-name="filter_value" :model="selected_relation_field_data.model" :required="true" select_name="filter_value" v-model:select_value="selected_relation_value"/>
+                                </div>
+                            </div>
+
+                            <div class="row" v-if="selected_filter_type == 'functions'">
+                                <div class="col-md-12">
+                                    <label for="filter_relation" class="form-label">Función</label>
+                                    <select name="filter_relation" id="filter_relation" class="form-select" @input="setSelectedFunction">
+                                        <option :value="null" selected>Seleccione un campo</option>
+                                        <option :value="fncKey" v-for="(fnc, fncKey) in available_filters.functions.functions" v-html="fnc.label"></option>
+                                    </select>
+                                </div>
+                                <div class="col-md-12 mt-3" v-if="selected_function">
+                                    <label for="filter_field" class="form-label" v-html="selected_function.field.label"></label>
+                                    <input class="form-control" id="filter_value" name="filter_value"  v-bind="selected_function.field.attrs"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="modal-footer mt-3">
                             <button type="submit" class="btn btn-primary">Agregar</button>
