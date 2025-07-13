@@ -138,7 +138,7 @@ class UserServices
         }
     }
 
-public static function addUserModelFilter($request, User $user)
+    public static function addUserModelFilter($request, User $user)
     {
         DB::beginTransaction();
 
