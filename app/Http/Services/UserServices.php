@@ -207,7 +207,6 @@ class UserServices
             DB::rollBack();
             return null;
         } catch (\Exception $e) {
-            dd($e->getMessage());
             DB::rollBack();
             return null;
         }
