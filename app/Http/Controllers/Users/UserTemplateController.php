@@ -8,7 +8,9 @@ use Inertia\Inertia;
 use App\Models\Users\Templates\UserTemplate;
 use App\Models\Users\Templates\UserTemplateModule;
 use App\Models\Users\Templates\UserTemplateModuleAction;
+use App\Models\Users\Templates\UserTemplateFilter;
 use Illuminate\Support\Facades\DB;
+use App\Http\Services\UserTemplateServices;
 
 class UserTemplateController extends Controller
 {
@@ -33,7 +35,7 @@ class UserTemplateController extends Controller
      */
     public function show(UserTemplate $userTemplate)
     {
-        $userTemplate->load(['modules.module', 'modules.actions']);
+        $userTemplate->load(['modules.module', 'modules.actions', 'filters']);
         $available_user_filters = config('modelFilters');
         return Inertia::render('users_templates.show', [
             'user_template' => $userTemplate,
@@ -218,6 +220,66 @@ class UserTemplateController extends Controller
         return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
             'message' => [
                 'message' => 'Error al eliminar el módulo de la plantilla de usuario.',
+                'type' => 'error',
+            ],
+        ]);
+    }
+
+    /**
+     * Store a user template model filter.
+     *
+     * @param \App\Http\Requests\BaseFormRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function addUserTemplateModelFilter(BaseFormRequest $request, UserTemplate $userTemplate)
+    {
+        $request->validate([
+            'comparison_type' => 'required',
+        ], [
+            'comparison_type.required' => 'El tipo de comparación es obligatorio',
+        ]);
+
+        $response = UserTemplateServices::addUserModelFilter($request, $userTemplate);
+
+        if($response === null)
+        {
+            return redirect()->back()->with([
+                'message' => [
+                    'message' => 'Error al agregar el filtro',
+                    'type' => 'danger',
+                ],
+            ]);
+        }
+
+        return redirect()->back()->with([
+            'message' => [
+                'message' => 'Filtro agregado correctamente',
+                'type' => 'success',
+            ],
+        ]);
+    }
+
+    /**
+     * Remove a user template model filter.
+     *
+     * @param \App\Models\Users\Templates\UserTemplateFilter $userTemplateFilter
+     * @param \App\Models\Users\Templates\UserTemplate $userTemplate
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function removeUserTemplateModelFilter(UserTemplateFilter $userTemplateModelFilter, UserTemplate $userTemplate)
+    {
+        if($userTemplateModelFilter->delete()){
+            return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
+                'message' => [
+                    'message' => 'Filtro eliminado de la plantilla de usuario exitosamente.',
+                    'type' => 'success',
+                ],
+            ]);
+        }
+
+        return redirect()->route('users.templates.show', ['userTemplate' => $userTemplate])->with([
+            'message' => [
+                'message' => 'Error al eliminar el filtro de la plantilla de usuario.',
                 'type' => 'error',
             ],
         ]);

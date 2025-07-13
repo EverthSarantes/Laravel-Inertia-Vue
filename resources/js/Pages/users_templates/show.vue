@@ -15,7 +15,6 @@
     const user_template = computed(() => {
         return usePage().props.user_template;
     });
-    console.log(user_template.value);
 
     const filters = usePage().props.available_user_filters;
 
@@ -54,7 +53,7 @@
         modalInstance.show();
     }
 
-    /* //Filtro según modelo
+    //Filtro según modelo
     const selected_filter = ref(null);
     // Almacena los filtros disponibles para el modelo seleccionado
     const available_filters = ref(null);
@@ -193,13 +192,13 @@
             });
         }
 
-        addUserModelFilterForm.post(route('users.addUserModelFilter', {user: user.value.id}), {
+        addUserModelFilterForm.post(route('users.templates.addUserTemplateModelFilter', {userTemplate: user_template.value.id}), {
             onSuccess: () => {
                 const modal = bootstrap.Modal.getInstance(document.getElementById('modal_add_filter'));
                 modal.hide();
             },
         });
-    }; */
+    };
 </script>
 
 <template>
@@ -311,7 +310,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- <tr v-for="userModelFilter in user.user_model_filters">
+                                    <tr v-for="userModelFilter in user_template.filters">
                                         <td>{{ userModelFilter.model }}</td>
                                         <td>
                                             <span v-if="userModelFilter.comparison_type === 'simple'">
@@ -329,12 +328,12 @@
                                         </td>
                                         <td>
                                             <div class="d-flex gap-1">
-                                                <DeleteButton class="btn btn-danger btn-sm" type="button" :url="route('users.removeUserModelFilter', {userModelFilter: userModelFilter.id, user: user.id})">
+                                                <DeleteButton class="btn btn-danger btn-sm" type="button" :url="route('users.templates.removeUserTemplateModelFilter', {userTemplateModelFilter: userModelFilter.id, userTemplate: userModelFilter.user_template_id})">
                                                     <i class='bx bxs-trash'></i>
                                                 </DeleteButton>
                                             </div>
                                         </td>
-                                    </tr> -->
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -416,7 +415,7 @@
         </div>
 
         <!-- modal add filter -->
-        <!-- <div class="modal fade" id="modal_add_filter" tabindex="-1" aria-labelledby="modal_add_filter" aria-hidden="true">
+        <div class="modal fade" id="modal_add_filter" tabindex="-1" aria-labelledby="modal_add_filter" aria-hidden="true">
             <div class="modal-dialog modal-lg">
                 <div class="modal-content">
                     <form method="POST" @submit.prevent="submitAddUserModelFilterForm">
@@ -521,7 +520,7 @@
                     </form>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <DeleteModal />
     </dashboard>

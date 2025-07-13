@@ -59,6 +59,9 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
 
                 Route::post('addModule', [UserTemplateController::class, 'addModule'])->name('users.templates.addModule');
                 Route::delete('deleteModule/{userTemplateModule}/{userTemplate}', [UserTemplateController::class, 'deleteModule'])->name('users.templates.deleteModule');
+
+                Route::post('addUserTemplateModelFilter/{userTemplate}', [UserTemplateController::class, 'addUserTemplateModelFilter'])->name('users.templates.addUserTemplateModelFilter');
+                Route::delete('removeUserTemplateModelFilter/{userTemplateModelFilter}/{userTemplate}', [UserTemplateController::class, 'removeUserTemplateModelFilter'])->name('users.templates.removeUserTemplateModelFilter');
             });
         });
 
