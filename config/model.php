@@ -5,4 +5,5 @@ return [
     'Module' => \App\Models\Users\Module::class,
     'UserModule' => \App\Models\Users\UserModule::class,
     'Backup' => \App\Models\Backups\Backup::class,
+    'UserTemplate' => \App\Models\Users\Templates\UserTemplate::class,
 ];

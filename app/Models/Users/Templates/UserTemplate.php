@@ -3,9 +3,11 @@
 namespace App\Models\Users\Templates;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\TableFormData\UserTemplate as TableFormDataUserTemplate;
 
 class UserTemplate extends Model
 {
+    use TableFormDataUserTemplate;
     /**
      * @var array<int, string> The attributes that are mass assignable.
      */
@@ -32,5 +34,5 @@ class UserTemplate extends Model
     public function filters()
     {
         return $this->hasMany(UserTemplateFilter::class);
-    }
+    } 
 }
