@@ -61,7 +61,6 @@
             tableData.value = response.data.data;
         }, () => {
             tableData.value = [props.model.table_fields.map(() => '')];
-            showToast('No se encontraron datos');
         });
     }
 
