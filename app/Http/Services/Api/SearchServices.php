@@ -111,7 +111,7 @@ class SearchServices
      * @param array|null $params
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator The paginated search results.
      */
-    public static function search(string $model, $extra_query_parameter = null, $pagination = 20, $params = null)
+    public static function search(string $model, $extra_query_parameter = null, $pagination = 20, $params = null, $orderByField = null, $orderByDirection = 'asc')
     {
         $permited_search_types = ['like', '=', '!=', '>', '<', '>=', '<='];
 
@@ -126,6 +126,10 @@ class SearchServices
         }
 
         $query = $model::query();
+
+        if($orderByField && (self::verifyFieldIsSearchable($model, $orderByField ) || $orderByField === 'created_at')) {
+            $query->orderBy($orderByField, $orderByDirection);
+        }
 
         foreach ($params as $param) {
             if($param['field'] && $param['search_type'] && $param['search']){

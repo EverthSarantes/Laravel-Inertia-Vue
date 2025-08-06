@@ -23,6 +23,9 @@
 
     const tableData = ref([]);
     const pagination = ref(20);
+    const orderByField = ref('created_at');
+    const orderByDirection = ref('asc');
+
     const searchOptions = ref([
         { field: props.model.table_fields_searchable?.[0] || '', search_type: 'like', search: '' }
     ]);
@@ -41,6 +44,9 @@
         });
         url.searchParams.append('pagination', pagination.value);
         url.searchParams.append('extraQueryParameter', props.extraQueryParameter);
+        url.searchParams.append('orderByField', orderByField.value);
+        url.searchParams.append('orderByDirection', orderByDirection.value);
+
         if (page) {
             url.searchParams.append('page', page);
         }
@@ -88,7 +94,7 @@
         }
     });
 
-    watch([pagination, searchOptions], () => {
+    watch([pagination, searchOptions, orderByField, orderByDirection], () => {
         searchData(getUrl());
     }, { deep: true });
 
@@ -119,19 +125,27 @@
 <template>
     <div class="card p-3" :id="id">
         <div class="row d-flex justify-content-end">
-            <div class="col-md" style="max-width: 460px">
-                <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
-                    <label class="input-group-text" :class="{ 'form-control-sm': small }" :for="'pagination_' + id">
-                        Paginación
-                    </label>
-
-                    <input type="number"  placeholder="Paginación" 
-                        class="form-control" :class="{ 'form-control-sm': small }"
-                        v-model.number="pagination"
+            <div class="col-md-6">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" :for="'orderByField_' + id">Ordenar Por</label>
+                    <select class="form-control" v-model="orderByField" :id="'orderByField_' + id">
+                        <option value="created_at">Fecha de Creación</option>
+                        <option v-for="field in props.model.table_fields" :key="field" :value="field">{{ props.model.table_fields_names[field] }}</option>
+                    </select>
+                    <select class="form-control" v-model="orderByDirection" :id="'orderByDirection_' + id">
+                        <option value="asc">Ascendente</option>
+                        <option value="desc">Descendente</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="input-group mb-3">
+                    <label class="input-group-text" :for="'pagination_' + id">Paginación</label>
+                    <input type="number" class="form-control" placeholder="Paginación" v-model.number="pagination"
                         :id="'pagination_' + id">
                 </div>
             </div>
-            <div class="col-md-2">
+            <div class="col-md-2 mb-3">
                 <div class="d-flex justify-content-end gap-1">
                     <button class="btn btn-success" @click="searchData(getUrl())">
                         <i class='bx bx-refresh'></i>

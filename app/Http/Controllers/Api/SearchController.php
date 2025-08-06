@@ -43,7 +43,7 @@ class SearchController extends Controller
             ], 403);
         }
 
-        $data = SearchServices::search($model, $request->extraQueryParameter, $request->pagination, $request->params);
+        $data = SearchServices::search($model, $request->extraQueryParameter, $request->pagination, $request->params, $request->orderByField, $request->orderByDirection);
 
         if($data === false) {
             return response()->json([
