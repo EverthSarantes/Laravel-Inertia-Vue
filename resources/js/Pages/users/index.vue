@@ -135,7 +135,7 @@
                                             </div>
                                             <div class="col-md-12" v-show="modules.selected_modules.includes(module.id)">
                                                 <div class="row">
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
                                                             <label class="form-check-label d-flex gap-1">
                                                                 <input type="checkbox"
@@ -146,7 +146,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
                                                             <label class="form-check-label d-flex gap-1">
                                                                 <input type="checkbox"
@@ -157,7 +157,18 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label d-flex gap-1">
+                                                            <input type="checkbox"
+                                                                value="search"
+                                                                :module-id="module.id"
+                                                                class="form-check checkbox-modules-actions">
+                                                            <small>Busqueda</small>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
                                                             <label class="form-check-label d-flex gap-1">
                                                                 <input type="checkbox"
@@ -168,7 +179,7 @@
                                                             </label>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-2">
                                                         <div class="form-check">
                                                             <label class="form-check-label d-flex gap-1">
                                                                 <input type="checkbox"
