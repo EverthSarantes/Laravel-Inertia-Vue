@@ -94,7 +94,7 @@ class SearchServices
         }
 
         foreach ($model::$permisson_modules as $module) {
-            if(auth()->user()->hasAccessToModule($module, 'GET')) {
+            if(auth()->user()->hasAccessToModule($module, 'SEARCH')) {
                 return true;
             }
         }
