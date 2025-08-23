@@ -60,7 +60,7 @@ return new class extends Migration
             $table->foreignId('user_module_id')->constrained('users_modules')
             ->onDelete('cascade')->onUpdate('cascade');
 
-            $table->enum('action', ['create', 'read', 'update', 'delete'])->nullable();
+            $table->enum('action', ['create', 'read', 'update', 'delete', 'search'])->nullable();
 
             $table->nullableUserStamps();
             $table->timestamps();
