@@ -125,9 +125,14 @@ class User extends Authenticatable
 
         $modules = new Collection();
 
-        foreach ($this->userModule as $userModule) {
+        UserModule::where('user_id', $this->id)
+        ->whereHas('actions', function($query) {
+            $query->where('action', 'read');
+        })
+        ->get()
+        ->each(function($userModule) use ($modules) {
             $modules->push($userModule->module);
-        }
+        });
 
         return $modules;
     }
@@ -150,6 +155,7 @@ class User extends Authenticatable
             'PUT' => 'update',
             'PATCH' => 'update',
             'DELETE' => 'delete',
+            'SEARCH' => 'search',
         ];
 
         return $this->userModule()->whereHas('module', function($query) use ($module) {
