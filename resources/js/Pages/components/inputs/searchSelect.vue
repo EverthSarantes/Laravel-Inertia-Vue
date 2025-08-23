@@ -20,14 +20,26 @@
     const selectId = computed(() => `select_${props.name}`);
     const searchId = computed(() => `search_${props.name}`);
 
-    watch(searchQuery, async (newQuery) => {
-        if (!newQuery) {
+    function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    }
+
+    const debouncedSearch = debounce((query) => {
+        searchSelect(query);
+    }, 500);
+
+    async function searchSelect(query) {
+        if (!query) {
             options.value = [];
             return;
         }
 
         isLoading.value = true;
-        const url = `${api_url}select/${props.model}/${newQuery}`;
+        const url = `${api_url}select/${props.model}/${query}`;
 
         try {
             const response = await fetch(url);
@@ -38,8 +50,11 @@
         } finally {
             isLoading.value = false;
         }
-    });
+    }
 
+    watch(searchQuery, (newQuery) => {
+        debouncedSearch(newQuery);
+    });
     const select_value = defineModel('select_value', { default: null });
 </script>
 

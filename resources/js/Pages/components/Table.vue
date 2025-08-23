@@ -94,8 +94,20 @@
         }
     });
 
-    watch([pagination, searchOptions, orderByField, orderByDirection], () => {
+    function debounce(fn, delay) {
+        let timeout;
+        return (...args) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => fn(...args), delay);
+        };
+    }
+
+    const debouncedSearch = debounce(() => {
         searchData(getUrl());
+    }, 500);
+
+    watch([pagination, searchOptions, orderByField, orderByDirection], () => {
+        debouncedSearch();
     }, { deep: true });
 
     function addNewSearchOption() {
