@@ -130,7 +130,7 @@
                     <label class="input-group-text" :for="'orderByField_' + id">Ordenar Por</label>
                     <select class="form-control" v-model="orderByField" :id="'orderByField_' + id">
                         <option value="created_at">Fecha de Creación</option>
-                        <option v-for="field in props.model.table_fields" :key="field" :value="field">{{ props.model.table_fields_names[field] }}</option>
+                        <option v-for="field in props.model.table_fields_searchable" :key="field" :value="field">{{ props.model.table_fields_names[field] }}</option>
                     </select>
                     <select class="form-control" v-model="orderByDirection" :id="'orderByDirection_' + id">
                         <option value="asc">Ascendente</option>
