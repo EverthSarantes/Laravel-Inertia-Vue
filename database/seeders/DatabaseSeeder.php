@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Users\Module;
 use App\Models\Backups\ScheduledBackup;
+use App\Models\Users\App;
 use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
@@ -41,6 +42,15 @@ class DatabaseSeeder extends Seeder
             'active' => false,
         ]);
 
+        $app = App::create([
+            'name' => 'Administración',
+            'internal_name' => 'administration_app',
+            'access_route_name' => 'administration_app.index',
+            'icon' => 'bx bx-app nav_icon',
+            'order' => 1,
+            'show_in_menu' => true,
+        ]);
+
         $modules = [
             [
                 'name' => 'Usuarios',
@@ -67,6 +77,8 @@ class DatabaseSeeder extends Seeder
                 'access_route_name' => $module['access_route_name'],
                 'icon' => $module['icon'],
                 'order' => $module['order'],
+                'show_in_menu' => $module['show_in_menu'],
+                'app_id' => $app->id,
             ]);
         }
     }

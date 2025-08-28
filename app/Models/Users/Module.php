@@ -27,6 +27,8 @@ class Module extends Model
         'access_route_name',
         'icon',
         'order',
+        'show_in_menu',
+        'app_id'
     ];
 
     /**
@@ -37,5 +39,15 @@ class Module extends Model
     public function userModule()
     {
         return $this->hasMany(UserModule::class);
+    }
+
+    /**
+     * Defines a belongs-to relationship with the App model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function app()
+    {
+        return $this->belongsTo(App::class);
     }
 }

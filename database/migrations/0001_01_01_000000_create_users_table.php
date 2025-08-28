@@ -26,6 +26,20 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        Schema::create('apps', function (Blueprint $table) {
+            $table->id();
+
+            $table->string('name')->nullable();
+            $table->string('internal_name')->nullable();
+            $table->string('access_route_name')->nullable();
+            $table->string('icon')->nullable();
+            $table->integer('order')->default(0)->nullable();
+            $table->boolean('show_in_menu')->default(true)->nullable();
+
+            $table->nullableUserStamps();
+            $table->timestamps();
+        });
+
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
 
@@ -35,6 +49,10 @@ return new class extends Migration
             $table->string('icon')->nullable();
             $table->integer('order')->default(0)->nullable();
             $table->boolean('show_in_menu')->default(true)->nullable();
+
+            $table->unsignedBigInteger('app_id')->nullable();
+            $table->foreign('app_id')->references('id')->on('apps')
+            ->onDelete('cascade')->onUpdate('cascade');
 
             $table->nullableUserStamps();
             $table->timestamps();
