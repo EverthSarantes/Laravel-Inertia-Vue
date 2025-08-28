@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\AdministrationApp\Users;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BaseFormRequest;
@@ -22,7 +22,7 @@ class UserTemplateController extends Controller
      */
     public function index($pagination = 20)
     {
-        return Inertia::render('users_templates.index', [
+        return Inertia::render('administration_app.users_templates.index', [
             'model' => UserTemplate::getStaticData(),
         ]);
     }
@@ -37,7 +37,7 @@ class UserTemplateController extends Controller
     {
         $userTemplate->load(['modules.module', 'modules.actions', 'filters']);
         $available_user_filters = config('modelFilters');
-        return Inertia::render('users_templates.show', [
+        return Inertia::render('administration_app.users_templates.show', [
             'user_template' => $userTemplate,
             'available_user_filters' => $available_user_filters,
         ]);

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backups;
+namespace App\Http\Controllers\AdministrationApp\Backups;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -15,7 +15,7 @@ class BackupsController extends Controller
     {
         $scheduledBackup = ScheduledBackup::firstOrNew(['id' => 1]);
 
-        return Inertia::render('backups.index', [
+        return Inertia::render('administration_app.backups.index', [
             'model' => Backup::getStaticData(),
             'schedules' => $scheduledBackup,
         ]);

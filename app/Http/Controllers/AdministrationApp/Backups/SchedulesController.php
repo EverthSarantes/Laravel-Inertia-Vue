@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Backups;
+namespace App\Http\Controllers\AdministrationApp\Backups;
 
 use App\Http\Controllers\Controller;
 use App\http\Requests\BaseFormRequest;

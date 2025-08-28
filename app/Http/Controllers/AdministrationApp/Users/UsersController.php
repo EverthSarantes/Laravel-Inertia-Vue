@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Users;
+namespace App\Http\Controllers\AdministrationApp\Users;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class UsersController extends Controller
     {
         $modules = Module::select('id', 'name')->get();
 
-        return Inertia::render('users.index', [
+        return Inertia::render('administration_app.users.index', [
             'model' => User::getStaticData(),
             'form_modules' => $modules,
         ]);
@@ -44,7 +44,7 @@ class UsersController extends Controller
     {
         $user->load(['userModule.actions', 'userModule.module', 'userModelFilters']);
         $available_user_filters = config('modelFilters');
-        return Inertia::render('users.show', [
+        return Inertia::render('administration_app.users.show', [
             'user' => $user,
             'available_user_filters' => $available_user_filters,
         ]);
