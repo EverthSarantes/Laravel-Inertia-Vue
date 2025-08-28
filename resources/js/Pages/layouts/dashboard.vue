@@ -110,7 +110,7 @@
 
     <Message v-if="message" :message="message.message" :color="message.type"/>
 
-    <main class="w-100">
+    <main class="pt-3 w-100">
         <slot />
     </main>
 
