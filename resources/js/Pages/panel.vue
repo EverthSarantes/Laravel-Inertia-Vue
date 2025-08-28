@@ -17,10 +17,7 @@
     <mainDashboard>
         <div class="container">
             <div class="row justify-content-center align-items-center">
-                <div class="col-md-6">
-                    <img class="img-fluid mt-5 mx-auto d-block" width="200" id="responsive-image">
-                </div>
-                <div class="mt-5">
+                <div class="mt-2">
                     <div class="text-center">
                         <h1 class="responsive-h1">Bienvenidos a {{ appName }}</h1>
                     </div>
