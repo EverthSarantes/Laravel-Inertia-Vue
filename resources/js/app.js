@@ -7,7 +7,7 @@ const pages = import.meta.glob('./Pages/**/*.vue');
 
 createInertiaApp({
     resolve: name => {
-        const path = `./Pages/${name.replace('.', '/')}.vue`;
+        const path = `./Pages/${name.replace(/\./g, '/')}.vue`;
         const importPage = pages[path];
         if (!importPage) {
             throw new Error(`Unknown page: ${name}`);
