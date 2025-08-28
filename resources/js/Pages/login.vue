@@ -20,7 +20,7 @@
 </script>
 
 <template>
-    <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 500px;">
+    <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 550px;">
             <div class="bg-white shadow bg-body rounded d-flex flex-column align-items-center p-3">
                 <Logo :with="'300'" :class="'mt-5'"/>
                 <h2 class="mt-5 p-3 ps-0" id="title"><strong>Iniciar Sesión</strong></h2>
