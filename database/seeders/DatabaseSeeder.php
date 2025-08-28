@@ -46,7 +46,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administración',
             'internal_name' => 'administration_app',
             'access_route_name' => 'administration_app.index',
-            'icon' => 'bx bx-app nav_icon',
+            'icon' => 'https://placehold.co/600x400',
             'order' => 1,
             'show_in_menu' => true,
         ]);

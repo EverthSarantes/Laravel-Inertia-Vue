@@ -27,7 +27,7 @@
                         <template v-for="app in userApps" :key="app.id">
                             <div class="col-lg-4 mb-3 justify-content-center align-items-center d-flex">
                                 <div class="card" style="max-width: 350px;">
-                                    <img src="https://placehold.co/600x400" class="card-img-top" alt="placeholder">
+                                    <img :src="app.icon" class="card-img-top" alt="placeholder">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ app.name }}</h5>
                                         <Link :href="route(app.access_route_name)" class="btn btn-primary">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
