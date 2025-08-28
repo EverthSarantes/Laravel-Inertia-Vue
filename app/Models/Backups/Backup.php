@@ -13,6 +13,8 @@ class Backup
     private string $disk;
     private string $backup_path;
     private array $filters = [];
+    private string $orderByField = 'name';
+    private string $orderByDirection = 'asc';
 
     /**
      * Dynamically retrieve attributes on the model.
@@ -80,6 +82,20 @@ class Backup
     }
 
     /**
+     * Set the order by clause for the query.
+     *
+     * @param string $orderByField The field to order by.
+     * @param string $orderByDirection The direction to order (asc or desc).
+     * @return $this
+     */
+    public function orderBy(string $orderByField, string $orderByDirection = 'asc'): self
+    {
+        $this->orderByField = $orderByField;
+        $this->orderByDirection = strtolower($orderByDirection) === 'desc' ? 'desc' : 'asc';
+        return $this;
+    }
+
+    /**
      * Get all backups with applied filters.
      *
      * @return Collection
@@ -98,6 +114,13 @@ class Backup
                     $files = array_filter($files, fn($file) => stripos(basename($file), $value) !== false);
                 }
             }
+        }
+
+        if ($this->orderByField) {
+            usort($files, fn($a, $b) => $this->orderByDirection === 'asc'
+                ? strcmp(basename($a), basename($b))
+                : strcmp(basename($b), basename($a))
+            );
         }
 
         return collect(array_values($files))->map(function ($file) {
