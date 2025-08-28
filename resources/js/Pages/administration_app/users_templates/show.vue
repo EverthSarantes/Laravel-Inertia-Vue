@@ -200,7 +200,7 @@
 </script>
 
 <template>
-    <dashboard>
+    <dashboard :appName="'administration_app'">
         <SubNavbar :links="links" />
 
         <div class="container">

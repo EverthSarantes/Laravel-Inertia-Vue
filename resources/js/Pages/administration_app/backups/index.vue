@@ -48,7 +48,7 @@
 </script>
 
 <template>
-    <dashboard>
+    <dashboard :appName="'administration_app'">
         <div class="container">
             
             <div class="card p-3 mt-2 row">
