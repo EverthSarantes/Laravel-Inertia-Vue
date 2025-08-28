@@ -3,6 +3,8 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use App\Models\Users\App;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -109,6 +111,26 @@ class User extends Authenticatable
     public function userModelFilters()
     {
         return $this->hasMany(UserModelFilter::class);
+    }
+
+    public function userApps()
+    {
+        if($this->isAdmin()) {
+            return App::all();
+        }
+
+        $apps = new Collection();
+
+        App::whereHas('modules.userModule', function($query) {
+            $query->where('user_id', $this->id)
+            ->whereHas('actions', function($query) {
+                $query->where('action', 'read');
+            });
+        })->get()->each(function($app) use ($apps) {
+            $apps->push($app);
+        });
+
+        return $apps;
     }
 
     /**
