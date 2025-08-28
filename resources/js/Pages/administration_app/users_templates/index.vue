@@ -2,12 +2,12 @@
 // It imports components for displaying a table of users and a form for adding new users templates.
 <script setup>
 
-    import dashboard from '../layouts/dashboard.vue';
-    import SubNavbar from '../components/SubNavbar.vue';
-    import DeleteModal from '../components/DeleteModal.vue';
-    import Table from '../components/Table.vue';
-    import Form from '../components/Form.vue';
-    import ExcelExport from '../components/buttons/ExcelExport.vue';
+    import dashboard from '../../layouts/dashboard.vue';
+    import SubNavbar from '../../components/SubNavbar.vue';
+    import DeleteModal from '../../components/DeleteModal.vue';
+    import Table from '../../components/Table.vue';
+    import Form from '../../components/Form.vue';
+    import ExcelExport from '../../components/buttons/ExcelExport.vue';
 
     import { usePage } from '@inertiajs/vue3';
     

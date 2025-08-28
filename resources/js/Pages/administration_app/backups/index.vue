@@ -1,9 +1,9 @@
 <script setup>
 
-    import dashboard from '../layouts/dashboard.vue';
-    import DeleteModal from '../components/DeleteModal.vue';
-    import Table from '../components/Table.vue';
-    import ExcelExport from '../components/buttons/ExcelExport.vue';
+    import dashboard from '../../layouts/dashboard.vue';
+    import DeleteModal from '../../components/DeleteModal.vue';
+    import Table from '../../components/Table.vue';
+    import ExcelExport from '../../components/buttons/ExcelExport.vue';
 
     import { useForm, usePage } from '@inertiajs/vue3';
 

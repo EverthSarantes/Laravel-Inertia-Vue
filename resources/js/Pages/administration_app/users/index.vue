@@ -4,14 +4,14 @@
 // Additional features include exporting data to Excel and printing user lists.
 <script setup>
 
-    import dashboard from '../layouts/dashboard.vue';
-    import SubNavbar from '../components/SubNavbar.vue';
-    import DeleteModal from '../components/DeleteModal.vue';
-    import Table from '../components/Table.vue';
-    import Form from '../components/Form.vue';
-    import ExcelExport from '../components/buttons/ExcelExport.vue';
-    import Print from '../components/buttons/Print.vue';
-    import SearchSelect from '../components/inputs/searchSelect.vue';
+    import dashboard from '../../layouts/dashboard.vue';
+    import SubNavbar from '../../components/SubNavbar.vue';
+    import DeleteModal from '../../components/DeleteModal.vue';
+    import Table from '../../components/Table.vue';
+    import Form from '../../components/Form.vue';
+    import ExcelExport from '../../components/buttons/ExcelExport.vue';
+    import Print from '../../components/buttons/Print.vue';
+    import SearchSelect from '../../components/inputs/searchSelect.vue';
 
     import { usePage } from '@inertiajs/vue3';
     import { computed, onMounted, ref, reactive, watch } from 'vue';

@@ -33,7 +33,7 @@
                                     <img src="https://placehold.co/600x400" class="card-img-top" alt="placeholder">
                                     <div class="card-body">
                                         <h5 class="card-title">{{ app.name }}</h5>
-                                        <Link :href="'route(app.access_route_name)'" class="btn btn-primary">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
+                                        <Link :href="route(app.access_route_name)" class="btn btn-primary">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
                                     </div>
                                 </div>
                             </div>

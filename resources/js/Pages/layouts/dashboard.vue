@@ -2,11 +2,15 @@
 // It includes navigation, theming options, and a slot for injecting page-specific content.
 // The template provides a sidebar for navigation and a header for user actions.
 <script setup>
-    import { computed, onMounted } from 'vue';
+    import { computed, onMounted, defineProps } from 'vue';
     import { usePage, Link  } from '@inertiajs/vue3';
     import Message from '../components/Message.vue';
     import Logo from '../components/Logo.vue';
     import { useHead } from '@vueuse/head';
+
+    defineProps({
+        appName: String,
+    });
 
     const page = usePage();
     const modules = computed(() => {

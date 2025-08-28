@@ -1,13 +1,11 @@
 // This script handles the user template editing page.
 <script setup>
-    import dashboard from '../layouts/dashboard.vue';
-    import SubNavbar from '../components/SubNavbar.vue';
-    import DeleteModal from '../components/DeleteModal.vue';
-    import Table from '../components/Table.vue';
-    import ExcelExport from '../components/buttons/ExcelExport.vue';
-    import Print from '../components/buttons/Print.vue';
-    import searchSelect from '../components/inputs/searchSelect.vue';
-    import DeleteButton from '../components/buttons/DeleteButton.vue';
+    import dashboard from '../../layouts/dashboard.vue';
+    import SubNavbar from '../../components/SubNavbar.vue';
+    import DeleteModal from '../../components/DeleteModal.vue';
+    import ExcelExport from '../../components/buttons/ExcelExport.vue';
+    import searchSelect from '../../components/inputs/searchSelect.vue';
+    import DeleteButton from '../../components/buttons/DeleteButton.vue';
 
     import { usePage, useForm, Link } from '@inertiajs/vue3';
     import { computed, ref, watch } from 'vue';
