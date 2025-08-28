@@ -49,6 +49,7 @@ class HandleInertiaRequests extends Middleware
                     'icon' => $module->icon,
                     'route' => route($module->access_route_name, [], false),
                     'order' => $module->order,
+                    'app' => $module->app->internal_name,
                 ];
             }) : [],
             'flash' => [

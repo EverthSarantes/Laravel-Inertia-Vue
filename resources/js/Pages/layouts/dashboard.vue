@@ -8,14 +8,17 @@
     import Logo from '../components/Logo.vue';
     import { useHead } from '@vueuse/head';
 
-    defineProps({
+    const props = defineProps({
         appName: String,
     });
 
     const page = usePage();
     const modules = computed(() => {
-        return [...page.props.modules].sort((a, b) => a.order - b.order);
+        return [...page.props.modules]
+        .filter(module => module.app === props.appName)
+        .sort((a, b) => a.order - b.order);
     });
+
     const userName = computed(() => page.props.userName);
     const message = computed(() => page.props.flash.message);
 
