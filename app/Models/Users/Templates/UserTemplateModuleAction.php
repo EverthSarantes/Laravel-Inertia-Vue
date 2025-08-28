@@ -37,6 +37,7 @@ class UserTemplateModuleAction extends Model
     {
         $actionNames = [
             'read' => 'Leer',
+            'search' => 'Busqueda',
             'create' => 'Crear',
             'update' => 'Actualizar',
             'delete' => 'Eliminar',

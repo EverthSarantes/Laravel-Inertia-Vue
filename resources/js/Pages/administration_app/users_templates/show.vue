@@ -354,7 +354,7 @@
                         </div>
                         <div class="col-md-12">
                             <div class="row">
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-check">
                                         <label class="form-check-label d-flex gap-1">
                                             <input type="checkbox"
@@ -366,7 +366,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-check">
                                         <label class="form-check-label d-flex gap-1">
                                             <input type="checkbox"
@@ -378,7 +378,19 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
+                                    <div class="form-check">
+                                        <label class="form-check-label d-flex gap-1">
+                                            <input type="checkbox"
+                                                name="actions[]"
+                                                v-model="addModuleForm.actions"
+                                                value="search"
+                                                class="form-check checkbox-modules-actions">
+                                            <small>Busqueda</small>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
                                     <div class="form-check">
                                         <label class="form-check-label d-flex gap-1">
                                             <input type="checkbox"
@@ -390,7 +402,7 @@
                                         </label>
                                     </div>
                                 </div>
-                                <div class="col-md-3">
+                                <div class="col-md-2">
                                     <div class="form-check">
                                         <label class="form-check-label d-flex gap-1">
                                             <input type="checkbox"
