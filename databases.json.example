@@ -1,0 +1,16 @@
+{
+  "connections": [
+    {
+      "name": "administration_app",
+      "driver": "sqlite",
+      "url": null,
+      "database": "administration_app.sqlite",
+      "prefix": "",
+      "prefix_indexes": null,
+      "foreign_key_constraints": true,
+      "busy_timeout": null,
+      "journal_mode": null,
+      "synchronous": null
+    }
+  ]
+}
