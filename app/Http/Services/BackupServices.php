@@ -3,6 +3,7 @@
 namespace App\Http\Services;
 
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Config;
 
 class BackupServices
 {
@@ -38,7 +39,8 @@ class BackupServices
      */
     public static function createSqliteBackup(string $backupPath): string
     {
-        $databasePath = database_path('database.sqlite');
+        $databasePath = Config::get('database.connections')[Config::get('database.default')]['database'];
+
         $backupPath = escapeshellarg($backupPath);
         $databasePath = escapeshellarg($databasePath);
 
@@ -56,7 +58,7 @@ class BackupServices
      */
     public static function getActualDatabase(): string
     {
-        $database = env('DB_CONNECTION');
+        $database = Config::get('database.connections')[Config::get('database.default')]['driver'];
         if (array_key_exists($database, self::available_databases)) {
             return $database;
         }
@@ -78,7 +80,9 @@ class BackupServices
             mkdir($backupDir, 0755, true);
         }
 
-        $backupFileName = 'backup_' . date('Y-m-d_H-i-s') . '.sql';
+        $config = Config::get('database.connections')[Config::get('database.default')];
+
+        $backupFileName = $config['name'] . '_' . date('Y-m-d_H-i-s') . '.sql';
         $backupPath = storage_path(self::BACKUP_PATH . $backupFileName);
         $database = self::getActualDatabase();
 
