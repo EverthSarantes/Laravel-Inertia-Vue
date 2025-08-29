@@ -17,19 +17,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        
-        if(env('DB_CONNECTION') == 'mysql')
-        {
-            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
-            User::truncate();
-            Module::truncate();
-            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
-        } 
-        else{
-            User::truncate();
-            Module::truncate();
-        }
-
         $user = User::factory()->create([
             'name' => 'admin',
             'password' => bcrypt('admin'),
