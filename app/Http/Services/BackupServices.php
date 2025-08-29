@@ -20,11 +20,13 @@ class BackupServices
      */
     public static function createMysqlBackup(string $backupPath): string
     {
+        $config = Config::get('database.connections')[Config::get('database.default')];
         $backupPath = escapeshellarg($backupPath);
-        if(env('DB_USERNAME') == 'root' && env('DB_PASSWORD') == ''){
-            $command = "mysqldump -u " . env('DB_USERNAME') . " " . env('DB_DATABASE') . " > $backupPath";
+
+        if($config['username'] == 'root' && $config['password'] == ''){
+            $command = "mysqldump -u " . $config['username'] . " " . $config['database'] . " > $backupPath";
         }else{
-            $command = "mysqldump -u " . env('DB_USERNAME') . " -p" . env('DB_PASSWORD') . " " . env('DB_DATABASE') . " > $backupPath";
+            $command = "mysqldump -u " . $config['username'] . " -p" . $config['password'] . " " . $config['database'] . " > $backupPath";
         }
 
         exec($command);
@@ -45,6 +47,7 @@ class BackupServices
         $databasePath = escapeshellarg($databasePath);
 
         $command = "sqlite3 $databasePath .dump > $backupPath";
+
         exec($command);
 
         return $backupPath;
