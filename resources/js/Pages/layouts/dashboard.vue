@@ -55,7 +55,7 @@
             <button type="button" class="btn btn-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ userName }}
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" style="width: 250px;">
                 <li>
                     <li><span class="dropdown-item-text">Tema</span></li>
                 </li>
@@ -67,11 +67,22 @@
                 </li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Claro Alto Contraste</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="light-hc" value="light-hc" style="width: 30px;" data-bs-theme-value="light-hc">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
                         <span class="dropdown-item-text">Oscuro</span>
                         <input class="dropdown-item" type="radio" name="theme" id="dark" value="dark" style="width: 30px;" data-bs-theme-value="dark">
                     </label>
                 </li>
-
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Oscuro Alto Contraste</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="dark-hc" value="dark-hc" style="width: 30px;" data-bs-theme-value="dark-hc">
+                    </label>
+                </li>
 
                 <li><hr class="dropdown-divider"></li>
                 <li><Link class="dropdown-item" href="/logout">Cerrar Sesión</Link></li>

@@ -1,8 +1,22 @@
-:root {
+:root,
+[data-bs-theme=light] {
     --header-height: 3rem;
     --nav-width: 60px;
     --normal-font-size: 2rem;
     --z-fixed: 100;
+    --filter-drop-shadow: drop-shadow(6px 6px 4px rgb(84, 84, 84, 0.3));
+}
+
+[data-bs-theme=dark] {
+    --filter-drop-shadow: drop-shadow(6px 6px 4px rgba(32, 32, 32, 0.43));
+}
+
+[data-bs-theme=light-hc] {
+    --filter-drop-shadow: none;
+}
+
+[data-bs-theme=dark-hc] {
+    --filter-drop-shadow: none;
 }
 
 a {
@@ -26,11 +40,11 @@ body{
     background-color: var(--bs-success);
     z-index: var(--z-fixed);
     transition: padding 0.5s;
-    filter: drop-shadow(6px 6px 4px rgb(84, 84, 84, 0.3));
+    filter: var(--filter-drop-shadow);
 }
 
 .l-navbar {
-    filter: drop-shadow(2px 2px 4px rgb(84, 84, 84, 0.3));
+    filter: var(--filter-drop-shadow);
     position: fixed;
     top: 0;
     left: 0;
@@ -40,6 +54,7 @@ body{
     padding: 1rem 0 0 !important;
     transition: width 0.5s;
     z-index: var(--z-fixed);
+    border: 1px solid var(--bs-border-color-translucent);
 }
 
 .nav {

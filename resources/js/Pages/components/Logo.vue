@@ -26,11 +26,18 @@
         return document.documentElement.getAttribute('data-bs-theme');
     };
 
-    const logoUrl = ref(getPreferredTheme() === 'dark' ? logoDarkUrl : logoLightUrl);
+    const logosUrl = {
+        light: logoLightUrl,
+        dark: logoDarkUrl,
+        light_hc: logoLightUrl,
+        dark_hc: logoDarkUrl
+    };
+
+    const logoUrl = ref(logosUrl[getPreferredTheme().replace('-', '_')] || logoLightUrl);
 
     const updateLogoUrl = () => {
-        const theme = getPreferredTheme();
-        logoUrl.value = theme === 'dark' ? logoDarkUrl : logoLightUrl;
+        const theme = getPreferredTheme().replace('-', '_');
+        logoUrl.value = logosUrl[theme] || logoLightUrl;
     };
 
     const observer = new MutationObserver(() => {

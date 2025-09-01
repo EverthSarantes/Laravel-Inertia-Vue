@@ -189,6 +189,220 @@
   --bs-form-invalid-border-color: #ff8d86;
 }
 
+[data-bs-theme=light-hc] {
+  color-scheme: light;
+
+  --bs-body-color: #000;
+  --bs-body-color-rgb: 0, 0, 0;
+  --bs-body-bg: #fff;
+  --bs-body-bg-rgb: 255, 255, 255;
+
+  --bs-emphasis-color: #000;
+  --bs-emphasis-color-rgb: 0, 0, 0;
+
+  --bs-secondary-color: rgba(0, 0, 0, 0.8);
+  --bs-secondary-bg: #e6e6e6;
+  --bs-tertiary-color: rgba(0, 0, 0, 0.6);
+  --bs-tertiary-bg: #f5f5f5;
+
+  /* Colores principales de alto contraste */
+  --bs-primary: #004aad;   /* azul intenso */
+  --bs-secondary: #808080; /* gris medio neutro */
+  --bs-success: #007e33;   /* verde fuerte */
+  --bs-info: #005f73;      /* azul petróleo */
+  --bs-warning: #e85d04;   /* naranja fuerte */
+  --bs-danger: #d00000;    /* rojo brillante */
+  --bs-light: #f9f9f9;
+  --bs-dark: #000;
+
+  /* Texto con mayor contraste */
+  --bs-primary-text-emphasis: #002c66;
+  --bs-secondary-text-emphasis: #404040;
+  --bs-success-text-emphasis: #00471d;
+  --bs-info-text-emphasis: #002f38;
+  --bs-warning-text-emphasis: #802c00;
+  --bs-danger-text-emphasis: #660000;
+  --bs-light-text-emphasis: #000;
+  --bs-dark-text-emphasis: #000;
+
+  /* Fondos sutiles pero con diferencia visible */
+  --bs-primary-bg-subtle: #d6e4f5;
+  --bs-secondary-bg-subtle: #f2f2f2;
+  --bs-success-bg-subtle: #d9f2e0;
+  --bs-info-bg-subtle: #d6ecf0;
+  --bs-warning-bg-subtle: #ffe6cc;
+  --bs-danger-bg-subtle: #fcd6d6;
+  --bs-light-bg-subtle: #f9f9f9;
+  --bs-dark-bg-subtle: #cccccc;
+
+  /* Bordes más notorios */
+  --bs-primary-border-subtle: #99c2e0;
+  --bs-secondary-border-subtle: #cccccc;
+  --bs-success-border-subtle: #80cfa0;
+  --bs-info-border-subtle: #80b6c0;
+  --bs-warning-border-subtle: #ffb380;
+  --bs-danger-border-subtle: #e69999;
+  --bs-light-border-subtle: #e6e6e6;
+  --bs-dark-border-subtle: #666666;
+
+  /* Links */
+  --bs-link-color: #004aad;
+  --bs-link-hover-color: #00347a;
+  --bs-link-color-rgb: 0, 74, 173;
+  --bs-link-hover-color-rgb: 0, 52, 122;
+
+  /* Código y resaltado */
+  --bs-code-color: #d00000;
+  --bs-highlight-color: #000;
+  --bs-highlight-bg: #ffe6cc;
+
+  /* Bordes y formularios */
+  --bs-border-color: #000;
+  --bs-border-color-translucent: rgba(0, 0, 0, 0.4);
+
+  --bs-form-valid-color: #007e33;
+  --bs-form-valid-border-color: #007e33;
+  --bs-form-invalid-color: #d00000;
+  --bs-form-invalid-border-color: #d00000;
+
+  /* Sombras reducidas */
+  --bs-box-shadow: none;
+  --bs-box-shadow-sm: none;
+  --bs-box-shadow-lg: none;
+  --bs-box-shadow-inset: none;
+
+  .form-control{
+    box-shadow: none !important;
+  }
+  .form-control:focus{
+    border-color: var(--bs-border-color-translucent);
+  }
+
+  .btn{
+    box-shadow: none !important;
+    border-color: var(--bs-border-color-translucent);
+  }
+  .btn:focus{
+    border-color: var(--bs-border-color-translucent);
+  }
+  .btn:hover{
+    border-color: var(--bs-border-color-translucent) !important;
+  }
+
+  .shadow{
+    border: 1px solid var(--bs-border-color-translucent) !important;
+  }
+}
+
+[data-bs-theme=dark-hc] {
+  color-scheme: dark;
+
+  --bs-body-color: #fff;
+  --bs-body-color-rgb: 255, 255, 255;
+  --bs-body-bg: #000;
+  --bs-body-bg-rgb: 0, 0, 0;
+
+  --bs-emphasis-color: #fff;
+  --bs-emphasis-color-rgb: 255, 255, 255;
+
+  --bs-secondary-color: rgba(255, 255, 255, 0.8);
+  --bs-secondary-bg: #1a1a1a;
+  --bs-tertiary-color: rgba(255, 255, 255, 0.6);
+  --bs-tertiary-bg: #111;
+
+  /* Colores principales de alto contraste */
+  --bs-primary: #4da3ff;   /* azul brillante */
+  --bs-secondary: #b3b3b3; /* gris claro */
+  --bs-success: #28b62c;   /* verde neón */
+  --bs-info: #4dd6ff;      /* cian brillante */
+  --bs-warning: #ff9933;   /* naranja fuerte */
+  --bs-danger: #ff4d4d;    /* rojo brillante */
+  --bs-light: #f2f2f2;
+  --bs-dark: #000;
+
+  /* Texto con mayor contraste */
+  --bs-primary-text-emphasis: #cce6ff;
+  --bs-secondary-text-emphasis: #e6e6e6;
+  --bs-success-text-emphasis: #ccffe6;
+  --bs-info-text-emphasis: #ccf5ff;
+  --bs-warning-text-emphasis: #ffe6cc;
+  --bs-danger-text-emphasis: #ffd6d6;
+  --bs-light-text-emphasis: #fff;
+  --bs-dark-text-emphasis: #fff;
+
+  /* Fondos sutiles pero visibles */
+  --bs-primary-bg-subtle: #001a33;
+  --bs-secondary-bg-subtle: #262626;
+  --bs-success-bg-subtle: #00331a;
+  --bs-info-bg-subtle: #002933;
+  --bs-warning-bg-subtle: #331a00;
+  --bs-danger-bg-subtle: #330000;
+  --bs-light-bg-subtle: #333;
+  --bs-dark-bg-subtle: #111;
+
+  /* Bordes notorios */
+  --bs-primary-border-subtle: #4da3ff;
+  --bs-secondary-border-subtle: #808080;
+  --bs-success-border-subtle: #33ff99;
+  --bs-info-border-subtle: #4dd6ff;
+  --bs-warning-border-subtle: #ff9933;
+  --bs-danger-border-subtle: #ff4d4d;
+  --bs-light-border-subtle: #666;
+  --bs-dark-border-subtle: #000;
+
+  /* Links */
+  --bs-link-color: #4da3ff;
+  --bs-link-hover-color: #80c1ff;
+  --bs-link-color-rgb: 77, 163, 255;
+  --bs-link-hover-color-rgb: 128, 193, 255;
+
+  /* Código y resaltado */
+  --bs-code-color: #ff4dff;
+  --bs-highlight-color: #fff;
+  --bs-highlight-bg: #66350b;
+
+  /* Bordes y formularios */
+  --bs-border-color: #999;
+  --bs-border-color-translucent: rgba(255, 255, 255, 0.4);
+
+  --bs-form-valid-color: #33ff99;
+  --bs-form-valid-border-color: #33ff99;
+  --bs-form-invalid-color: #ff4d4d;
+  --bs-form-invalid-border-color: #ff4d4d;
+
+  /* Sombras reducidas */
+  --bs-box-shadow: none;
+  --bs-box-shadow-sm: none;
+  --bs-box-shadow-lg: none;
+  --bs-box-shadow-inset: none;
+
+  .form-control {
+    box-shadow: none !important;
+  }
+  .form-control:focus {
+    border-color: var(--bs-border-color-translucent);
+  }
+
+  .btn {
+    box-shadow: none !important;
+    border-color: var(--bs-border-color-translucent);
+  }
+  .btn:focus {
+    border-color: var(--bs-border-color-translucent);
+  }
+  .btn:hover {
+    border-color: var(--bs-border-color-translucent) !important;
+  }
+
+  .shadow {
+    border: 1px solid var(--bs-border-color-translucent) !important;
+  }
+
+  .modal-content{
+    border: 1px solid var(--bs-border-color-translucent) !important;
+  }
+}
+
 *,
 *::before,
 *::after {
