@@ -1,10 +1,21 @@
 <script setup>
-    import { onMounted, onUnmounted } from 'vue';
+    import { onMounted, onUnmounted, ref } from 'vue';
 
     let mouseX = 0;
     let mouseY = 0;
     const selectors = ['a', 'button', '.btn', 'input', 'select', 'label'];
     let lastActive = null;
+    let active = ref(false);
+
+    window.addEventListener('config-updated', (event) => {
+        const highlight = window.localStorage.getItem('highlight') === 'true';
+        active.value = highlight;
+
+        if(!active.value) {
+            if (lastActive) lastActive.classList.remove('premonish-active');
+            lastActive = null;
+        }
+    });
 
     function getDistanceToMouse(el) {
         const rect = el.getBoundingClientRect();
@@ -14,6 +25,7 @@
     }
 
     function highlightClosest() {
+        if(!active.value) return;
         const candidates = Array.from(document.querySelectorAll(selectors.join(',')));
         if (candidates.length === 0) return;
 
