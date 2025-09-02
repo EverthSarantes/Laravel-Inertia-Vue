@@ -7,7 +7,7 @@
     import Message from '../components/Message.vue';
     import Logo from '../components/Logo.vue';
     import { useHead } from '@vueuse/head';
-    import PremonishHandler from '../components/PremonishHandler.vue';
+    import PremonishHandler from '../components/accesibility/PremonishHandler.vue';
 
     const props = defineProps({
         appName: String,
