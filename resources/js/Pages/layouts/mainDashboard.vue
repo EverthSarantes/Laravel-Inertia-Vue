@@ -2,35 +2,17 @@
 // It includes navigation, theming options, and a slot for injecting page-specific content.
 // The template provides a sidebar for navigation and a header for user actions.
 <script setup>
-    import { computed, onMounted } from 'vue';
+    import { computed } from 'vue';
     import { usePage, Link  } from '@inertiajs/vue3';
     import Message from '../components/Message.vue';
     import Logo from '../components/Logo.vue';
     import { useHead } from '@vueuse/head';
     import PremonishHandler from '../components/accesibility/PremonishHandler.vue';
+    import TemeHandler from '../components/accesibility/TemeHandler.vue';
 
     const page = usePage();
     const userName = computed(() => page.props.userName);
     const message = computed(() => page.props.flash.message);
-
-    /* Theme Switcher */
-    onMounted(() => {
-        window.showActiveTheme(window.getPreferredTheme())
-
-        document.querySelectorAll('[data-bs-theme-value]').forEach(toggle => {
-
-            if(toggle.dataset.bsThemeValue === window.getPreferredTheme()) {
-                toggle.setAttribute('checked', true)
-            }
-
-            toggle.addEventListener('click', () => {
-                const theme = toggle.getAttribute('data-bs-theme-value')
-                window.setStoredTheme(theme)
-                window.setTheme(theme)
-                window.showActiveTheme(theme, true)
-            })
-        });
-    });
 
     useHead({
         link: [
@@ -41,6 +23,7 @@
 
 <template>
     <PremonishHandler />
+    <TemeHandler />
     <header class="header d-flex justify-content-end" id="header">
         <div class="dropdown">
             <button type="button" class="btn btn-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
