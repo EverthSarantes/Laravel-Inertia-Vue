@@ -7,6 +7,7 @@
     import Message from '../components/Message.vue';
     import Logo from '../components/Logo.vue';
     import { useHead } from '@vueuse/head';
+    import PremonishHandler from '../components/PremonishHandler.vue';
 
     const page = usePage();
     const userName = computed(() => page.props.userName);
@@ -28,7 +29,7 @@
                 window.setTheme(theme)
                 window.showActiveTheme(theme, true)
             })
-        })
+        });
     });
 
     useHead({
@@ -39,7 +40,7 @@
 </script>
 
 <template>
-
+    <PremonishHandler />
     <header class="header d-flex justify-content-end" id="header">
         <div class="dropdown">
             <button type="button" class="btn btn-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -47,7 +48,7 @@
             </button>
             <ul class="dropdown-menu" style="width: 250px;">
                 <li>
-                    <li><span class="dropdown-item-text">Tema</span></li>
+                    <span class="dropdown-item-text">Tema</span>
                 </li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">
