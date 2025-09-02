@@ -1,0 +1,45 @@
+<script setup>
+    import { Link } from '@inertiajs/vue3';
+
+    defineProps({
+        userName: String,
+    });
+</script>
+
+<template>
+    <div class="dropdown">
+            <button type="button" class="btn btn-light" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{ userName }}
+            </button>
+            <ul class="dropdown-menu" style="width: 250px;">
+                <li>
+                    <span class="dropdown-item-text">Tema</span>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Claro</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="light" value="light" style="width: 30px;" data-bs-theme-value="light">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Claro Alto Contraste</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="light-hc" value="light-hc" style="width: 30px;" data-bs-theme-value="light-hc">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Oscuro</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="dark" value="dark" style="width: 30px;" data-bs-theme-value="dark">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Oscuro Alto Contraste</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="dark-hc" value="dark-hc" style="width: 30px;" data-bs-theme-value="dark-hc">
+                    </label>
+                </li>
+            </ul>
+        </div>
+</template>
