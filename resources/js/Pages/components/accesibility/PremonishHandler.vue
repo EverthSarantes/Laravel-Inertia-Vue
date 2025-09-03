@@ -66,6 +66,6 @@
 <template></template>
 <style>
     .premonish-active {
-        outline: 4px solid blue;
+        outline: 4px solid var(--bs-primary);
     }
 </style>

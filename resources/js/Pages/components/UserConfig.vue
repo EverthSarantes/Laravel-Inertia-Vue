@@ -59,6 +59,18 @@
                         <input class="dropdown-item" type="radio" name="theme" id="dark-hc" value="dark-hc" style="width: 30px;" data-bs-theme-value="dark-hc" v-model="config.theme">
                     </label>
                 </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Deuteranopia</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="deuteranopia" value="deuteranopia" style="width: 30px;" data-bs-theme-value="deuteranopia" v-model="config.theme">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Tritanopia</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="tritanopia" value="tritanopia" style="width: 30px;" data-bs-theme-value="tritanopia" v-model="config.theme">
+                    </label>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">
