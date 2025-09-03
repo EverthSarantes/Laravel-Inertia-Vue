@@ -34,7 +34,7 @@
             </button>
             <ul class="dropdown-menu" style="width: 250px;">
                 <li>
-                    <span class="dropdown-item-text">Tema</span>
+                    <span class="dropdown-item-text"><strong>Tema</strong></span>
                 </li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">
@@ -86,7 +86,7 @@
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
-                    <span class="dropdown-item-text">Tamaño de Fuente</span>
+                    <span class="dropdown-item-text"><strong>Tamaño de Fuente</strong></span>
                 </li>
                 <li>
                     <select class="dropdown-item" v-model="config.fontSize">
@@ -98,7 +98,7 @@
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">
-                        <span class="dropdown-item-text">Remarcado de Elementos</span>
+                        <span class="dropdown-item-text"><strong>Remarcado de Elementos</strong></span>
                         <input class="dropdown-item" type="checkbox" name="highlight" id="highlight" style="width: 30px;" v-model="config.highlight">
                     </label>
                 </li>
