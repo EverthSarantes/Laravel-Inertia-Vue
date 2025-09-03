@@ -669,6 +669,18 @@
   --bs-table-active-color: var(--bs-body-color);
 }
 
+[data-bs-font-size=small] {
+  --bs-body-font-size: 0.875rem;
+}
+
+[data-bs-font-size=medium] {
+  --bs-body-font-size: 1rem;
+}
+
+[data-bs-font-size=large] {
+  --bs-body-font-size: 1.25rem;
+}
+
 *,
 *::before,
 *::after {

@@ -7,7 +7,8 @@
 
     let config = ref({
         theme: window.localStorage.getItem('theme') || 'light',
-        highlight: window.localStorage.getItem('highlight') === 'true'
+        highlight: window.localStorage.getItem('highlight') === 'true',
+        fontSize: window.localStorage.getItem('fontSize') || 'medium',
     });
 
     function updateConfig() {
@@ -82,6 +83,17 @@
                         <span class="dropdown-item-text">Acromatopsia</span>
                         <input class="dropdown-item" type="radio" name="theme" id="acromatopsia" value="acromatopsia" style="width: 30px;" data-bs-theme-value="acromatopsia" v-model="config.theme">
                     </label>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <span class="dropdown-item-text">Tamaño de Fuente</span>
+                </li>
+                <li>
+                    <select class="dropdown-item" v-model="config.fontSize">
+                        <option value="small">Pequeño</option>
+                        <option value="medium">Mediano</option>
+                        <option value="large">Grande</option>
+                    </select>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
