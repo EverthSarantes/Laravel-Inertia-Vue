@@ -30,7 +30,11 @@
         light: logoLightUrl,
         dark: logoDarkUrl,
         light_hc: logoLightUrl,
-        dark_hc: logoDarkUrl
+        dark_hc: logoDarkUrl,
+        deuteranopia: logoLightUrl,
+        tritanopia: logoLightUrl,
+        protanopia: logoLightUrl,
+        acromatopsia: logoLightUrl,
     };
 
     const logoUrl = ref(logosUrl[getPreferredTheme().replace('-', '_')] || logoLightUrl);

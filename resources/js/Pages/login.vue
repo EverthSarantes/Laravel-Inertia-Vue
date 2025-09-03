@@ -6,6 +6,8 @@
     import { computed } from 'vue';
     import { usePage } from '@inertiajs/vue3';
     import Logo from './components/Logo.vue';
+    import PremonishHandler from './components/accesibility/PremonishHandler.vue';
+    import TemeHandler from './components/accesibility/TemeHandler.vue';
 
     const form = useForm({
         name: '',
@@ -20,6 +22,8 @@
 </script>
 
 <template>
+    <PremonishHandler />
+    <TemeHandler />
     <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 550px;">
             <div class="bg-white shadow bg-body rounded d-flex flex-column align-items-center p-3">
                 <Logo :with="'300'" :class="'mt-5'"/>
