@@ -3,9 +3,9 @@
 
     let mouseX = 0;
     let mouseY = 0;
-    const selectors = ['a', 'button', '.btn', 'input', 'select', 'label'];
+    const selectors = ['a', 'button', '.btn', 'input', 'select', 'label', '.alert'];
     let lastActive = null;
-    let active = ref(false);
+    let active = ref(window.localStorage.getItem('highlight') === 'true' || false);
 
     window.addEventListener('config-updated', (event) => {
         const highlight = window.localStorage.getItem('highlight') === 'true';
@@ -24,9 +24,13 @@
         return Math.sqrt((elX - mouseX) ** 2 + (elY - mouseY) ** 2);
     }
 
+    function getSelectors() {
+        return selectors.map(selector => `${selector}:not([disabled]):not(.disabled)`).join(',');
+    }
+
     function highlightClosest() {
         if(!active.value) return;
-        const candidates = Array.from(document.querySelectorAll(selectors.join(',')));
+        const candidates = Array.from(document.querySelectorAll(getSelectors()));
         if (candidates.length === 0) return;
 
         candidates.forEach(el => el.classList.remove('premonish-active'));
