@@ -71,6 +71,18 @@
                         <input class="dropdown-item" type="radio" name="theme" id="tritanopia" value="tritanopia" style="width: 30px;" data-bs-theme-value="tritanopia" v-model="config.theme">
                     </label>
                 </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Protanopia</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="protanopia" value="protanopia" style="width: 30px;" data-bs-theme-value="protanopia" v-model="config.theme">
+                    </label>
+                </li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text">Acromatopsia</span>
+                        <input class="dropdown-item" type="radio" name="theme" id="acromatopsia" value="acromatopsia" style="width: 30px;" data-bs-theme-value="acromatopsia" v-model="config.theme">
+                    </label>
+                </li>
                 <li><hr class="dropdown-divider"></li>
                 <li>
                     <label class="d-flex justify-content-between align-items-center">

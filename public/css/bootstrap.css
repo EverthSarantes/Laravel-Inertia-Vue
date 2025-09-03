@@ -584,6 +584,91 @@
   --bs-table-active-color: var(--bs-body-color);
 }
 
+[data-bs-theme=protanopia] {
+  --bs-primary: #1f77b4;   /* azul seguro */
+  --bs-success: #2ca02c;   /* verde accesible */
+  --bs-danger: #9467bd;    /* púrpura en lugar de rojo */
+  --bs-warning: #ff7f0e;   /* naranja */
+  --bs-info: #17becf;      /* cian */
+
+  /* Botones principales */
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-color: #fff;
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--bs-primary) 80%, black);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-primary) 80%, black);
+  --bs-btn-active-bg: color-mix(in srgb, var(--bs-primary) 65%, black);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--bs-primary) 65%, black);
+
+  /* Botones de éxito */
+  --bs-btn-success-bg: var(--bs-success);
+  --bs-btn-success-color: #fff;
+  --bs-btn-success-border-color: var(--bs-success);
+  --bs-btn-success-hover-bg: color-mix(in srgb, var(--bs-success) 80%, black);
+  --bs-btn-success-hover-border-color: color-mix(in srgb, var(--bs-success) 80%, black);
+
+  /* Botones de peligro */
+  --bs-btn-danger-bg: var(--bs-danger);
+  --bs-btn-danger-color: #fff;
+  --bs-btn-danger-border-color: var(--bs-danger);
+  --bs-btn-danger-hover-bg: color-mix(in srgb, var(--bs-danger) 80%, black);
+  --bs-btn-danger-hover-border-color: color-mix(in srgb, var(--bs-danger) 80%, black);
+
+  /* Tablas */
+  --bs-table-bg: var(--bs-body-bg);
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-striped-bg: color-mix(in srgb, var(--bs-body-bg) 90%, black);
+  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-hover-bg: color-mix(in srgb, var(--bs-body-bg) 85%, black);
+  --bs-table-hover-color: var(--bs-body-color);
+  --bs-table-active-bg: color-mix(in srgb, var(--bs-body-bg) 80%, black);
+  --bs-table-active-color: var(--bs-body-color);
+}
+
+[data-bs-theme=acromatopsia] {
+  --bs-primary: #000;   /* negro */
+  --bs-success: #555;   /* gris medio oscuro */
+  --bs-danger: #222;    /* gris oscuro */
+  --bs-warning: #999;   /* gris medio */
+  --bs-info: #ccc;      /* gris claro */
+  --bs-secondary: #777; /* gris neutro */
+
+  /* Botones principales */
+  --bs-btn-bg: var(--bs-primary);
+  --bs-btn-color: #fff;
+  --bs-btn-border-color: var(--bs-primary);
+  --bs-btn-hover-bg: color-mix(in srgb, var(--bs-primary) 80%, black);
+  --bs-btn-hover-border-color: color-mix(in srgb, var(--bs-primary) 80%, black);
+  --bs-btn-active-bg: color-mix(in srgb, var(--bs-primary) 65%, black);
+  --bs-btn-active-border-color: color-mix(in srgb, var(--bs-primary) 65%, black);
+
+  /* Botones de éxito */
+  --bs-btn-success-bg: var(--bs-success);
+  --bs-btn-success-color: #fff;
+  --bs-btn-success-border-color: var(--bs-success);
+  --bs-btn-success-hover-bg: color-mix(in srgb, var(--bs-success) 80%, black);
+  --bs-btn-success-hover-border-color: color-mix(in srgb, var(--bs-success) 80%, black);
+
+  /* Botones de peligro */
+  --bs-btn-danger-bg: var(--bs-danger);
+  --bs-btn-danger-color: #fff;
+  --bs-btn-danger-border-color: var(--bs-danger);
+  --bs-btn-danger-hover-bg: color-mix(in srgb, var(--bs-danger) 80%, black);
+  --bs-btn-danger-hover-border-color: color-mix(in srgb, var(--bs-danger) 80%, black);
+
+  /* Tablas */
+  --bs-table-bg: var(--bs-body-bg);
+  --bs-table-color: var(--bs-body-color);
+  --bs-table-border-color: var(--bs-border-color);
+  --bs-table-striped-bg: color-mix(in srgb, var(--bs-body-bg) 90%, black);
+  --bs-table-striped-color: var(--bs-body-color);
+  --bs-table-hover-bg: color-mix(in srgb, var(--bs-body-bg) 85%, black);
+  --bs-table-hover-color: var(--bs-body-color);
+  --bs-table-active-bg: color-mix(in srgb, var(--bs-body-bg) 80%, black);
+  --bs-table-active-color: var(--bs-body-color);
+}
+
 *,
 *::before,
 *::after {
