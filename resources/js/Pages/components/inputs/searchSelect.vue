@@ -3,22 +3,24 @@
 // The component fetches data from an API based on the search query and updates the options list.
 
 <script setup>
-    import { ref, watch, computed } from 'vue';
+    import { ref, watch } from 'vue';
 
     const props = defineProps({
         name: { type: String, required: true },
         inputName: { type: String, required: true },
         model: { type: String, required: true },
         required: { type: Boolean, default: false },
-        select_name: { type: String, default: null },
+        allowNew: { type: Boolean, default: false },
     });
 
     const searchQuery = ref('');
     const options = ref([]);
     const isLoading = ref(false);
+    const highlightedIndex = ref(-1);
+    const skipWatch = ref(false);
+    const optionSelected = ref(false);
 
-    const selectId = computed(() => `select_${props.name}`);
-    const searchId = computed(() => `search_${props.name}`);
+    const select_value = defineModel('select_value', { default: null });
 
     function debounce(fn, delay) {
         let timeout;
@@ -30,7 +32,7 @@
 
     const debouncedSearch = debounce((query) => {
         searchSelect(query);
-    }, 500);
+    }, 400);
 
     async function searchSelect(query) {
         if (!query) {
@@ -53,43 +55,72 @@
     }
 
     watch(searchQuery, (newQuery) => {
+        if (skipWatch.value) {
+            optionSelected.value = false;
+            skipWatch.value = false;
+            return;
+        }
         debouncedSearch(newQuery);
     });
-    const select_value = defineModel('select_value', { default: null });
+
+    function selectOption(option) {
+        skipWatch.value = true;
+        searchQuery.value = option.name;
+        select_value.value = option.id;
+        options.value = [];
+        optionSelected.value = true;
+    }
+
+    function handleEnter() {
+        if (highlightedIndex.value >= 0 && highlightedIndex.value < options.value.length) {
+            selectOption(options.value[highlightedIndex.value]);
+        }
+    }
+
+    function clearOptions() {
+        setTimeout(() => {
+            options.value.forEach((option, index) => {
+                if (option.name == searchQuery.value) {
+                    selectOption(option);
+                }
+            });
+
+            options.value = [];
+            isLoading.value = false;
+
+            if(!optionSelected.value && !props.allowNew) {
+                searchQuery.value = '';
+                select_value.value = null;
+            }
+        }, 500);
+    }
 </script>
 
 <template>
-    <div class="col">
-        <div class="row">
-            <h5>Buscar {{ name }}</h5>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <label class="form-label" :for="searchId">Buscar</label>
-                <input
-                    type="text"
-                    class="form-control"
-                    :id="searchId"
-                    v-model="searchQuery"
-                    placeholder="Escriba para buscar..."
-                />
-            </div>
-            <div class="col-md-6">
-                <label class="form-label" :for="selectId">Seleccione una Opción <span class="text-danger" v-if="required">*</span></label>
-                <select
-                    class="form-select"
-                    :name="select_name ? select_name : inputName"
-                    :id="selectId"
-                    :required="required"
-                    :disabled="isLoading"
-                    v-model="select_value"
-                >
-                    <option value="null" selected>{{ isLoading ? 'Buscando...' : 'Seleccione una opción' }}</option>
-                    <option v-for="option in options" :key="option.id" :value="option.id">
-                        {{ option.name }}
-                    </option>
-                </select>
-            </div>
-        </div>
+    <div class="mb-3 position-relative">
+        <label class="form-label">
+            {{ name }} <span class="text-danger" v-if="required">*</span>
+        </label>
+        <input type="text" class="form-control" v-model="searchQuery" autocomplete="off"
+            @keydown.enter.prevent="handleEnter"
+            @keydown.arrow-down.prevent="highlightedIndex = (highlightedIndex + 1) % options.length"
+            @keydown.arrow-up.prevent="highlightedIndex = (highlightedIndex - 1 + options.length) % options.length"
+            :placeholder="`Escriba para buscar ${name}...`" :required="required" :name="inputName"
+            @focus="searchSelect(searchQuery)"
+            @blur="clearOptions"
+        />
+
+        <!-- Lista de opciones -->
+        <ul class="dropdown-menu w-100" style="max-height: 150px; overflow-y: auto;" :class="{'show': options.length > 0}">
+            <li
+                v-for="option in options"
+                :key="option.id"
+                @mousedown.prevent="selectOption(option)"
+            >
+                <span class="dropdown-item">
+                    {{ option.name }}
+                </span>
+            </li>   
+        </ul>
     </div>
 </template>
