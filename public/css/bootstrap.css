@@ -271,7 +271,7 @@
   --bs-tertiary-color: rgba(0, 0, 0, 0.6);
   --bs-tertiary-bg: #f5f5f5;
   --bs-primary: #004aad;
-  --bs-secondary: #808080;
+  --bs-secondary: #e6e6e6;
   --bs-success: #007e33;
   --bs-info: #005f73;
   --bs-warning: #e85d04;
@@ -390,7 +390,7 @@
   --bs-tertiary-color: rgba(255, 255, 255, 0.6);
   --bs-tertiary-bg: #111;
   --bs-primary: #4da3ff;
-  --bs-secondary: #b3b3b3;
+  --bs-secondary: #e6e6e6;
   --bs-success: #28b62c;
   --bs-info: #4dd6ff;
   --bs-warning: #ff9933;
