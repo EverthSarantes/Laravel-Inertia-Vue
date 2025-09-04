@@ -67,7 +67,6 @@
         skipWatch.value = true;
         searchQuery.value = option.name;
         select_value.value = option.id;
-        options.value = [];
         optionSelected.value = true;
     }
 
