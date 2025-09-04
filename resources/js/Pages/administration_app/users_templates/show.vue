@@ -250,7 +250,7 @@
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5>Módulos a los que posee acceso la Plantilla de Usuario</h5>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_module">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_module" aria-label="Agregar Módulo">
                                 <i class='bx bx-plus'></i>
                             </button>
                         </div>
@@ -293,7 +293,7 @@
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
                             <h5>Filtros de Información de la plantilla de Usuario</h5>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_filter">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal_add_filter" aria-label="Agregar Filtro">
                                 <i class='bx bx-plus'></i>
                             </button>
                         </div>
@@ -347,7 +347,7 @@
                     <form method="POST" @submit.prevent="submitAddModuleForm">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modal_add_module">Agregar Módulo</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
                              <searchSelect name="Módulos" input-name="module_id" :model="'Module'" :required="true" select_name="module_id" v-model:select_value="addModuleForm.module_id"/>
@@ -431,7 +431,7 @@
                     <form method="POST" @submit.prevent="submitAddUserModelFilterForm">
                         <div class="modal-header">
                             <h5 class="modal-title" id="modal_add_filter">Agregar Filtro</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body row">
                             <div class="row">

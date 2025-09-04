@@ -26,7 +26,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Crear Plantilla Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
                             <Form :route="route('users.templates.store')" :method="'POST'" :model="usePage().props.model" :is-modal="true"></Form>
@@ -44,7 +44,7 @@
                         <h5>Plantillas de Usuarios</h5>
                         <div class="d-flex gap-1">
                             <ExcelExport :filename="'Plantillas de Usuarios'" :target="'users_table'"/>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal" aria-label="Agregar Plantilla Usuario">
                                 <i class='bx bx-plus'></i>
                             </button>
                         </div>

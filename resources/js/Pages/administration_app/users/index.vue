@@ -92,7 +92,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Crear Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                         </div>
                         <div class="modal-body">
                         <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="true">
@@ -213,7 +213,7 @@
                         <div class="d-flex gap-1">
                             <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
                             <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal" aria-label="Agregar Usuario">
                                 <i class='bx bx-plus'></i>
                             </button>
                         </div>

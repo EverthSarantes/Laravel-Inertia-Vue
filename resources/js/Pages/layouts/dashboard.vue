@@ -48,7 +48,7 @@
                 </div>
                 <div class="nav_list mt-5">
                     <template v-for="module in modules" :key="module.name">
-                        <Link v-if="module.route" :href="module.route" class="nav_link">
+                        <Link v-if="module.route" :href="module.route" class="nav_link" aria-label="Ir a {{ module.name }}">
                             <i :class="`bx ${module.icon} nav_icon`"></i>
                                 <span
                                     class="nav_name nav_module_name"
