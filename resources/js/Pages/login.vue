@@ -63,4 +63,10 @@
         justify-content: center;
         padding-top: 50px;
     }
+
+    [data-bs-theme=dark-hc] {
+        .shadow {
+            border-color: #fff !important;
+        }
+    }
 </style>
