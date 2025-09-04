@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, watch } from 'vue';
+    import { onMounted, onUnmounted, ref, watch } from 'vue';
 
     defineProps({
         userName: String,
@@ -8,8 +8,15 @@
     let config = ref({
         theme: window.localStorage.getItem('theme') || 'light',
         highlight: window.localStorage.getItem('highlight') === 'true',
+        clickAsist: window.localStorage.getItem('clickAsist') === 'true',
         fontSize: window.localStorage.getItem('fontSize') || 'medium',
     });
+
+    function globalUpdateConfig(key, value){
+        config.value[key] = value;
+        updateConfig();
+        emitConfigUpdated({ ...config.value });
+    }
 
     function updateConfig() {
         Object.entries(config.value).forEach(([key, value]) => {
@@ -25,6 +32,14 @@
         updateConfig();
         emitConfigUpdated({ ...newVal });
     }, { deep: true });
+
+    onMounted(() => {
+        window.globalUpdateConfig = globalUpdateConfig;
+    });
+
+    onUnmounted(() => {
+        delete window.globalUpdateConfig;
+    });
 </script>
 
 <template>
@@ -100,6 +115,13 @@
                     <label class="d-flex justify-content-between align-items-center">
                         <span class="dropdown-item-text"><strong>Remarcado de Elementos</strong></span>
                         <input class="dropdown-item" type="checkbox" name="highlight" id="highlight" style="width: 30px;" v-model="config.highlight">
+                    </label>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                    <label class="d-flex justify-content-between align-items-center">
+                        <span class="dropdown-item-text"><strong>Asistencia de Clics</strong></span>
+                        <input class="dropdown-item" type="checkbox" name="clickAsist" id="clickAsist" style="width: 30px;" v-model="config.clickAsist">
                     </label>
                 </li>
             </ul>
