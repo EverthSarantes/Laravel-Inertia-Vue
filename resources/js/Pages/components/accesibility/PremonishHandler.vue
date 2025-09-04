@@ -74,6 +74,8 @@
         document.addEventListener('mousemove', onMouseMove);
 
         document.addEventListener('mousedown', (e) => {
+            if (e.button !== 0) return;
+
             if (!clickAsistActive.value) return;
 
             let activeEl = document.querySelector('.premonish-active');
@@ -86,10 +88,6 @@
                 if (forEl) {
                     activeEl = forEl;
                 }
-            }
-
-            if (['INPUT', 'SELECT', 'TEXTAREA'].includes(activeEl.tagName)) {
-                activeEl.focus();
             }
 
             activeEl.click();
