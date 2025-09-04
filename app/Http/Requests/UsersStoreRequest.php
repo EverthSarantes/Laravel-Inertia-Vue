@@ -26,6 +26,7 @@ class UsersStoreRequest extends BaseFormRequest
         return [
             'name' => 'required',
             'password' => 'required',
+            'role' => 'required|in:0,1',
         ];
     }
 
@@ -39,6 +40,8 @@ class UsersStoreRequest extends BaseFormRequest
         return [
             'name.required' => 'El nombre de usuario es requerido',
             'password.required' => 'La contraseña es requerida',
+            'role.required' => 'El rol es requerido',
+            'role.in' => 'El rol seleccionado no es válido',
         ];
     }
 }
