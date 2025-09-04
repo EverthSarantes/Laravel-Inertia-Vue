@@ -14,7 +14,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,300;0,400;0,700;1,400&display=swap");
 :root,
 [data-bs-theme=light] {
-  --bs-pagination-disabled-color: #999;
+  --bs-pagination-disabled-color: color-mix(in srgb, var(--bs-primary) 50%, black);
   --bs-blue: #158cba;
   --bs-indigo: #6610f2;
   --bs-purple: #6f42c1;
@@ -170,7 +170,6 @@
 
 [data-bs-theme=dark] {
   color-scheme: dark;
-  --bs-pagination-disabled-color: #999;
   --bs-body-color: #dee2e6;
   --bs-body-color-rgb: 222, 226, 230;
   --bs-body-bg: #222;
@@ -261,8 +260,6 @@
 
 [data-bs-theme=light-hc] {
   color-scheme: light;
-
-  --bs-pagination-disabled-color: #000;
   --bs-body-color: #000;
   --bs-body-color-rgb: 0, 0, 0;
   --bs-body-bg: #fff;
@@ -382,7 +379,6 @@
 
 [data-bs-theme=dark-hc] {
   color-scheme: dark;
-  --bs-pagination-disabled-color: #fff;
   --bs-body-color: #fff;
   --bs-body-color-rgb: 255, 255, 255;
   --bs-body-bg: #000;
