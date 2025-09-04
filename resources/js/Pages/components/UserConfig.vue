@@ -43,7 +43,7 @@
 </script>
 
 <template>
-    <div class="dropdown">
+    <div class="dropdown" style="z-index: 1;">
         <button type="button" class="btn btn-light" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             {{ userName }}
         </button>

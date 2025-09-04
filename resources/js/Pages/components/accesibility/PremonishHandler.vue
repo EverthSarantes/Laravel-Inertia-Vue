@@ -39,13 +39,25 @@
 
         candidates.forEach(el => el.classList.remove('premonish-active'));
 
-        let closest = candidates[0];
+        let maxZ = Math.max(
+            ...candidates.map(el => {
+                const z = window.getComputedStyle(el).zIndex;
+                return isNaN(Number(z)) ? 0 : Number(z);
+            })
+        );
+
+        const topCandidates = candidates.filter(el => {
+            const z = window.getComputedStyle(el).zIndex;
+            return (isNaN(Number(z)) ? 0 : Number(z)) === maxZ;
+        });
+
+        let closest = topCandidates[0];
         let minDist = getDistanceToMouse(closest);
-        for (let i = 1; i < candidates.length; i++) {
-            const dist = getDistanceToMouse(candidates[i]);
+        for (let i = 1; i < topCandidates.length; i++) {
+            const dist = getDistanceToMouse(topCandidates[i]);
             if (dist < minDist) {
                 minDist = dist;
-                closest = candidates[i];
+                closest = topCandidates[i];
             }
         }
         closest.classList.add('premonish-active');
