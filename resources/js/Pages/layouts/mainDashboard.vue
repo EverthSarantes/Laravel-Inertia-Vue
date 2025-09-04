@@ -34,13 +34,13 @@
 
             <div>
                 <div class="nav_list">
-                    <Link href="/" class="nav_logo logo-toggle nav_module_name"><Logo/></Link>
+                    <Link href="/" class="nav_logo logo-toggle nav_module_name" aria-label="Ir a inicio"><Logo/></Link>
                 </div>
             </div>
 
             <div class="post_user d-flex justify-content-between align-items-center">
                 <span class="nav_module_name"> {{ userName }} </span>
-                <Link class="d-flex justify-content-between align-items-center text-decoration-none" href="/logout"> <i class='bx bxs-x-circle icon_block'></i></Link>
+                <Link class="d-flex justify-content-between align-items-center text-decoration-none" href="/logout" aria-label="Cerrar sesión"> <i class='bx bxs-x-circle icon_block'></i></Link>
             </div>
         </nav>
     </div>

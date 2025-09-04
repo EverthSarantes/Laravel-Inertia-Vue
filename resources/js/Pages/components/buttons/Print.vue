@@ -22,6 +22,7 @@
 
 <template>
     <a
+        aria-label="imprimir"
         class="btn btn-secondary"
         :href="printUrl"
     >

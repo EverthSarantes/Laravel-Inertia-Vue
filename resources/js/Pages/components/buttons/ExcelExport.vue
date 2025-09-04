@@ -19,7 +19,13 @@
 </script>
 
 <template>
-    <button type="button" class="btn btn-success excel_api_export" :data-filename="filename" :data-target="target" :id="'excel_api_export_'+props.target"><i class='bx bxs-file-export'></i></button>
+    <button aria-label="exportar a excel"
+        type="button" class="btn btn-success excel_api_export" 
+        :data-filename="filename" 
+        :data-target="target" 
+        :id="'excel_api_export_'+props.target">
+        <i class='bx bxs-file-export'></i>
+    </button>
 </template>
 
 <script>

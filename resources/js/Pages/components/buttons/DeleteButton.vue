@@ -15,7 +15,10 @@
 </script>
 
 <template>
-    <button class="btn btn-danger" @click="showDeleteModal(url)" :class="{'btn-sm': sm}">
+    <button aria-label="eliminar"
+        class="btn btn-danger"
+        @click="showDeleteModal(url)" 
+        :class="{'btn-sm': sm}">
         <i class='bx bx-trash'></i>
     </button>
 </template>
