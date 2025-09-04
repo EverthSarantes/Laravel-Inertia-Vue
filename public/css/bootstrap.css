@@ -12721,7 +12721,7 @@ textarea.form-control-lg {
   position: relative;
   top: 0;
   font-weight: 700;
-  color: #555;
+  color: var(--bs-primary);
   text-transform: uppercase;
   border-style: solid;
   border-width: 0 1px 4px 1px;
