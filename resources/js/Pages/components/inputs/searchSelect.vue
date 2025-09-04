@@ -15,6 +15,7 @@
 
     const searchQuery = ref('');
     const options = ref([]);
+    const lastOptions = ref([]);
     const isLoading = ref(false);
     const highlightedIndex = ref(-1);
     const skipWatch = ref(false);
@@ -37,6 +38,7 @@
     async function searchSelect(query) {
         if (!query) {
             options.value = [];
+            lastOptions.value = [];
             return;
         }
 
@@ -47,8 +49,10 @@
             const response = await fetch(url);
             const data = await response.json();
             options.value = data.data;
+            lastOptions.value = data.data;
         } catch (error) {
             options.value = [];
+            lastOptions.value = [];
         } finally {
             isLoading.value = false;
         }
@@ -68,6 +72,7 @@
         searchQuery.value = option.name;
         select_value.value = option.id;
         optionSelected.value = true;
+        options.value = [];
     }
 
     function handleEnter() {
@@ -78,7 +83,7 @@
 
     function clearOptions() {
         setTimeout(() => {
-            options.value.forEach((option, index) => {
+            lastOptions.value.forEach((option, index) => {
                 if (option.name == searchQuery.value) {
                     selectOption(option);
                 }
