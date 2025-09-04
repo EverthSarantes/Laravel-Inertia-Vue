@@ -6,10 +6,14 @@
     const selectors = ['a', 'button', '.btn', 'input', 'select', 'label', '.alert'];
     let lastActive = null;
     let active = ref(window.localStorage.getItem('highlight') === 'true' || false);
+    let clickAsistActive = ref(window.localStorage.getItem('clickAsist') === 'true' || false);
 
     window.addEventListener('config-updated', (event) => {
-        const highlight = window.localStorage.getItem('highlight') === 'true';
+        let highlight = window.localStorage.getItem('highlight') === 'true';
+        let clickAsist = window.localStorage.getItem('clickAsist') === 'true';
+
         active.value = highlight;
+        clickAsistActive.value = clickAsist;
 
         if(!active.value) {
             if (lastActive) lastActive.classList.remove('premonish-active');
@@ -35,13 +39,25 @@
 
         candidates.forEach(el => el.classList.remove('premonish-active'));
 
-        let closest = candidates[0];
+        let maxZ = Math.max(
+            ...candidates.map(el => {
+                const z = window.getComputedStyle(el).zIndex;
+                return isNaN(Number(z)) ? 0 : Number(z);
+            })
+        );
+
+        const topCandidates = candidates.filter(el => {
+            const z = window.getComputedStyle(el).zIndex;
+            return (isNaN(Number(z)) ? 0 : Number(z)) === maxZ;
+        });
+
+        let closest = topCandidates[0];
         let minDist = getDistanceToMouse(closest);
-        for (let i = 1; i < candidates.length; i++) {
-            const dist = getDistanceToMouse(candidates[i]);
+        for (let i = 1; i < topCandidates.length; i++) {
+            const dist = getDistanceToMouse(topCandidates[i]);
             if (dist < minDist) {
                 minDist = dist;
-                closest = candidates[i];
+                closest = topCandidates[i];
             }
         }
         closest.classList.add('premonish-active');
@@ -56,6 +72,31 @@
 
     onMounted(() => {
         document.addEventListener('mousemove', onMouseMove);
+
+        document.addEventListener('mousedown', (e) => {
+            if (!clickAsistActive.value) return;
+
+            let activeEl = document.querySelector('.premonish-active');
+            if (!activeEl) return;
+
+            if (e.target === activeEl) return;
+
+            if( activeEl.tagName === 'LABEL' && activeEl.htmlFor) {
+                const forEl = document.getElementById(activeEl.htmlFor);
+                if (forEl) {
+                    activeEl = forEl;
+                }
+            }
+
+            if (['INPUT', 'SELECT', 'TEXTAREA'].includes(activeEl.tagName)) {
+                activeEl.focus();
+            }
+
+            activeEl.click();
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }, true);
     });
 
     onUnmounted(() => {
