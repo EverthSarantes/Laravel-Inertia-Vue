@@ -14,12 +14,5 @@
 
 <template>
     <dashboard :appName="'administration_app'">
-        <div class="container">
-            <div class="row justify-content-center align-items-center">
-                <div class="col-md-6">
-                    <img class="img-fluid mt-5 mx-auto d-block" width="200" id="responsive-image">
-                </div>
-            </div>
-        </div>
     </dashboard>
 </template>
