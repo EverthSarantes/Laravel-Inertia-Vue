@@ -144,7 +144,7 @@
                         <option value="created_at">Fecha de Creación</option>
                         <option v-for="field in props.model.table_fields_searchable" :key="field" :value="field">{{ props.model.table_fields_names[field] }}</option>
                     </select>
-                    <select class="form-control" v-model="orderByDirection" :id="'orderByDirection_' + id">
+                    <select class="form-control" v-model="orderByDirection" :id="'orderByDirection_' + id" aria-label="Dirección de ordenamiento">
                         <option value="asc">Ascendente</option>
                         <option value="desc">Descendente</option>
                     </select>
@@ -159,10 +159,10 @@
             </div>
             <div class="col-md-2 mb-3">
                 <div class="d-flex justify-content-end gap-1">
-                    <button class="btn btn-success" @click="searchData(getUrl())">
+                    <button class="btn btn-success" @click="searchData(getUrl())" aria-label="refrescar">
                         <i class='bx bx-refresh'></i>
                     </button>
-                    <button class="btn btn-secondary" data-bs-toggle="collapse"
+                    <button class="btn btn-secondary" data-bs-toggle="collapse" aria-label="opciones de búsqueda"
                         :data-bs-target="'#search_options_' + id">
                         <i class='bx bx-cog'></i>
                     </button>
@@ -176,7 +176,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex justify-content-end">
-                        <button class="btn btn-primary" :class="{ 'btn-sm': small }"
+                        <button class="btn btn-primary" :class="{ 'btn-sm': small }" aria-label="agregar opción de búsqueda"
                             @click="addNewSearchOption">
                             <i class='bx bx-plus'></i>
                         </button>
@@ -225,7 +225,7 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="d-flex justify-content-end button-container">
-                                        <button class="btn btn-danger" :class="{ 'btn-sm': small }"
+                                        <button class="btn btn-danger" :class="{ 'btn-sm': small }" aria-label="eliminar opción de búsqueda"
                                             @click="removeSearchOption(index)">
                                             <i class="bx bx-trash"></i>
                                         </button>
@@ -261,9 +261,9 @@
                         <td>
                             <div class="d-flex justify-content-center gap-1" v-if="!defaultOptions">
                                 <template v-for="(option, key) in row.options" :key="key">
-                                    <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}"></Link>
-                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}"></button>
-                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}"></a>
+                                    <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}" aria-label="ver registro"></Link>
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}" aria-label="eliminar registro"></button>
+                                    <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}" aria-label="ver registro"></a>
                                 </template>
                             </div>
                             <div class="d-flex justify-content-center gap-1" v-if="defaultOptions">
@@ -274,9 +274,9 @@
                                             acc[field] = row[field];
                                             return acc;
                                         }, {})
-                                    )" :class="{'btn-sm': small}"></Link>
+                                    )" :class="{'btn-sm': small}" aria-label="ver registro"></Link>
 
-                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}"></button>
+                                    <button v-else-if="option.type === 'button'" v-bind="option.attr" @click="key === 'delete' && showDeleteModal(option.attr['data-url'])" v-html="option.inner" :class="{'btn-sm': small}" aria-label="eliminar registro"></button>
 
                                     <a v-else-if="option.type === 'normal-link'" v-bind="option.attr" :href="route(
                                             option.attr.route_name,
@@ -286,8 +286,7 @@
                                         }, {})
                                     )"
                                         v-html="option.inner"
-                                        :class="{'btn-sm': small}">
-                                    </a>
+                                        :class="{'btn-sm': small}" aria-label="ver registro"></a>
                                     </template>
                                 </div>
                         </td>

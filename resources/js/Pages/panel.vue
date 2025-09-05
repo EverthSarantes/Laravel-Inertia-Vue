@@ -29,8 +29,8 @@
                                 <div class="card" style="max-width: 350px;">
                                     <img :src="app.icon" class="card-img-top" alt="placeholder">
                                     <div class="card-body">
-                                        <h5 class="card-title">{{ app.name }}</h5>
-                                        <Link :href="route(app.access_route_name)" class="btn btn-primary">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
+                                        <span class="card-title fs-4">{{ app.name }}</span><br>
+                                        <Link :href="route(app.access_route_name)" class="btn btn-primary" :aria-label="'Ir a ' + app.name">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
                                     </div>
                                 </div>
                             </div>

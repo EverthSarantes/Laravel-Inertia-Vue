@@ -58,7 +58,7 @@
                     </button>
 
                     <div class="d-flex gap-2">
-                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#configBackupsModal">
+                        <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#configBackupsModal" aria-label="Configurar Respaldos">
                             <i class="bx bx-cog"></i>
                         </button>
                         <ExcelExport :filename="'backups'" :target="'backups_table'"/>
@@ -81,7 +81,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h1 class="modal-title fs-5" id="configBackupsModalLabel">Configurar Respaldos</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                     </div>
                     <form class="modal-body row" @submit.prevent="updateSchedule" id="updateScheduleForm" :disabled="updateScheduleForm.processing">
                         <h5>Activar Respaldo Automático</h5>
