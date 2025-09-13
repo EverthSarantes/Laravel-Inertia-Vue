@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\AdministrationApp\Backups;
 
 use App\Http\Controllers\Controller;
-use App\http\Requests\BaseFormRequest;
+use App\Http\Requests\BaseFormRequest;
 use App\Models\Backups\ScheduledBackup;
 
 class SchedulesController extends Controller
