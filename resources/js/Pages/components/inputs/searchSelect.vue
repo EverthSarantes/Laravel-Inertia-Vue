@@ -3,7 +3,7 @@
 // The component fetches data from an API based on the search query and updates the options list.
 
 <script setup>
-    import { ref, watch } from 'vue';
+    import { ref, watch, onMounted } from 'vue';
 
     const props = defineProps({
         name: { type: String, required: true },
@@ -11,6 +11,10 @@
         model: { type: String, required: true },
         required: { type: Boolean, default: false },
         allowNew: { type: Boolean, default: false },
+        defaultValue: {
+            type: Object,
+            default: null
+        },
     });
 
     const searchQuery = ref('');
@@ -104,6 +108,14 @@
         }, 500);
 
     }
+
+    onMounted(() => {
+        if (props.defaultValue) {
+            options.value = [props.defaultValue];
+            lastOptions.value = [props.defaultValue];
+            selectOption(props.defaultValue);
+        }
+    });
 </script>
 
 <template>
