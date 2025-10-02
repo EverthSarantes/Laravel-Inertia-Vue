@@ -110,12 +110,17 @@
     }
 
     function setOptionOnChange() {
+        let selectFound = false;
         if (lastOptions.value) {
             lastOptions.value.forEach((option, index) => {
                 if (option.name == searchQuery.value) {
                     selectOption(option);
+                    selectFound = true;
                 }
             });
+        }
+        if (!selectFound && props.allowNew) {
+            select_value.value = searchQuery.value;
         }
     }
 
