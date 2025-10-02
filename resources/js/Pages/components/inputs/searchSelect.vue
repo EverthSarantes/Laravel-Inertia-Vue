@@ -109,6 +109,16 @@
 
     }
 
+    function setOptionOnChange() {
+        if (lastOptions.value) {
+            lastOptions.value.forEach((option, index) => {
+                if (option.name == searchQuery.value) {
+                    selectOption(option);
+                }
+            });
+        }
+    }
+
     onMounted(() => {
         if (props.defaultValue) {
             options.value = [props.defaultValue];
@@ -130,6 +140,7 @@
             :placeholder="`Escriba para buscar ${name}...`" :required="required" :name="inputName"
             @focus="searchSelect(searchQuery)"
             @blur="clearOptions"
+            @input="setOptionOnChange"
         />
 
         <!-- Lista de opciones -->
