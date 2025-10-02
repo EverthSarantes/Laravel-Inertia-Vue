@@ -92,8 +92,8 @@ class UserServices
         try {
             $user = User::create([
                 'name' => $request->name,
-                'password' => Hash::make($template->password),
-                'role' => 1,
+                'password' => Hash::make($request->password),
+                'role' => $template->role,
                 'can_login' => $request->can_login,
             ]);
 
