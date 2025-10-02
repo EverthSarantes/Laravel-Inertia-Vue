@@ -24,6 +24,14 @@
 
     const userName = computed(() => page.props.userName);
     const message = computed(() => page.props.flash.message);
+    const error = computed(() => {
+        const errors = page.props?.errors ?? null;
+        if (errors && typeof errors === 'object') {
+            const firstKey = Object.keys(errors)[0];
+            return errors[firstKey];
+        }
+        return null;
+    });
 
     useHead({
         link: [
@@ -69,6 +77,7 @@
     </div>
 
     <Message v-if="message" :message="message.message" :color="message.type"/>
+    <Message v-if="error" :message="error" color="danger"/>
 
     <main class="pt-3 w-100">
         <slot />
