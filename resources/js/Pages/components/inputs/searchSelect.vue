@@ -83,20 +83,26 @@
 
     function clearOptions() {
         setTimeout(() => {
-            lastOptions.value.forEach((option, index) => {
-                if (option.name == searchQuery.value) {
-                    selectOption(option);
-                }
-            });
+            if (lastOptions.value) {
+                lastOptions.value.forEach((option, index) => {
+                    if (option.name == searchQuery.value) {
+                        selectOption(option);
+                    }
+                });
+            }
 
             options.value = [];
             isLoading.value = false;
 
-            if(!optionSelected.value && !props.allowNew) {
+            if (!optionSelected.value && !props.allowNew) {
                 searchQuery.value = '';
                 select_value.value = null;
             }
+            else if (!optionSelected.value && props.allowNew) {
+                select_value.value = searchQuery.value;
+            }
         }, 500);
+
     }
 </script>
 
