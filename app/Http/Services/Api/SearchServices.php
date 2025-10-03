@@ -111,7 +111,7 @@ class SearchServices
      * @param array|null $params
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator The paginated search results.
      */
-    public static function search(string $model, $extra_query_parameter = null, $pagination = 20, $params = null, $orderByField = null, $orderByDirection = 'asc')
+    public static function search(string $model, $extra_query_parameter = null, $pagination = 20, $params = null, $orderByField = null, $orderByDirection = 'asc', $showSoftDeleted = false)
     {
         $permited_search_types = ['like', '=', '!=', '>', '<', '>=', '<='];
 
@@ -145,6 +145,10 @@ class SearchServices
         }
 
         self::loadExtraQuery($model, $query, $extra_query_parameter);
+
+        if($showSoftDeleted && in_array('App\Traits\ModelSoftDeleteTrait', class_uses($model))) {
+            $query->withTrashed();
+        }
 
         return $query->paginate($pagination);
     }

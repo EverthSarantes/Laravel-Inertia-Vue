@@ -25,6 +25,7 @@
     const pagination = ref(20);
     const orderByField = ref('created_at');
     const orderByDirection = ref('asc');
+    const showSoftDeleted = ref(false);
 
     const searchOptions = ref([
         { field: props.model.table_fields_searchable?.[0] || '', search_type: 'like', search: '' }
@@ -46,6 +47,7 @@
         url.searchParams.append('extraQueryParameter', props.extraQueryParameter);
         url.searchParams.append('orderByField', orderByField.value);
         url.searchParams.append('orderByDirection', orderByDirection.value);
+        url.searchParams.append('showSoftDeleted', showSoftDeleted.value);
 
         if (page) {
             url.searchParams.append('page', page);
@@ -106,7 +108,7 @@
         searchData(getUrl());
     }, 500);
 
-    watch([pagination, searchOptions, orderByField, orderByDirection], () => {
+    watch([pagination, searchOptions, orderByField, orderByDirection, showSoftDeleted], () => {
         debouncedSearch();
     }, { deep: true });
 
@@ -174,7 +176,15 @@
         <div class="collapse" :id="'search_options_' + id">
             <!-- Botón para agregar nueva opción de búsqueda -->
             <div class="row">
-                <div class="col-md-12">
+                <div class="col d-flex align-items-end">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="showSoftDeleted" v-model="showSoftDeleted">
+                        <label class="form-check-label user-select-none" for="showSoftDeleted">
+                            Mostrar Eliminados Temporales
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-2">
                     <div class="d-flex justify-content-end">
                         <button class="btn btn-primary" :class="{ 'btn-sm': small }" aria-label="agregar opción de búsqueda"
                             @click="addNewSearchOption">

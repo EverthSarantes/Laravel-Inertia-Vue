@@ -43,7 +43,8 @@ class SearchController extends Controller
             ], 403);
         }
 
-        $data = SearchServices::search($model, $request->extraQueryParameter, $request->pagination, $request->params, $request->orderByField, $request->orderByDirection);
+        $request->showSoftDeleted = $request->showSoftDeleted === 'true' ? true : false;
+        $data = SearchServices::search($model, $request->extraQueryParameter, $request->pagination, $request->params, $request->orderByField, $request->orderByDirection, $request->showSoftDeleted);
 
         if($data === false) {
             return response()->json([
