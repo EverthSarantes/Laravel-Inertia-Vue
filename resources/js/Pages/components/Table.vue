@@ -262,13 +262,12 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(row, rowIndex) in tableData" :key="rowIndex">
+                    <tr v-for="(row, rowIndex) in tableData" :key="rowIndex" :class="{ 'table-info': row.deleted_at }">
                         <td v-for="(field, fieldIndex) in props.model.table_fields" :key="fieldIndex">
                             {{ row[field] }}
                         </td>
-
                         
-                        <td>
+                        <td v-if="!row.deleted_at">
                             <div class="d-flex justify-content-center gap-1" v-if="!defaultOptions">
                                 <template v-for="(option, key) in row.options" :key="key">
                                     <Link v-if="option.type === 'link'" v-bind="option.attr" v-html="option.inner" :class="{'btn-sm': small}" aria-label="ver registro"></Link>
@@ -300,7 +299,7 @@
                                     </template>
                                 </div>
                         </td>
-
+                        <td v-else></td>
 
                     </tr>
                     <tr v-if="tableData.length === 0">
