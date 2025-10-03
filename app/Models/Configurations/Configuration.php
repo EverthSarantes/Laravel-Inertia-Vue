@@ -16,7 +16,7 @@ class Configuration extends Model
     public function getTypedValueAttribute()
     {
         return match ($this->type) {
-            'boolean' => filter_var((bool) $this->value, FILTER_VALIDATE_BOOLEAN),
+            'boolean' => $this->value === 'true',
             'integer' => (int) $this->value,
             'float' => (float) $this->value,
             'array' => json_decode($this->value, true),
