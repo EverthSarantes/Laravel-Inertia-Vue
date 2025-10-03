@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('configurations', function (Blueprint $table) {
             $table->id();
 
+            $table->string('name')->nullable();
             $table->string('key')->unique();
             $table->text('value')->nullable();
             $table->enum('type', ['string', 'integer', 'boolean', 'json'])->default('string');
