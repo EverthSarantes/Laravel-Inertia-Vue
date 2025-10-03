@@ -24,6 +24,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->nullableUserStamps();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('apps', function (Blueprint $table) {

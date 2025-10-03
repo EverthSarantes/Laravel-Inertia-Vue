@@ -14,6 +14,7 @@ use App\Models\Users\Module;
 use App\Traits\TableFormData\User as TableFormDataUser;
 use App\Models\Users\UserModelFilter;
 use App\Traits\ModelFilters\HasUserModelFilters;
+use App\Traits\ModelSoftDeleteTrait;
 
 /**
  * Class User
@@ -22,7 +23,7 @@ use App\Traits\ModelFilters\HasUserModelFilters;
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, TableFormDataUser, HasUserModelFilters;
+    use HasFactory, Notifiable, TableFormDataUser, HasUserModelFilters, ModelSoftDeleteTrait;
 
     /**
      * @var array<int, string> The attributes that are mass assignable.
