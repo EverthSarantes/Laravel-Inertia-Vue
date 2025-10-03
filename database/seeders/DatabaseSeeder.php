@@ -7,8 +7,8 @@ use App\Models\User;
 use Illuminate\Database\Seeder;
 use App\Models\Users\Module;
 use App\Models\Backups\ScheduledBackup;
+use App\Models\Configurations\Configuration;
 use App\Models\Users\App;
-use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -55,6 +55,14 @@ class DatabaseSeeder extends Seeder
                 'order' => 2,
                 'show_in_menu' => true,
             ],
+            [
+                'name' => 'Configuración',
+                'internal_name' => 'config',
+                'access_route_name' => 'config.index',
+                'icon' => 'bx bx-cog nav_icon',
+                'order' => 3,
+                'show_in_menu' => true,
+            ],
         ];
 
         foreach ($modules as $module) {
@@ -66,6 +74,19 @@ class DatabaseSeeder extends Seeder
                 'order' => $module['order'],
                 'show_in_menu' => $module['show_in_menu'],
                 'app_id' => $app->id,
+            ]);
+        }
+
+        $configurations = [
+            ['name' => 'Eliminar Fisicamente', 'key' => 'global_use_soft_deletes', 'value' => 'false', 'type' => 'boolean'],
+        ];
+
+        foreach ($configurations as $configuration) {
+            Configuration::create([
+                'name' => $configuration['name'],
+                'key' => $configuration['key'],
+                'value' => $configuration['value'],
+                'type' => $configuration['type'],
             ]);
         }
     }
