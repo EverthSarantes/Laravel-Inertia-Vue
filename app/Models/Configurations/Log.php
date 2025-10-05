@@ -165,7 +165,12 @@ class Log
             [$field, $operator, $value] = array_values($filter);
             if ($operator === '=') {
                 $logs = $logs->filter(fn($log) => isset($log->$field) && $log->$field == $value);
-            } elseif ($operator === 'like') {
+            } 
+            elseif ($operator === '!=') {
+                $logs = $logs->filter(fn($log) => isset($log->$field) && $log->$field != $value);
+            }
+            elseif ($operator === 'like') {
+                $value = str_replace('%', '', $value);
                 $logs = $logs->filter(fn($log) => isset($log->$field) && stripos($log->$field, $value) !== false);
             }
         }
