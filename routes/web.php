@@ -15,11 +15,17 @@ use App\Http\Controllers\AdministrationApp\Backups\BackupsController;
 use App\Http\Controllers\AdministrationApp\Backups\SchedulesController;
 
 use App\Http\Controllers\AdministrationApp\Config\ConfigController;
+use App\Http\Controllers\AdministrationApp\Config\LogsController;
 
 use App\Http\Controllers\Api\SearchController;
 use App\Http\Controllers\Api\ModelFilters\ModelFiltersController;
 
 use App\Http\Controllers\Exports\PrintController;
+
+Route::get('test', function () {
+    $logs = (new \App\Models\Configurations\UserLog())->get();
+    dd($logs);
+});
 
 Route::middleware('HandleInertiaRequests')->group(function () {
     Route::get('/', function () {
@@ -84,6 +90,11 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         Route::prefix('configurations')->middleware('CheckRoles:configurations')->group(function () {
             Route::get('index', [ConfigController::class, 'index'])->name('config.index');
             Route::put('update/{configuration}', [ConfigController::class, 'update'])->name('config.update');
+        });
+
+        Route::prefix('logs')->middleware('CheckRoles:configurations')->group(function () {
+            Route::get('index', [LogsController::class, 'index'])->name('logs.index');
+            Route::delete('cleanUserLogs', [LogsController::class, 'cleanUserLogs'])->name('logs.cleanUserLogs');
         });
     });
 
