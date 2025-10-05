@@ -40,6 +40,7 @@ trait UserLog
         'url',
         'method',
         'ip',
+        'status_code',
     ];
 
     /**
@@ -68,19 +69,6 @@ trait UserLog
      */
     public function getOptionsFieldContent()
     {
-        if(!$this->raw_line) {
-            return [];
-        }
-
-        return [
-            /* 'delete' => [
-                'type' => 'button',
-                'attr' => [
-                    'class' => 'delete-button btn btn-danger',
-                    'data-url' => route('backups.delete', ['name' => $this->name]),
-                ],
-                'inner' => '<i class=\'bx bxs-trash-alt\'></i>',
-            ], */
-        ];
+        return null;
     }
 }
