@@ -9,6 +9,7 @@
     
     const links = [
         { route: 'config.index', name: 'Configuraciones', active: true },
+        { route: 'logs.index', name: 'Logs', active: false },
     ];
 
     const configs = ref(usePage().props.configurations);
