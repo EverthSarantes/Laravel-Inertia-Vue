@@ -4,6 +4,7 @@ namespace App\Models\Backups;
 
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Traits\TableFormData\Backup as TableFormDataTrait;
 
 class Backup
@@ -138,7 +139,7 @@ class Backup
      * @param int $page The current page.
      * @return array
      */
-    public function paginate(int $perPage = 10, int $page = 1): \Illuminate\Pagination\LengthAwarePaginator
+    public function paginate(int $perPage = 10, int $page = 1): LengthAwarePaginator
     {
         $allBackups = $this->get();
         $total = $allBackups->count();
@@ -146,7 +147,7 @@ class Backup
 
         $paginatedItems = $allBackups->slice($offset, $perPage)->values();
 
-        return new \Illuminate\Pagination\LengthAwarePaginator(
+        return new LengthAwarePaginator(
             $paginatedItems,
             $total,
             $perPage,
