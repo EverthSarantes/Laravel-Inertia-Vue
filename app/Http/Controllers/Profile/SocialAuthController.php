@@ -12,15 +12,32 @@ class SocialAuthController extends Controller
 {
     public function redirect($provider)
     {
-        return Socialite::driver($provider)->redirect();
+        return Socialite::driver($provider)
+        ->stateless()
+        ->with(['state' => 'link'])
+        ->redirect();
     }
 
     public function callback($provider)
     {
-        try{
-            $socialite_user = Socialite::driver($provider)->user();
-            
-            if(!$socialite_user || !$socialite_user->getId()){
+        $state = request('state');
+
+        if($state === 'link'){
+            try{
+                $socialite_user = Socialite::driver($provider)
+                ->stateless()->user();
+                
+                if(!$socialite_user || !$socialite_user->getId()){
+                    return redirect()->route('profile.index')->with([
+                        'message' => [
+                            'message' => 'Error al obtener los datos del usuario de '.$provider,
+                            'type' => 'danger'
+                        ],
+                    ]);
+                }
+            }
+            catch(\Exception $e){
+
                 return redirect()->route('profile.index')->with([
                     'message' => [
                         'message' => 'Error al autenticar con '.$provider,
@@ -28,63 +45,55 @@ class SocialAuthController extends Controller
                     ],
                 ]);
             }
-        }
-        catch(\Exception $e){
+
+            $user = auth()->user();
+
+            if(!$user){
+                return redirect()->route('profile.index')->with([
+                    'message' => [
+                        'message' => 'No se encontró el usuario autenticado',
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
+            // Check if the social account is already linked to another user
+            if(
+                UserProvider::where('provider_name', $provider)
+                ->where('provider_id', $socialite_user->getId())
+                ->exists()
+            ){
+                return redirect()->route('profile.index')->with([
+                    'message' => [
+                        'message' => 'Esta cuenta de '.$provider.' ya está vinculada.',
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
+            // Link the social account to the authenticated user
+            $user_provider = new UserProvider();
+            $user_provider->user_id = $user->id;
+            $user_provider->provider_name = $provider;
+            $user_provider->provider_id = $socialite_user->getId();
+            $user_provider->provider_email = $socialite_user->getEmail();
+
+            if(!$user_provider->save()){
+                return redirect()->route('profile.index')->with([
+                    'message' => [
+                        'message' => 'Error al vincular la cuenta de '.$provider,
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
             return redirect()->route('profile.index')->with([
                 'message' => [
-                    'message' => 'Error al autenticar con '.$provider,
-                    'type' => 'danger'
+                    'message' => 'Cuenta de '.$provider.' vinculada exitosamente.',
+                    'type' => 'success'
                 ],
             ]);
         }
-
-        $user = auth()->user();
-
-        if(!$user){
-            return redirect()->route('profile.index')->with([
-                'message' => [
-                    'message' => 'Error al autenticar con '.$provider,
-                    'type' => 'danger'
-                ],
-            ]);
-        }
-
-        // Check if the social account is already linked to another user
-        if(
-            UserProvider::where('provider_name', $provider)
-            ->where('provider_id', $socialite_user->getId())
-            ->exists()
-        ){
-            return redirect()->route('profile.index')->with([
-                'message' => [
-                    'message' => 'Esta cuenta de '.$provider.' ya está vinculada.',
-                    'type' => 'danger'
-                ],
-            ]);
-        }
-
-        // Link the social account to the authenticated user
-        $user_provider = new UserProvider();
-        $user_provider->user_id = $user->id;
-        $user_provider->provider_name = $provider;
-        $user_provider->provider_id = $socialite_user->getId();
-        $user_provider->provider_email = $socialite_user->getEmail();
-
-        if(!$user_provider->save()){
-            return redirect()->route('profile.index')->with([
-                'message' => [
-                    'message' => 'Error al vincular la cuenta de '.$provider,
-                    'type' => 'danger'
-                ],
-            ]);
-        }
-
-        return redirect()->route('profile.index')->with([
-            'message' => [
-                'message' => 'Cuenta de '.$provider.' vinculada exitosamente.',
-                'type' => 'success'
-            ],
-        ]);
     }
 
     public function removeProvider(UserProvider $userProvider)
