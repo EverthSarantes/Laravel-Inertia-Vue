@@ -27,6 +27,18 @@ return new class extends Migration
             $table->softDeletes();
         });
 
+        Schema::create('user_providers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->string('provider_name');
+            $table->string('provider_id');
+            $table->string('provider_email')->nullable();
+
+            $table->nullableUserStamps();
+            $table->timestamps();
+            $table->softDeletes();
+        });
+
         Schema::create('apps', function (Blueprint $table) {
             $table->id();
 
@@ -127,6 +139,8 @@ return new class extends Migration
     {
         Schema::dropIfExists('modules');
         Schema::dropIfExists('users');
+        Schema::dropIfExists('apps');
+        Schema::dropIfExists('user_providers');
         Schema::dropIfExists('users_modules');
         Schema::dropIfExists('users_modules_actions');
         Schema::dropIfExists('user_model_filters');
