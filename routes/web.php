@@ -52,7 +52,7 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         });
 
         Route::prefix('socialAuth')->group(function () {
-            Route::get('redirect/{provider}', [SocialAuthController::class, 'redirect'])->name('socialAuth.redirect');
+            Route::get('redirect/{provider}/{state?}', [SocialAuthController::class, 'redirect'])->name('socialAuth.redirect');
             Route::get('callback/{provider}', [SocialAuthController::class, 'callback'])->name('socialAuth.callback');
             Route::delete('removeProvider/{userProvider}', [SocialAuthController::class, 'removeProvider'])->name('profile.removeProvider');
         });

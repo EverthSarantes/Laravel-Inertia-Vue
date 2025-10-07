@@ -10,11 +10,11 @@ use App\Models\Users\UserProvider;
 
 class SocialAuthController extends Controller
 {
-    public function redirect($provider)
+    public function redirect($provider, $state = 'link')
     {
         return Socialite::driver($provider)
         ->stateless()
-        ->with(['state' => 'link'])
+        ->with(['state' => $state])
         ->redirect();
     }
 
