@@ -304,20 +304,22 @@
                             </span>
                             <span class="badge bg-primary rounded-pill">Conectar</span>
                         </a>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        <a :href="route('socialAuth.redirect', 'facebook')"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
                                 <i class='bx bxl-facebook-square'></i>
                                 Facebook
                             </span>
                             <span class="badge bg-primary rounded-pill">Conectar</span>
-                        </button>
-                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                        </a>
+                        <a :href="route('socialAuth.redirect', 'github')"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
                             <span>
                                 <i class='bx bxl-github'></i>
                                 GitHub
                             </span>
                             <span class="badge bg-primary rounded-pill">Conectar</span>
-                        </button>
+                        </a>
                     </div>
                 </div>
             </div>
