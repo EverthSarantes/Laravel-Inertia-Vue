@@ -78,7 +78,7 @@ class DatabaseSeeder extends Seeder
         }
 
         $configurations = [
-            ['name' => 'Eliminar Temporalmente', 'key' => 'global_use_soft_deletes', 'value' => 'true', 'type' => 'boolean'],
+            ['name' => 'Eliminar Temporalmente', 'key' => 'global_use_soft_deletes', 'value' => 'false', 'type' => 'boolean'],
         ];
 
         foreach ($configurations as $configuration) {
