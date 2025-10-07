@@ -24,11 +24,6 @@ use App\Http\Controllers\Api\ModelFilters\ModelFiltersController;
 
 use App\Http\Controllers\Exports\PrintController;
 
-Route::get('test', function () {
-    $logs = (new \App\Models\Configurations\UserLog())->get();
-    dd($logs);
-});
-
 Route::middleware('HandleInertiaRequests')->group(function () {
     Route::get('/', function () {
         if (auth()->check()) {
