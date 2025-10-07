@@ -20,7 +20,7 @@
         let delete_url = form.action;
         
         form_request.delete(delete_url, {
-            onSuccess: () => {
+            onSuccess: (response) => {
                 form.reset();
                 const modal = bootstrap.Modal.getInstance(document.getElementById('delete_modal'));
                 modal.hide();
