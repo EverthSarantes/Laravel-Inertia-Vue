@@ -87,12 +87,12 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
             });
         });
 
-        Route::prefix('configurations')->middleware('CheckRoles:configurations')->group(function () {
+        Route::prefix('configurations')->middleware('CheckRoles:config')->group(function () {
             Route::get('index', [ConfigController::class, 'index'])->name('config.index');
             Route::put('update/{configuration}', [ConfigController::class, 'update'])->name('config.update');
         });
 
-        Route::prefix('logs')->middleware('CheckRoles:configurations')->group(function () {
+        Route::prefix('logs')->middleware('CheckRoles:config')->group(function () {
             Route::get('index', [LogsController::class, 'index'])->name('logs.index');
             Route::delete('cleanUserLogs', [LogsController::class, 'cleanUserLogs'])->name('logs.cleanUserLogs');
         });
