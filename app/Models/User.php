@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Users\UserModule;
 use Illuminate\Database\Eloquent\Collection;
 use App\Models\Users\Module;
+use App\Models\Users\UserProvider;
 use App\Traits\TableFormData\User as TableFormDataUser;
 use App\Models\Users\UserModelFilter;
 use App\Traits\ModelFilters\HasUserModelFilters;
@@ -93,6 +94,16 @@ class User extends Authenticatable
             'foreign_key' => 'id',
         ],
     ];
+
+    /**
+     * Defines a one-to-many relationship with the UserProvider model.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function userProviders()
+    {
+        return $this->hasMany(UserProvider::class);
+    }
 
     /**
      * Defines a one-to-many relationship with the UserModule model.
