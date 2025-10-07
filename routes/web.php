@@ -36,6 +36,12 @@ Route::middleware('HandleInertiaRequests')->group(function () {
         return redirect()->route('/');
     });
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+
+    Route::prefix('socialAuth')->group(function () {
+        Route::get('redirect/{provider}/{state?}', [SocialAuthController::class, 'redirect'])->name('socialAuth.redirect');
+        Route::get('callback/{provider}', [SocialAuthController::class, 'callback'])->name('socialAuth.callback');
+        Route::delete('removeProvider/{userProvider}', [SocialAuthController::class, 'removeProvider'])->name('profile.removeProvider');
+    });
 });
 
 Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
@@ -49,12 +55,6 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
             Route::get('index', [ProfilesController::class, 'index'])->name('profile.index');
             Route::put('update', [ProfilesController::class, 'update'])->name('profile.update');
             Route::put('changePassword', [ProfilesController::class, 'changePassword'])->name('profile.changePassword');
-        });
-
-        Route::prefix('socialAuth')->group(function () {
-            Route::get('redirect/{provider}/{state?}', [SocialAuthController::class, 'redirect'])->name('socialAuth.redirect');
-            Route::get('callback/{provider}', [SocialAuthController::class, 'callback'])->name('socialAuth.callback');
-            Route::delete('removeProvider/{userProvider}', [SocialAuthController::class, 'removeProvider'])->name('profile.removeProvider');
         });
 
         Route::prefix('users')->middleware('CheckRoles:users')->group(function () {
