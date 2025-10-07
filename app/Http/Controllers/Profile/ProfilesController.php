@@ -11,7 +11,12 @@ class ProfilesController extends Controller
     public function index()
     {
         return Inertia::render('profile.index', [
-            'user' => auth()->user()->load(['userModule.actions', 'userModule.module', 'userModelFilters']),
+            'user' => auth()->user()->load([
+                'userModule.actions', 
+                'userModule.module', 
+                'userModelFilters',
+                'userProviders',
+            ]),
         ]);
     }
 

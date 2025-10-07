@@ -5,7 +5,7 @@
     import DeleteButton from '../components/buttons/DeleteButton.vue';
 
     import { usePage, useForm, Link } from '@inertiajs/vue3';
-    import { computed, ref, watch } from 'vue';
+    import { ref } from 'vue';
 
     const links = [
         { route: 'profile.index', name: 'Perfil', active: true },
@@ -53,6 +53,12 @@
             },
         });
     };
+
+    function deleteProviderCallback(response) {
+        if (response.props.user) {
+            user.value = response.props.user;
+        }
+    }
 </script>
 
 <template>
@@ -106,7 +112,10 @@
         <div class="container p-3">
             <ul class="nav nav-tabs flex-row justify-content-end" id="pills-tab" role="tablist" style="border: none;">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-modules-tab" data-bs-toggle="pill" data-bs-target="#pills-modules" type="button" role="tab" aria-controls="pills-modules" aria-selected="true">Modulos</button>
+                    <button class="nav-link active" id="pills-providers-tab" data-bs-toggle="pill" data-bs-target="#pills-providers" type="button" role="tab" aria-controls="pills-providers" aria-selected="true">Proveedores de Sessión</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="pills-modules-tab" data-bs-toggle="pill" data-bs-target="#pills-modules" type="button" role="tab" aria-controls="pills-modules" aria-selected="true">Modulos</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-model-filters-tab" data-bs-toggle="pill" data-bs-target="#pills-model-filters" type="button" role="tab" aria-controls="pills-model-filters" aria-selected="false">Filtros de Información</button>
@@ -115,7 +124,52 @@
         </div>
 
         <div class="tab-content container" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab">
+            <div class="tab-pane fade show active" id="pills-providers" role="tabpanel" aria-labelledby="pills-providers-tab">
+                <div class="row">
+                    <div class="col-lg-12 mt-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Proveedores</h5>
+                            <div>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddProviderModal">
+                                    <i class='bx bx-plus'></i>
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover m-0" id="modules_table">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="userProvider in user.user_providers" :key="userProvider.id">
+                                        <td>{{ userProvider.provider_name }}</td>
+                                        <td>
+                                            {{ userProvider.provider_email }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <DeleteButton
+                                                    :url="route('profile.removeProvider', userProvider.id)"
+                                                    item-name="Proveedor"
+                                                    :item-id="userProvider.id"
+                                                    modal-id="deleteProviderModal"
+                                                />
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab">
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
@@ -193,10 +247,10 @@
             </div>
         </div>
 
-        <DeleteModal />
+        <DeleteModal :callback="deleteProviderCallback"/>
     </mainDashboard>
 
-    <!-- Modal -->
+    <!-- Modal Cambiar Contraseña -->
     <div class="modal fade" id="ChangePasswordModal" tabindex="-1" aria-labelledby="ChangePasswordModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -224,6 +278,47 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                     <button type="submit" class="btn btn-primary" form="changePasswordForm">Guardar cambios</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Añadir Proveedor -->
+    <div class="modal fade" id="AddProviderModal" tabindex="-1" aria-labelledby="AddProviderModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="AddProviderModalLabel">Añadir Proveedor</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    <h5>Proveedores disponibles</h5>
+                    <hr>
+
+                    <div class="list-group">
+                        <a :href="route('socialAuth.redirect', 'google')"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class='bx bxl-google'></i>
+                                Google
+                            </span>
+                            <span class="badge bg-primary rounded-pill">Conectar</span>
+                        </a>
+                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class='bx bxl-facebook-square'></i>
+                                Facebook
+                            </span>
+                            <span class="badge bg-primary rounded-pill">Conectar</span>
+                        </button>
+                        <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                            <span>
+                                <i class='bx bxl-github'></i>
+                                GitHub
+                            </span>
+                            <span class="badge bg-primary rounded-pill">Conectar</span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
