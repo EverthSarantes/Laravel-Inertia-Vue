@@ -18,6 +18,21 @@ class UserProvider extends Model
         'provider_email',
     ];
 
+    protected $appends = [
+        'provider_icon',
+    ];
+
+    public function getProviderIconAttribute()
+    {
+        $icons = [
+            'google' => 'bx bxl-google',
+            'facebook' => 'bx bxl-facebook-square',
+            'github' => 'bx bxl-github',
+        ];
+
+        return $icons[$this->provider_name] ?? 'fas fa-user';
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

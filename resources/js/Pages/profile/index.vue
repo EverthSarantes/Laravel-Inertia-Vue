@@ -147,7 +147,12 @@
                                 </thead>
                                 <tbody>
                                     <tr v-for="userProvider in user.user_providers" :key="userProvider.id">
-                                        <td>{{ userProvider.provider_name }}</td>
+                                        <td>
+                                            <span class="d-flex align-items-center gap-1">
+                                                <i :class="userProvider.provider_icon"></i>
+                                                <span class="text-align-center">{{ userProvider.provider_name }}</span>
+                                            </span>
+                                        </td>
                                         <td>
                                             {{ userProvider.provider_email }}
                                         </td>
