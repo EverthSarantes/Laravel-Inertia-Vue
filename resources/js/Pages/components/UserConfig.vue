@@ -1,5 +1,6 @@
 <script setup>
     import { onMounted, onUnmounted, ref, watch } from 'vue';
+    import { Link } from '@inertiajs/vue3';
 
     defineProps({
         userName: String,
@@ -48,6 +49,10 @@
             {{ userName }}
         </button>
         <ul class="dropdown-menu" style="width: 250px;">
+            <li>
+                <Link :href="route('profile.index')" class="dropdown-item-text text-decoration-none"><strong>Perfil</strong></Link>
+            </li>
+            <li><hr class="dropdown-divider"></li>
             <li>
                 <span class="dropdown-item-text"><strong>Tema</strong></span>
             </li>

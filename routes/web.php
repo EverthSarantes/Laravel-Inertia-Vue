@@ -10,6 +10,7 @@ use App\Http\Controllers\AdministrationApp\PanelController as AdministrationAppP
 
 use App\Http\Controllers\AdministrationApp\Users\UsersController;
 use App\Http\Controllers\AdministrationApp\Users\UserTemplateController;
+use App\Http\Controllers\Profile\ProfilesController;
 
 use App\Http\Controllers\AdministrationApp\Backups\BackupsController;
 use App\Http\Controllers\AdministrationApp\Backups\SchedulesController;
@@ -47,6 +48,12 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         Route::get('panel', [PanelController::class, 'index'])->name('panel');
 
         Route::get('administration/panel', [AdministrationAppPanelController::class, 'index'])->name('administration_app.index');
+
+        Route::prefix('profile')->group(function () {
+            Route::get('index', [ProfilesController::class, 'index'])->name('profile.index');
+            Route::put('update', [ProfilesController::class, 'update'])->name('profile.update');
+            Route::put('changePassword', [ProfilesController::class, 'changePassword'])->name('profile.changePassword');
+        });
 
         Route::prefix('users')->middleware('CheckRoles:users')->group(function () {
             Route::get('index', [UsersController::class, 'index'])->name('users.index');
