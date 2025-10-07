@@ -94,6 +94,58 @@ class SocialAuthController extends Controller
                 ],
             ]);
         }
+        else if($state === 'login'){
+            try{
+                $socialite_user = Socialite::driver($provider)
+                ->stateless()->user();
+                
+                if(!$socialite_user || !$socialite_user->getId()){
+                    return redirect()->route('/')->with([
+                        'error' => [
+                            'message' => 'Error al obtener los datos del usuario de '.$provider,
+                            'type' => 'danger'
+                        ],
+                    ]);
+                }
+            }
+            catch(\Exception $e){
+
+                return redirect()->route('/')->with([
+                    'error' => [
+                        'message' => 'Error al autenticar con '.$provider,
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
+            // Find the user by the social account
+            $user_provider = UserProvider::where('provider_name', $provider)
+                ->where('provider_id', $socialite_user->getId())
+                ->first();
+
+            if(!$user_provider){
+                return redirect()->route('/')->with([
+                    'error' => [
+                        'message' => 'No se encontró una cuenta vinculada con '.$provider,
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
+            if(!$user_provider->user || !$user_provider->user->can_login){
+                return redirect()->route('/')->with([
+                    'error' => [
+                        'message' => 'El usuario asociado a esta cuenta de '.$provider.' no tiene permiso para iniciar sesión',
+                        'type' => 'danger'
+                    ],
+                ]);
+            }
+
+            // Log in the user
+            auth()->login($user_provider->user);
+            request()->session()->regenerate();
+            return redirect()->route('panel');
+        }
     }
 
     public function removeProvider(UserProvider $userProvider)
