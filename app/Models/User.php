@@ -114,6 +114,12 @@ class User extends Authenticatable
         return $this->hasMany(UserModelFilter::class);
     }
 
+    /**
+     * Retrieves the applications associated with the user.
+     * If the user is an administrator, all applications are returned.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection The collection of applications.
+     */
     public function userApps()
     {
         if($this->isAdmin()) {
