@@ -24,7 +24,7 @@
 <template>
     <PremonishHandler />
     <TemeHandler />
-    <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 550px;">
+    <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 620px;">
             <div class="bg-white shadow bg-body rounded d-flex flex-column align-items-center p-3">
                 <Logo :with="'300'" :class="'mt-5'"/>
                 <h2 class="mt-5 p-3 ps-0" id="title"><strong>Iniciar Sesión</strong></h2>
@@ -51,6 +51,17 @@
                             </div>
                         </div>
                     </form>
+                    <div class="mt-3">
+                        <h5 class="text-center">O Iniciar Sesión Con</h5>
+                        <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                            <a :href="route('socialAuth.redirect', {provider: 'google', state: 'login'})"
+                                class="btn btn-danger"><i class='bx bxl-google'></i></a>
+                            <a :href="route('socialAuth.redirect', {provider: 'facebook', state: 'login'})"
+                                class="btn btn-info"><i class='bx bxl-facebook-square'></i></a>
+                            <a :href="route('socialAuth.redirect', {provider: 'github', state: 'login'})"
+                                class="btn btn-dark"><i class='bx bxl-github'></i></a>
+                        </div>
+                    </div>
                 </div>
             </div>
     </div>
