@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Profile;
 use App\Http\Controllers\Controller;
 use Inertia\Inertia;
 use App\Http\Requests\BaseFormRequest;
+use App\Models\Configurations\Configuration;
 
 class ProfilesController extends Controller
 {
@@ -17,6 +18,7 @@ class ProfilesController extends Controller
                 'userModelFilters',
                 'userProviders',
             ]),
+            'global_use_social_login' => Configuration::where('key', 'global_use_social_login')->first()?->typed_value ?? false,
         ]);
     }
 

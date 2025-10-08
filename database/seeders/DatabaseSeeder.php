@@ -79,6 +79,7 @@ class DatabaseSeeder extends Seeder
 
         $configurations = [
             ['name' => 'Eliminar Temporalmente', 'key' => 'global_use_soft_deletes', 'value' => 'false', 'type' => 'boolean'],
+            ['name' => 'Permitir Sesiones de Redes Sociales', 'key' => 'global_use_social_login', 'value' => 'false', 'type' => 'boolean'],
         ];
 
         foreach ($configurations as $configuration) {

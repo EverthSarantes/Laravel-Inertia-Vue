@@ -12,6 +12,7 @@
     ];
 
     const user = ref(usePage().props.user);
+    const global_use_social_login = ref(usePage().props.global_use_social_login);
 
     const updateUserForm = useForm({
         name: user.value.name,
@@ -112,69 +113,19 @@
         <div class="container p-3">
             <ul class="nav nav-tabs flex-row justify-content-end" id="pills-tab" role="tablist" style="border: none;">
                 <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="pills-providers-tab" data-bs-toggle="pill" data-bs-target="#pills-providers" type="button" role="tab" aria-controls="pills-providers" aria-selected="true">Proveedores de Sessión</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-modules-tab" data-bs-toggle="pill" data-bs-target="#pills-modules" type="button" role="tab" aria-controls="pills-modules" aria-selected="true">Modulos</button>
+                    <button class="nav-link active" id="pills-modules-tab" data-bs-toggle="pill" data-bs-target="#pills-modules" type="button" role="tab" aria-controls="pills-modules" aria-selected="true">Modulos</button>
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-model-filters-tab" data-bs-toggle="pill" data-bs-target="#pills-model-filters" type="button" role="tab" aria-controls="pills-model-filters" aria-selected="false">Filtros de Información</button>
+                </li>
+                <li class="nav-item" role="presentation" v-if="global_use_social_login">
+                    <button class="nav-link" id="pills-providers-tab" data-bs-toggle="pill" data-bs-target="#pills-providers" type="button" role="tab" aria-controls="pills-providers" aria-selected="true">Proveedores de Sessión</button>
                 </li>
             </ul>
         </div>
 
         <div class="tab-content container" id="pills-tabContent">
-            <div class="tab-pane fade show active" id="pills-providers" role="tabpanel" aria-labelledby="pills-providers-tab">
-                <div class="row">
-                    <div class="col-lg-12 mt-2">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <h5>Proveedores</h5>
-                            <div>
-                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddProviderModal">
-                                    <i class='bx bx-plus'></i>
-                                </button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="table-responsive">
-                            <table class="table table-striped table-hover m-0" id="modules_table">
-                                <thead>
-                                    <tr class="table-primary">
-                                        <th>Nombre</th>
-                                        <th>Correo</th>
-                                        <th>Opciones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="userProvider in user.user_providers" :key="userProvider.id">
-                                        <td>
-                                            <span class="d-flex align-items-center gap-1">
-                                                <i :class="userProvider.provider_icon"></i>
-                                                <span class="text-align-center">{{ userProvider.provider_name }}</span>
-                                            </span>
-                                        </td>
-                                        <td>
-                                            {{ userProvider.provider_email }}
-                                        </td>
-                                        <td>
-                                            <div class="d-flex gap-1">
-                                                <DeleteButton
-                                                    :url="route('profile.removeProvider', userProvider.id)"
-                                                    item-name="Proveedor"
-                                                    :item-id="userProvider.id"
-                                                    modal-id="deleteProviderModal"
-                                                />
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="tab-pane fade" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab">
+            <div class="tab-pane fade show active" id="pills-modules" role="tabpanel" aria-labelledby="pills-modules-tab">
                 <div class="row">
                     <div class="col-lg-12 mt-2">
                         <div class="d-flex justify-content-between align-items-center">
@@ -242,6 +193,56 @@
                                             <span v-if="userModelFilter.comparison_type === 'user_own'">
                                                 Pertenece al usuario
                                             </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tab-pane fade" id="pills-providers" role="tabpanel" aria-labelledby="pills-providers-tab" v-if="global_use_social_login">
+                <div class="row">
+                    <div class="col-lg-12 mt-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <h5>Proveedores</h5>
+                            <div>
+                                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddProviderModal">
+                                    <i class='bx bx-plus'></i>
+                                </button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover m-0" id="modules_table">
+                                <thead>
+                                    <tr class="table-primary">
+                                        <th>Nombre</th>
+                                        <th>Correo</th>
+                                        <th>Opciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="userProvider in user.user_providers" :key="userProvider.id">
+                                        <td>
+                                            <span class="d-flex align-items-center gap-1">
+                                                <i :class="userProvider.provider_icon"></i>
+                                                <span class="text-align-center">{{ userProvider.provider_name }}</span>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            {{ userProvider.provider_email }}
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1">
+                                                <DeleteButton
+                                                    :url="route('profile.removeProvider', userProvider.id)"
+                                                    item-name="Proveedor"
+                                                    :item-id="userProvider.id"
+                                                    modal-id="deleteProviderModal"
+                                                />
+                                            </div>
                                         </td>
                                     </tr>
                                 </tbody>

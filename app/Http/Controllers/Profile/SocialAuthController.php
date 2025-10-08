@@ -4,14 +4,29 @@ namespace App\Http\Controllers\Profile;
 
 use App\Http\Controllers\Controller;
 use Laravel\Socialite\Facades\Socialite;
-use Inertia\Inertia;
-use App\Http\Requests\BaseFormRequest;
+use App\Models\Configurations\Configuration;
 use App\Models\Users\UserProvider;
 
 class SocialAuthController extends Controller
 {
+    protected $global_use_social_login;
+
+    public function __construct()
+    {
+        $this->global_use_social_login = Configuration::where('key', 'global_use_social_login')->first()?->typed_value ?? null;
+    }
+
     public function redirect($provider, $state = 'link')
     {
+        if(!$this->global_use_social_login){
+            return redirect()->route('profile.index')->with([
+                'message' => [
+                    'message' => 'El inicio de sesión con redes sociales no está habilitado.',
+                    'type' => 'danger'
+                ],
+            ]);
+        }
+
         return Socialite::driver($provider)
         ->stateless()
         ->with(['state' => $state])
@@ -20,6 +35,15 @@ class SocialAuthController extends Controller
 
     public function callback($provider)
     {
+        if(!$this->global_use_social_login){
+            return redirect()->route('profile.index')->with([
+                'message' => [
+                    'message' => 'El inicio de sesión con redes sociales no está habilitado.',
+                    'type' => 'danger'
+                ],
+            ]);
+        }
+
         $state = request('state');
 
         if($state === 'link'){
@@ -150,6 +174,15 @@ class SocialAuthController extends Controller
 
     public function removeProvider(UserProvider $userProvider)
     {
+        if(!$this->global_use_social_login){
+            return redirect()->route('profile.index')->with([
+                'message' => [
+                    'message' => 'El inicio de sesión con redes sociales no está habilitado.',
+                    'type' => 'danger'
+                ],
+            ]);
+        }
+
         $user = auth()->user();
 
         if(!$user){
