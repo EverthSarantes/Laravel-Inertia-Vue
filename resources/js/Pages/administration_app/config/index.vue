@@ -13,7 +13,6 @@
     ];
 
     const configs = ref(usePage().props.configurations);
-    console.log(configs.value);
 
     function openUpdateModal(config) {
         updateConfigForm.id = config.id;

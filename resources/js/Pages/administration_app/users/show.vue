@@ -147,7 +147,6 @@
             } else {
                 selected_function.value = null;
             }
-            console.log(selected_function.value);
         }
     }
 
