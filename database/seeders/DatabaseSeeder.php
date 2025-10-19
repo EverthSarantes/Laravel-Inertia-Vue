@@ -56,11 +56,19 @@ class DatabaseSeeder extends Seeder
                 'show_in_menu' => true,
             ],
             [
+                'name' => 'Reportes',
+                'internal_name' => 'reports',
+                'access_route_name' => 'reports.index',
+                'icon' => 'bx bx-bar-chart-alt-2 nav_icon',
+                'order' => 3,
+                'show_in_menu' => true,
+            ],
+            [
                 'name' => 'Configuración',
                 'internal_name' => 'config',
                 'access_route_name' => 'config.index',
                 'icon' => 'bx bx-cog nav_icon',
-                'order' => 3,
+                'order' => 4,
                 'show_in_menu' => true,
             ],
         ];
