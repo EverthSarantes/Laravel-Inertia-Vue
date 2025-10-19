@@ -17,6 +17,7 @@ use App\Http\Controllers\AdministrationApp\Backups\BackupsController;
 use App\Http\Controllers\AdministrationApp\Backups\SchedulesController;
 
 use App\Http\Controllers\AdministrationApp\Config\ConfigController;
+use App\Http\Controllers\AdministrationApp\Reports\ReportsController;
 use App\Http\Controllers\AdministrationApp\Config\LogsController;
 
 use App\Http\Controllers\Api\SearchController;
@@ -94,6 +95,10 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
             Route::prefix('schedules')->group(function () {
                 Route::put('update', [SchedulesController::class, 'update'])->name('backups.schedules.update');
             });
+        });
+
+        Route::prefix('reports')->middleware('CheckRoles:reports')->group(function () {
+            Route::get('index', [ReportsController::class, 'index'])->name('reports.index');
         });
 
         Route::prefix('configurations')->middleware('CheckRoles:config')->group(function () {
