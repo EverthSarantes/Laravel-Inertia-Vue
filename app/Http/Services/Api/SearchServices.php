@@ -205,6 +205,10 @@ class SearchServices
 
         foreach ($model::$morphable_fiels as $field => $morphable_name) {
             $data->map(function ($item) use ($field, $morphable_name, $model) {
+                if (!isset($model::$$morphable_name[$item->$field])) {
+                    return $item;
+                }
+
                 $item->$field = $model::$$morphable_name[$item->$field];
                 return $item;
             });
