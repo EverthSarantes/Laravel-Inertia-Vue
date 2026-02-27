@@ -5,6 +5,8 @@
 <script setup>
     import { ref, onMounted, watch, onUnmounted } from 'vue';
     import { Link } from '@inertiajs/vue3';
+    import FormattedDateInput from './accounting/FormattedDateInput.vue';
+    import FormattedDate from './accounting/FormattedDate.vue'; 
 
     const props = defineProps({
         model: Object,
@@ -18,12 +20,16 @@
         defaultOptions: {
             type: Object,
             default: null,
-        }
+        },
+        defaultOrderByField: {
+            type: String,
+            default: 'created_at',
+        },
     });
 
     const tableData = ref([]);
     const pagination = ref(20);
-    const orderByField = ref('created_at');
+    const orderByField = ref(props.defaultOrderByField);
     const orderByDirection = ref('asc');
     const showSoftDeleted = ref(false);
 
@@ -144,7 +150,9 @@
                     <label class="input-group-text" :for="'orderByField_' + id">Ordenar Por</label>
                     <select class="form-control" v-model="orderByField" :id="'orderByField_' + id">
                         <option value="created_at">Fecha de Creación</option>
-                        <option v-for="field in props.model.table_fields_searchable" :key="field" :value="field">{{ props.model.table_fields_names[field] }}</option>
+                        <template v-for="field in props.model.table_fields_searchable" :key="field">
+                            <option :value="field" v-if="props.model.table_fields_names[field]">{{ props.model.table_fields_names[field] }}</option>
+                        </template>
                     </select>
                     <select class="form-control" v-model="orderByDirection" :id="'orderByDirection_' + id" aria-label="Dirección de ordenamiento">
                         <option value="asc">Ascendente</option>
@@ -230,7 +238,13 @@
                                 <div class="col-lg">
                                     <div class="input-group mb-3" :class="{ 'input-group-sm': small }">
                                         <span class="input-group-text"><i class='bx bx-search'></i></span>
-                                        <input type="search" class="form-control" placeholder="Buscar" v-model="option.search" autocomplete="off">
+
+                                        <FormattedDateInput 
+                                            v-if="props.model.table_fields_types && props.model.table_fields_types[option.field] === 'formatted_date'"
+                                            v-model:value="option.search" 
+                                            placeholder="Buscar" :attrs="{ class: 'form-control rounded-start-0' }"/>
+
+                                        <input v-else type="search" class="form-control" placeholder="Buscar" v-model="option.search" autocomplete="off">
                                     </div>
                                 </div>
                                 <div class="col-lg-2">
@@ -264,7 +278,11 @@
                 <tbody>
                     <tr v-for="(row, rowIndex) in tableData" :key="rowIndex" :class="{ 'table-info': row.deleted_at }">
                         <td v-for="(field, fieldIndex) in props.model.table_fields" :key="fieldIndex">
-                            {{ row[field] }}
+                            <FormattedDate v-if="props.model.table_fields_types && props.model.table_fields_types[field] === 'formatted_date'" :date="row[field]" />
+
+                            <template v-else>
+                                {{ row[field] }}
+                            </template>
                         </td>
                         
                         <td v-if="!row.deleted_at">
@@ -296,10 +314,19 @@
                                     )"
                                         v-html="option.inner"
                                         :class="{'btn-sm': small}" aria-label="ver registro"></a>
-                                    </template>
-                                </div>
+                                </template>
+                            </div>
                         </td>
-                        <td v-else></td>
+                        <td v-else>
+                            <!-- <div class="d-flex justify-content-center gap-1">
+                                <button class="btn btn-success" :class="{ 'btn-sm': small }" aria-label="restaurar registro">
+                                    <i class="bx bx-recycle"></i>
+                                </button>
+                                <button class="btn btn-danger" :class="{ 'btn-sm': small }" aria-label="eliminar registro completamente">
+                                    <i class="bx bx-trash"></i>
+                                </button>
+                            </div> -->
+                        </td>
 
                     </tr>
                     <tr v-if="tableData.length === 0">
