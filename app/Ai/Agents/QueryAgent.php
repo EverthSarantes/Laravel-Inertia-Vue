@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Cache;
 use Stringable;
 use App\Ai\Tools\GetModelData;
+use App\Ai\Tools\ExecuteQuery;
+use App\Ai\Tools\GetQueryBuilderDescription;
 use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Provider;
 use Laravel\Ai\Enums\Lab;
@@ -94,6 +96,8 @@ class QueryAgent implements Agent, Conversational, HasTools
     {
         return [
             new GetModelData,
+            new GetQueryBuilderDescription,
+            new ExecuteQuery,
         ];
     }
 }
