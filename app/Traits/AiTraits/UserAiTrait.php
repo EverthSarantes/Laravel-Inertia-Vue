@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Traits\IaTraits;
+namespace App\Traits\AiTraits;
 
-trait UserIaTrait
+trait UserAiTrait
 {
-    use HasIaData;
+    use HasAiData;
 
     public static string $description = '
         Este modelo representa a los usuarios del sistema.

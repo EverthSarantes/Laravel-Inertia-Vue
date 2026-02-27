@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Traits\IaTraits;
+namespace App\Traits\AiTraits;
 
-trait HasIaData
+trait HasAiData
 {
     /**
      * Retrieves static data properties defined in the implementing class.
      *
      * @return array<string, mixed> An associative array of static data properties.
      */
-    public static function getIaData()
+    public static function getAiData()
     {
         return [
             'description' => static::$description ?? null,

@@ -36,7 +36,7 @@ class GetModelData implements Tool
             $model = config('model')[$model] ?? null;
             if (class_exists($model)) {
                 $traits = class_uses_recursive($model);
-                if (in_array(\App\Traits\IaTraits\HasIaData::class, $traits)) {
+                if (in_array(\App\Traits\AiTraits\HasAiData::class, $traits)) {
                     $result[$model] = [
                         'description' => $model::$description ?? 'No description available.',
                         'fields' => $model::$fields ?? [],

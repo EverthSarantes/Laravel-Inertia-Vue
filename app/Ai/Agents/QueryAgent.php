@@ -23,7 +23,7 @@ class QueryAgent implements Agent, Conversational, HasTools
 
     protected function getAvailableModels(): array
     {
-        return Cache::rememberForever('ia_available_models', function () {
+        return Cache::rememberForever('ai_available_models', function () {
             $models = [];
             $path = app_path('Models');
 
@@ -40,7 +40,7 @@ class QueryAgent implements Agent, Conversational, HasTools
 
                 if (class_exists($class)) {
                     $traits = class_uses_recursive($class);
-                    if (in_array(\App\Traits\IaTraits\HasIaData::class, $traits)) {
+                    if (in_array(\App\Traits\AiTraits\HasAiData::class, $traits)) {
                         $models[] = $class;
                     }
                 }
