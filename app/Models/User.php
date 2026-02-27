@@ -16,6 +16,7 @@ use App\Traits\TableFormData\User as TableFormDataUser;
 use App\Models\Users\UserModelFilter;
 use App\Traits\ModelFilters\HasUserModelFilters;
 use App\Traits\ModelSoftDeleteTrait;
+use App\Traits\IaTraits\UserIaTrait;
 
 /**
  * Class User
@@ -24,7 +25,9 @@ use App\Traits\ModelSoftDeleteTrait;
  */
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, TableFormDataUser, HasUserModelFilters, ModelSoftDeleteTrait;
+    use HasFactory, Notifiable, 
+        TableFormDataUser, HasUserModelFilters,
+        ModelSoftDeleteTrait, UserIaTrait;
 
     /**
      * @var array<int, string> The attributes that are mass assignable.
