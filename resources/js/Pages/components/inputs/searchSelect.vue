@@ -3,7 +3,7 @@
 // The component fetches data from an API based on the search query and updates the options list.
 
 <script setup>
-    import { ref, watch, onMounted } from 'vue';
+    import { ref, watch, onMounted, onUnmounted } from 'vue';
 
     const props = defineProps({
         name: { type: String, required: true },
@@ -15,6 +15,12 @@
             type: Object,
             default: null
         },
+        extraQueryParameter: {
+            type: [String, Boolean, Number],
+            default: null
+        },
+        showLabel: { type: Boolean, default: true },
+        withRelations: { type: Array, default: [] },
     });
 
     const searchQuery = ref('');
@@ -26,6 +32,7 @@
     const optionSelected = ref(false);
 
     const select_value = defineModel('select_value', { default: null });
+    const select_data = defineModel('select_data', { default: null });
 
     function debounce(fn, delay) {
         let timeout;
@@ -47,7 +54,16 @@
         }
 
         isLoading.value = true;
-        const url = `${api_url}select/${props.model}/${query}`;
+        let url = `${api_url}select/${props.model}/${query}`;
+        if (props.extraQueryParameter) {
+            url += `/${props.extraQueryParameter}`;
+        }
+
+        if (props.withRelations.length > 0) {
+            for (const relation of props.withRelations) {
+                url += (url.includes('?') ? '&' : '?') + `withRelations[]=${relation}`;
+            }
+        }
 
         try {
             const response = await fetch(url);
@@ -72,12 +88,14 @@
     });
 
     function selectOption(option) {
+        select_data.value = option;
         skipWatch.value = true;
         searchQuery.value = option.name;
         select_value.value = option.id;
         optionSelected.value = true;
         options.value = [];
     }
+    defineExpose({ selectOption });
 
     function handleEnter() {
         if (highlightedIndex.value >= 0 && highlightedIndex.value < options.value.length) {
@@ -125,17 +143,46 @@
     }
 
     onMounted(() => {
+        window.addEventListener('resize', updateDropdownPosition);
         if (props.defaultValue) {
             options.value = [props.defaultValue];
             lastOptions.value = [props.defaultValue];
             selectOption(props.defaultValue);
         }
     });
+
+    onUnmounted(() => {
+        window.removeEventListener('resize', updateDropdownPosition);
+    });
+
+    const inputRef = ref(null);
+    const listRef = ref(null);
+    const dropdownStyle = ref({});
+
+    function updateDropdownPosition() {
+        if (inputRef.value) {
+            const rect = inputRef.value.getBoundingClientRect();
+            dropdownStyle.value = {
+                position: 'fixed',
+                top: `${rect.bottom}px`,
+                left: `${rect.left}px`,
+                width: `${rect.width}px`,
+                overflowY: 'auto',
+                maxHeight: '200px'
+            };
+        }
+    }
+
+    watch(options, (newOptions) => {
+        if (newOptions.length > 0) {
+            updateDropdownPosition();
+        }
+    });
 </script>
 
 <template>
     <div class="mb-3 position-relative">
-        <label class="form-label">
+        <label class="form-label" v-if="showLabel">
             {{ name }} <span class="text-danger" v-if="required">*</span>
         </label>
         <input type="text" class="form-control" v-model="searchQuery" autocomplete="off"
@@ -146,10 +193,17 @@
             @focus="searchSelect(searchQuery)"
             @blur="clearOptions"
             @input="setOptionOnChange"
+            ref="inputRef"
         />
 
         <!-- Lista de opciones -->
-        <ul class="dropdown-menu w-100" style="max-height: 150px; overflow-y: auto;" :class="{'show': options.length > 0}">
+        <ul class="dropdown-menu" 
+            :style="dropdownStyle"
+            :class="{
+                'show': options.length > 0,
+            }"
+            ref="listRef"
+            >
             <li
                 v-for="option in options"
                 :key="option.id"
