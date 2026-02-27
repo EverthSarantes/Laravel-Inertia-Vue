@@ -30,7 +30,9 @@
                                     <img :src="app.icon" class="card-img-top" alt="placeholder">
                                     <div class="card-body">
                                         <span class="card-title fs-4">{{ app.name }}</span><br>
-                                        <Link :href="route(app.access_route_name)" class="btn btn-primary" :aria-label="'Ir a ' + app.name">Entrar <i class='bx bx-right-arrow-circle'></i></Link>
+                                        <Link :href="route().has(app.access_route_name) ? route(app.access_route_name) : '#'" class="btn btn-primary" :aria-label="'Ir a ' + app.name">
+                                            Entrar <i class='bx bx-right-arrow-circle'></i>
+                                        </Link>
                                     </div>
                                 </div>
                             </div>

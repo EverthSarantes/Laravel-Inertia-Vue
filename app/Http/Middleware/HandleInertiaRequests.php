@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -47,7 +48,7 @@ class HandleInertiaRequests extends Middleware
                 return [
                     'name' => $module->name,
                     'icon' => $module->icon,
-                    'route' => route($module->access_route_name, [], false),
+                    'route' => Route::has($module->access_route_name) ? route($module->access_route_name, [], false) : null,
                     'order' => $module->order,
                     'app' => $module->app->internal_name,
                 ];
