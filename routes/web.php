@@ -24,6 +24,8 @@ use App\Http\Controllers\Api\ModelFilters\ModelFiltersController;
 
 use App\Http\Controllers\Exports\PrintController;
 
+use App\Http\Controllers\AiApp\PanelController as AiAppPanelController;
+
 Route::middleware('HandleInertiaRequests')->group(function () {
     Route::get('/', function () {
         if (auth()->check()) {
@@ -52,6 +54,7 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         Route::get('panel', [PanelController::class, 'index'])->name('panel');
 
         Route::get('administration/panel', [AdministrationAppPanelController::class, 'index'])->name('administration_app.index');
+        Route::get('ai/panel', [AiAppPanelController::class, 'index'])->name('ai_assistant_app.index');
 
         Route::prefix('profile')->group(function () {
             Route::get('index', [ProfilesController::class, 'index'])->name('profile.index');
