@@ -160,13 +160,21 @@ class SearchServices
      * @param string $search
      * @return \Illuminate\Support\Collection The search results.
      */
-    public static function searchSelect(string $model, string $search)
+    public static function searchSelect(string $model, string $search, ?string $extra_query_parameter = null, $withRelations = [])
     {
         $query = $model::query();
 
         if($search != "*")
         {
             $query->where($model::$name_field, 'like', "%$search%");
+        }
+
+        if($extra_query_parameter) {
+            self::loadExtraQuery($model, $query, $extra_query_parameter);
+        }
+
+        if(!empty($withRelations)) {
+            $query->with($withRelations);
         }
 
         $data = $query->get();

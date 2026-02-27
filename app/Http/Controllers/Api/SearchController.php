@@ -79,7 +79,7 @@ class SearchController extends Controller
      * @param string $search
      * @return \Illuminate\Http\JsonResponse
      */
-    public function searchSelect(string $model, string $search)
+    public function searchSelect(string $model, string $search, ?string $extraQueryParameter = null)
     {
         $model = config('model')[$model];
 
@@ -104,7 +104,7 @@ class SearchController extends Controller
             ], 403);
         }
 
-        $data = SearchServices::searchSelect($model, $search);
+        $data = SearchServices::searchSelect($model, $search, $extraQueryParameter, $request->withRelations ?? []);
 
         return response()->json([
             'message' => 'Búsqueda realizada con éxito',

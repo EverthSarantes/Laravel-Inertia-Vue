@@ -109,7 +109,7 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
 
     Route::prefix('api')->group(function () {
         Route::get('search/{model}', [SearchController::class, 'search']);
-        Route::get('select/{model}/{search}', [SearchController::class, 'searchSelect']);
+        Route::get('select/{model}/{search}/{extra_query_parameter?}', [SearchController::class, 'searchSelect']);
 
         Route::prefix('modelFilters')->middleware('CheckRoles:users')->group(function () {
             Route::get('getAvailableFilterByModel/{model}', [ModelFiltersController::class, 'getAvailableFilterByModel'])->name('api.modelFilters.getAvailableFilterByModel');
