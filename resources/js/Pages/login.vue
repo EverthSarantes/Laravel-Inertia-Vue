@@ -3,7 +3,7 @@
 // The template includes a form for entering username and password, styled with a centered layout.
 <script setup>
     import { useForm } from '@inertiajs/vue3';
-    import { computed } from 'vue';
+    import { computed, ref } from 'vue';
     import { usePage } from '@inertiajs/vue3';
     import Logo from './components/Logo.vue';
     import PremonishHandler from './components/accesibility/PremonishHandler.vue';
@@ -15,6 +15,7 @@
     });
 
     const errorMessage = computed(() => usePage().props.flash.error?.message ?? '');
+    const global_use_social_login = ref(usePage().props.global_use_social_login);
 
     const submit = () => {
         form.post('/login');
@@ -51,7 +52,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="mt-3">
+                    <div class="mt-3" v-if="global_use_social_login">
                         <h5 class="text-center">O Iniciar Sesión Con</h5>
                         <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
                             <a :href="route('socialAuth.redirect', {provider: 'google', state: 'login'})"
