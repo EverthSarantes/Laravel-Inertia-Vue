@@ -38,6 +38,15 @@ class DatabaseSeeder extends Seeder
             'show_in_menu' => true,
         ]);
 
+        $ai = App::create([
+            'name' => 'Asistente IA',
+            'internal_name' => 'ai_assistant_app',
+            'access_route_name' => 'ai_assistant_app.index',
+            'icon' => 'https://placehold.co/600x400',
+            'order' => 2,
+            'show_in_menu' => true,
+        ]);
+
         $modules = [
             [
                 'name' => 'Usuarios',
@@ -46,6 +55,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'bx bx-group nav_icon',
                 'order' => 1,
                 'show_in_menu' => true,
+                'app_id' => $app->id,
             ],
             [
                 'name' => 'Respaldos',
@@ -54,6 +64,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'bx bx-save nav_icon',
                 'order' => 2,
                 'show_in_menu' => true,
+                'app_id' => $app->id,
             ],
             [
                 'name' => 'Configuración',
@@ -62,6 +73,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'bx bx-cog nav_icon',
                 'order' => 3,
                 'show_in_menu' => true,
+                'app_id' => $app->id,
             ],
         ];
 
@@ -73,7 +85,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => $module['icon'],
                 'order' => $module['order'],
                 'show_in_menu' => $module['show_in_menu'],
-                'app_id' => $app->id,
+                'app_id' => $module['app_id'],
             ]);
         }
 
