@@ -30,7 +30,7 @@
     const tableData = ref([]);
     const pagination = ref(20);
     const orderByField = ref(props.defaultOrderByField);
-    const orderByDirection = ref('asc');
+    const orderByDirection = ref('desc');
     const showSoftDeleted = ref(false);
 
     const searchOptions = ref([
