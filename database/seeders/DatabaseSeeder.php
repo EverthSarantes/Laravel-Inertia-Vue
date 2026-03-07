@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
                 'icon' => 'bx bx-bar-chart-alt-2 nav_icon',
                 'order' => 3,
                 'show_in_menu' => true,
+                'app_id' => $app->id,
             ],
             [
                 'name' => 'Configuración',
