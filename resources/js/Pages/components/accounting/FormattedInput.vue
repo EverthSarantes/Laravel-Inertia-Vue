@@ -1,60 +1,99 @@
 <script setup>
-import { ref, watch } from 'vue';
+import { ref, watch, computed } from 'vue';
 
 const props = defineProps({
     field: Object,
-    locale: {
-        type: String,
-        default: 'en-US',
+    showLabel: {
+        type: Boolean,
+        default: true,
     },
-    currency: {
+    decimal_separator: {
         type: String,
-        default: 'USD',
+        default: '.',
+    },
+    currency_symbol: {
+        type: String,
+        default: 'NIO',
+    },
+    decimal_digits: {
+        type: Number,
+        default: 2,
     },
 });
 
-const value = defineModel('value');
+const propsLocale = computed(() => {
+    if( props.decimal_separator === ',' ) {
+        return 'es-VE';
+    } else {
+        return 'es-MX';
+    }
+});
 
+const value = defineModel('value');
 const formattedValue = ref('');
+const isFocused = ref(false);
 
 const formatValue = (val) => {
     if (val === null || val === undefined || val === '') return '';
-    return new Intl.NumberFormat(props.locale, {
+    const num = parseFloat(val); 
+    if (isNaN(num)) return '';
+
+    return new Intl.NumberFormat(propsLocale.value, {
         style: 'currency',
-        currency: props.currency
-    }).format(val);
+        currencyDisplay: 'narrowSymbol',
+        currency: props.currency_symbol,
+        minimumFractionDigits: props.decimal_digits,
+        maximumFractionDigits: props.decimal_digits,
+    }).format(num);
 };
 
 const parseValue = (val) => {
-    if (val === null || val === undefined || val === '') return '';
-    return parseFloat(val.replace(/[^0-9.-]+/g, '')) || 0;
+    if (val === null || val === undefined || val === '') return 0;
+    return parseFloat(val.toString().replace(/[^0-9.-]+/g, '')) || 0;
 };
 
-watch(
-    () => value,
-    (newValue) => {
-        formattedValue.value = formatValue(newValue.value);
-    },
-    { immediate: true }
-);
+watch(value, (newValue) => {
+    if (isFocused.value && newValue != 0) {
+        return;
+    }
+    formattedValue.value = formatValue(newValue);
+}, { immediate: true });
 
 const handleInput = (event) => {
     const rawValue = parseValue(event.target.value);
     value.value = rawValue;
-    formattedValue.value = formatValue(rawValue);
+}
+
+const handleFocus = () => {
+    isFocused.value = true;
+}
+
+const handleBlur = () => {
+    isFocused.value = false;
+    formattedValue.value = formatValue(value.value);
 }
 </script>
 
 <template>
-    <div class="form-group col-md-6 mt-3">
-        <label :for="field.id + 'formatted'">
+    <div class="form-group mt-3">
+        <label :for="field.id + 'formatted'" v-if="showLabel">
             {{ field.label }}
             <span v-if="field.required" class="text-danger">*</span>
         </label>
 
-        <input type="text" :id="field.id + 'formatted'" class="form-control" :required="field.required"
-            :readonly="field.readonly" :placeholder="field.placeholder" :disabled="field.disabled"
-            :value="formattedValue" @input="handleInput" />
+        <input 
+            type="text" 
+            :id="field.id + 'formatted'" 
+            class="form-control" 
+            :required="field.required"
+            :readonly="field.readonly" 
+            :placeholder="field.placeholder" 
+            :disabled="field.disabled"
+            :value="formattedValue" 
+            @change="handleInput"
+            @focus="handleFocus"
+            @blur="handleBlur"
+        />
 
         <input type="hidden" :name="field.name" :value="value" />
     </div>

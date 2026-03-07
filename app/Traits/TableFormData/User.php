@@ -47,6 +47,16 @@ trait User
     ];
 
     /**
+     * @var array<string, string> Field types for the table.
+     */
+    public static $table_fields_types = [
+        'name' => 'text',
+        'email' => 'text',
+        'role' => 'text',
+        'can_login' => 'text',
+    ];
+
+    /**
      * @var array<string, string> Fields that can be morphed.
      */
     public static $morphable_fiels = [

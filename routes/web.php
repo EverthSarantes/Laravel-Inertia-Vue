@@ -30,7 +30,9 @@ Route::middleware('HandleInertiaRequests')->group(function () {
         if (auth()->check()) {
             return redirect()->route('panel');
         }
-        return Inertia::render('login');
+        return Inertia::render('login', [
+            'global_use_social_login' => App\Models\Configurations\Configuration::where('key', 'global_use_social_login')->first()?->typed_value ?? false,
+        ]);
     })->name('/');
     Route::post('login', [LoginController::class, 'login'])->name('login');
     Route::get('login', function () {
@@ -114,7 +116,7 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
 
     Route::prefix('api')->group(function () {
         Route::get('search/{model}', [SearchController::class, 'search']);
-        Route::get('select/{model}/{search}', [SearchController::class, 'searchSelect']);
+        Route::get('select/{model}/{search}/{extra_query_parameter?}', [SearchController::class, 'searchSelect']);
 
         Route::prefix('modelFilters')->middleware('CheckRoles:users')->group(function () {
             Route::get('getAvailableFilterByModel/{model}', [ModelFiltersController::class, 'getAvailableFilterByModel'])->name('api.modelFilters.getAvailableFilterByModel');

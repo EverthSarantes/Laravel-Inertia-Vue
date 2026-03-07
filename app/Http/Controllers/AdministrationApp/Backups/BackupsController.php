@@ -74,6 +74,6 @@ class BackupsController extends Controller
         $backup = new Backup();
         $path = $backup->download($name);
         
-        return response()->download($path)->deleteFileAfterSend(true);
+        return response()->download($path)->deleteFileAfterSend(false);
     }
 }

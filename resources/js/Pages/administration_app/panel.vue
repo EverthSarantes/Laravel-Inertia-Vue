@@ -3,16 +3,12 @@
 // The template includes a centered layout with a welcome message and application logo.
 <script setup>
 
-    import dashboard from '../layouts/dashboard.vue';
-    import { usePage, Link } from '@inertiajs/vue3';
-    import { computed } from 'vue';
-
-    const page = usePage();
-    const appName = computed(() => page.props.appName);
+import dashboard from '../layouts/dashboard.vue';
 
 </script>
 
 <template>
     <dashboard :appName="'administration_app'">
+
     </dashboard>
 </template>
