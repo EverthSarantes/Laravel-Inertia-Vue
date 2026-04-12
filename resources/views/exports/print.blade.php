@@ -1,11 +1,33 @@
 <!DOCTYPE html>
 <html lang="es">
 
+@php
+    $usePagedJs = isset($pageProperties['pagedjs']) && $pageProperties['pagedjs'] == true;
+    $hasBackground = isset($pageProperties['background']) && $pageProperties['background'] == true;
+    $openInNewTab = $pageProperties['openInNewTab'] ?? false;
+    $backgroundImage = $pageProperties['backgroundimage'] ?? '';
+
+    $pageSize = $pageProperties['size'] ?? 'letter';
+    $pageOrientation = $pageProperties['orientation'] ?? 'portrait';
+
+    $pageMargin = $pageProperties['margin'] ?? null;
+    $marginTop = $pageProperties['margintop'] ?? '3.8cm';
+    $marginBottom = $pageProperties['marginbottom'] ?? '1.5cm';
+    $marginLeft = $pageProperties['marginleft'] ?? '1.5cm';
+    $marginRight = $pageProperties['marginright'] ?? '1.5cm';
+
+    $contentPadding = $pageMargin
+        ? $pageMargin
+        : "$marginTop $marginRight $marginBottom $marginLeft";
+@endphp
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ $title }}</title>
-    <link href="/css/bootstrap.css" rel="stylesheet">
+    @if(isset($pageProperties['loadBootstrap']) && $pageProperties['loadBootstrap'] == true)
+        <link href="/css/bootstrap.css" rel="stylesheet">
+    @endif
     <style>
         * {
             margin: 0;
@@ -13,24 +35,60 @@
             box-sizing: border-box;
         }
 
-        br:not(.not-break) {
-            break-before: always;
+        @if(!$usePagedJs)
+            html,
+            body {
+                background: transparent;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .print-container {
+                position: relative;
+                isolation: isolate;
+            }
+
+            .print-page-background {
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                pointer-events: none;
+                background-repeat: no-repeat;
+                background-position: center top;
+                background-size: 100% 100%;
+            }
+
+            .print-content {
+                position: relative;
+                z-index: 1;
+                padding: {{ $contentPadding }};
+                -webkit-box-decoration-break: clone;
+                box-decoration-break: clone;
+            }
+        @endif
+
+        @page {
+            size: {{ $pageSize }} {{ $pageOrientation }};
+            @if(!$usePagedJs)
+                margin: 0;
+            @else
+                @if($pageMargin)
+                    margin: {{ $pageMargin }};
+                @else
+                    margin-top: {{ $marginTop }};
+                    margin-bottom: {{ $marginBottom }};
+                    margin-left: {{ $marginLeft }};
+                    margin-right: {{ $marginRight }};
+                @endif
+            @endif
         }
 
         @page {
-            size: {{ isset($pageProperties['size']) ? $pageProperties['size'] : 'letter' }} {{ isset($pageProperties['orientation']) ? $pageProperties['orientation'] : 'portrait' }};
-            margin-top: {{ isset($pageProperties['margin-top']) ? $pageProperties['margin-top'] : '3.8cm' }};
-            margin-bottom: {{ isset($pageProperties['margin-bottom']) ? $pageProperties['margin-bottom'] : '1.5cm' }};
-            margin-left: {{ isset($pageProperties['margin-left']) ? $pageProperties['margin-left'] : '1.5cm' }};
-            margin-right: {{ isset($pageProperties['margin-right']) ? $pageProperties['margin-right'] : '1.5cm' }};
-            {{ isset($pageProperties['margin']) ? 'margin: ' . $pageProperties['margin'] : '' }}
-        }
-
-        @page {
-            @if(isset($pageProperties['background']) && $pageProperties['background'] == true)
-                background-image: url('');
+            @if($hasBackground && $usePagedJs)
+                background-image: url('{{ $backgroundImage }}');
                 background-size: 100% auto;
                 background-repeat: no-repeat;
+                background-position: center center;
             @endif
 
             @if(isset($pageProperties['pagecounter']) && $pageProperties['pagecounter'] == true)
@@ -46,15 +104,26 @@
 </head>
 
 <body class="print-container" id="print-container">
-    @if($params)
-        @include($view_name, $params)
-    @else
-        @include($view_name)
+    @if($hasBackground && !$usePagedJs)
+        <div
+            class="print-page-background"
+            aria-hidden="true"
+            style="background-image: url('{{ $backgroundImage }}');"
+        ></div>
     @endif
+
+    <div class="print-content">
+        @if($params)
+            @include($view_name, $params)
+        @else
+            @include($view_name)
+        @endif
+    </div>
 </body>
 
 <script>
-    window.loadPagedJs = {{isset($pageProperties['pagedjs']) && $pageProperties['pagedjs'] == true ? true : false}};
+    window.loadPagedJs = @json($usePagedJs);
+    window.openInNewTab = @json($openInNewTab);
 </script>
 
 <script src="/js/exports/print.js"></script>
