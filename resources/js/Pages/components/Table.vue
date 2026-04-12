@@ -63,7 +63,6 @@
 
     function searchData(url) {
         if (!url) return;
-        closeToast();
         tableData.value = [];
 
         makeRequest(url, 'GET', (response) => {
