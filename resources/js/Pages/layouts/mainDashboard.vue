@@ -9,6 +9,7 @@
     import PremonishHandler from '../components/accesibility/PremonishHandler.vue';
     import TemeHandler from '../components/accesibility/TemeHandler.vue';
     import UserConfig from '../components/UserConfig.vue';
+    import PersistentTabs from '../components/PersistentTabs.vue';
 
     const page = usePage();
     const userName = computed(() => page.props.userName);
@@ -44,6 +45,7 @@
 <template>
     <PremonishHandler />
     <TemeHandler />
+    <PersistentTabs />
     <header class="header d-flex justify-content-end" id="header">
         <UserConfig :userName="userName" />
     </header>

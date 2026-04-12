@@ -9,6 +9,7 @@
     import PremonishHandler from '../components/accesibility/PremonishHandler.vue';
     import TemeHandler from '../components/accesibility/TemeHandler.vue';
     import UserConfig from '../components/UserConfig.vue';
+    import PersistentTabs from '../components/PersistentTabs.vue';
 
     const props = defineProps({
         appName: String,
@@ -54,6 +55,7 @@
 <template>
     <PremonishHandler />
     <TemeHandler />
+    <PersistentTabs />
     <header class="header d-flex justify-content-end" id="header">
         <UserConfig :userName="userName" />
     </header>
