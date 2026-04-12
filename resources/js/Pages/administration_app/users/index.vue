@@ -212,7 +212,7 @@
                         <h5>Usuarios</h5>
                         <div class="d-flex gap-1">
                             <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
-                            <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{}"/>
+                            <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true, 'openInNewTab': true, 'loadBootstrap': true}" :params="{}"/>
                             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal" aria-label="Agregar Usuario">
                                 <i class='bx bx-plus'></i>
                             </button>

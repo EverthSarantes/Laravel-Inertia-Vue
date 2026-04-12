@@ -237,7 +237,7 @@
                                 </div>
                                 <div class="d-flex justify-content-end gap-1">
                                     <ExcelExport :filename="user.name" :target="'modules_table'"/>
-                                    <Print :view-name="'users.print.show'" :title="user.name" :page-properties="{'pagedjs': true, 'pagecounter': true}" :params="{user_id: user.id}"/>
+                                    <Print :view-name="'users.print.show'" :title="user.name" :page-properties="{'pagedjs': true, 'pagecounter': true, 'openInNewTab': true, 'loadBootstrap': true}" :params="{user_id: user.id}"/>
                                 </div>
                             </div>
                         </div>
