@@ -25,7 +25,7 @@ class QueryAgent implements Agent, Conversational, HasTools
 
     protected function getAvailableModels(): array
     {
-        return Cache::rememberForever('ai_available_models', function () {
+        return Cache::remember('ai_available_models', 60, function () {
             $models = [];
             $path = app_path('Models');
 
