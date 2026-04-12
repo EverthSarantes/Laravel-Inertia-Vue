@@ -149,12 +149,12 @@ class UserServices
      */
     public static function updateUser($request, User $user)
     {
-        $user->name = $request['name'];
-        $can_login = $request['can_login'] == 1 ? true : false;
+        $user->name = $request->name;
+        $can_login = $request->can_login == 1 ? true : false;
         $user->can_login = $can_login ?? $user->can_login;
         if($request->password !== null)
         {
-            $user->password = bcrypt($request['password']);
+            $user->password = bcrypt($request->password);
         }
         
         if($user->save())
