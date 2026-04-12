@@ -25,6 +25,7 @@ use App\Http\Controllers\Api\ModelFilters\ModelFiltersController;
 use App\Http\Controllers\Exports\PrintController;
 
 use App\Http\Controllers\AiApp\PanelController as AiAppPanelController;
+use App\Http\Controllers\AiApp\Reports\AiReportsController;
 
 Route::middleware('HandleInertiaRequests')->group(function () {
     Route::get('/', function () {
@@ -54,7 +55,6 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         Route::get('panel', [PanelController::class, 'index'])->name('panel');
 
         Route::get('administration/panel', [AdministrationAppPanelController::class, 'index'])->name('administration_app.index');
-        Route::get('ai/panel', [AiAppPanelController::class, 'index'])->name('ai_assistant_app.index');
 
         Route::prefix('profile')->group(function () {
             Route::get('index', [ProfilesController::class, 'index'])->name('profile.index');
@@ -109,6 +109,11 @@ Route::middleware(['auth', 'CheckCanLogin'])->group(function () {
         Route::prefix('logs')->middleware('CheckRoles:config')->group(function () {
             Route::get('index', [LogsController::class, 'index'])->name('logs.index');
             Route::delete('cleanUserLogs', [LogsController::class, 'cleanUserLogs'])->name('logs.cleanUserLogs');
+        });
+
+        Route::get('ai/panel', [AiAppPanelController::class, 'index'])->name('ai_assistant_app.index');
+        Route::prefix('ai')->group(function () {
+            Route::get('reports/querys', [AiReportsController::class, 'querys'])->name('ai_reports.index');
         });
     });
 
