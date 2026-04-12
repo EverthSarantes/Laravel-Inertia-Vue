@@ -24,6 +24,7 @@ a {
 }
 
 body{
+    margin: calc(var(--header-height) + 1rem) 0 0 0;
     padding-left: calc(var(--nav-width));
 }
 
@@ -136,11 +137,6 @@ body{
 
     .nav_module_name{
         display: block;
-    }
-
-    body {
-        margin: calc(var(--header-height) + 1rem) 0 0 0;
-        padding-left: calc(var(--nav-width));
     }
 
     .header {
