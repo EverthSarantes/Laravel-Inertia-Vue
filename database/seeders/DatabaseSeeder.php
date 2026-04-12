@@ -75,6 +75,17 @@ class DatabaseSeeder extends Seeder
                 'show_in_menu' => true,
                 'app_id' => $app->id,
             ],
+
+            //modulos de IA
+            [
+                'name' => 'Reportes de IA',
+                'internal_name' => 'ai_reports',
+                'access_route_name' => 'ai_reports.index',
+                'icon' => 'bx bx-chart nav_icon',
+                'order' => 1,
+                'show_in_menu' => true,
+                'app_id' => $ai->id,
+            ],
         ];
 
         foreach ($modules as $module) {
