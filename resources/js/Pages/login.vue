@@ -25,7 +25,8 @@
 <template>
     <PremonishHandler />
     <TemeHandler />
-    <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 620px;">
+    <div id="login-container">
+        <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 620px;">
             <div class="bg-white shadow bg-body rounded d-flex flex-column align-items-center p-3">
                 <Logo :with="'300'" :class="'mt-5'"/>
                 <h2 class="mt-5 p-3 ps-0" id="title"><strong>Iniciar Sesión</strong></h2>
@@ -65,11 +66,12 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </template>
 
 <style>
-    #app{
+    #login-container{
         height: 100vh;
         display: flex;
         justify-content: center;
