@@ -3,7 +3,7 @@
 <script setup>
     import { computed } from 'vue';
 
-    const props =defineProps({
+    const props = defineProps({
         viewName: String,
         title: String,
         params: Object,
@@ -18,13 +18,22 @@
         url.searchParams.append('page_properties', JSON.stringify(props.pageProperties));
         return url.toString();
     });
+
+    function openPrintWindow() {
+        if (props.pageProperties.openInNewTab || false) {
+            window.open(printUrl.value, '_blank', 'width=1100,height=800');
+        } else {
+            window.location.href = printUrl.value;
+        }
+    }
 </script>
 
 <template>
     <a
         aria-label="imprimir"
         class="btn btn-secondary"
-        :href="printUrl"
+        href="#"
+        @click.prevent="openPrintWindow()"
     >
         <i class="bx bxs-printer"></i>
     </a>
