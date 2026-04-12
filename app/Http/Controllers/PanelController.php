@@ -15,8 +15,14 @@ class PanelController extends Controller
      */
     public function index()
     {
+        $userApps = Auth::user()->userApps();
+
+        if($userApps->count() === 1 && $userApps->first()->access_route_name) {
+            return redirect()->route($userApps->first()->access_route_name);
+        }
+
         return Inertia::render('panel', [
-            'userApps' => Auth::user()->userApps()
+            'userApps' => $userApps
         ]);
     }
 }
