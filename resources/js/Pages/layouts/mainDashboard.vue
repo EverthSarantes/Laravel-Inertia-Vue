@@ -2,10 +2,9 @@
 // It includes navigation, theming options, and a slot for injecting page-specific content.
 // The template provides a sidebar for navigation and a header for user actions.
 <script setup>
-    import { computed } from 'vue';
+    import { computed, watch } from 'vue';
     import { usePage, Link  } from '@inertiajs/vue3';
     import { useHead } from '@vueuse/head';
-    import Message from '../components/Message.vue';
     import Logo from '../components/Logo.vue';
     import PremonishHandler from '../components/accesibility/PremonishHandler.vue';
     import TemeHandler from '../components/accesibility/TemeHandler.vue';
@@ -21,6 +20,18 @@
             return errors[firstKey];
         }
         return null;
+    });
+
+    watch(message, (newMessage) => {
+        if (newMessage) {
+            showToast(newMessage.message);
+        }
+    });
+
+    watch(error, (newError) => {
+        if (newError) {
+            showToast(newError);
+        }
     });
 
     useHead({
@@ -52,9 +63,6 @@
             </div>
         </nav>
     </div>
-
-    <Message v-if="message" :message="message.message" :color="message.type"/>
-    <Message v-if="error" :message="error" color="danger"/>
 
     <main class="pt-3 w-100">
         <slot />
