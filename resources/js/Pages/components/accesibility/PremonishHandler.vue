@@ -105,6 +105,7 @@
 <template></template>
 <style>
     .premonish-active {
-        outline: 4px solid var(--bs-primary);
+        --color: var(--color-green-500);
+        outline: 4px solid var(--color);
     }
 </style>
