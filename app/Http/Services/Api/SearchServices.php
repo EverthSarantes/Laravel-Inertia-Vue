@@ -269,10 +269,10 @@ class SearchServices
                 $item->name = data_get($item, $item::$name_field);
             }
             if (method_exists($item, 'getSearchName')) {
-                $item->name = $item->getSearchName();
+                $item->search_name = $item->getSearchName();
             }
-                return $item;
-            });
+            return $item;
+        });
         return $data;
     }
 
