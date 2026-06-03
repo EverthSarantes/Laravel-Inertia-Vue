@@ -166,7 +166,7 @@ class SearchServices
 
         if($search != "*")
         {
-            $query->where($model::$name_field, 'like', "%$search%");
+            $query = self::addDinamicWhere($model::$name_field, $search, $query);
         }
 
         if($extra_query_parameter) {
@@ -182,6 +182,21 @@ class SearchServices
         $data = self::loadSearchName($data);
 
         return $data;
+    }
+
+    public static function addDinamicWhere($field, $search, $query)
+    {
+        $fields = explode('.', $field);
+        if(count($fields) > 1) {
+            $relation = implode('.', array_slice($fields, 0, -1));
+            $foreign_field = $fields[count($fields) - 1];
+
+            return $query->whereHas($relation, function ($query) use ($foreign_field, $search) {
+                $query->where($foreign_field, 'like', "%$search%");
+            });
+        }
+
+        return $query->where($field, 'like', "%$search%");
     }
 
     /**
@@ -251,14 +266,13 @@ class SearchServices
     {
         $data->map(function ($item) {
             if($item::$name_field) {
-                $item->name = $item->{$item::$name_field};
+                $item->name = data_get($item, $item::$name_field);
             }
             if (method_exists($item, 'getSearchName')) {
                 $item->name = $item->getSearchName();
             }
-            return $item;
-        });
-
+                return $item;
+            });
         return $data;
     }
 
