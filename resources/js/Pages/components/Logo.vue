@@ -23,7 +23,7 @@
     const logoClass = ref(props.class);
 
     const getPreferredTheme = () => {
-        return document.documentElement.getAttribute('data-bs-theme');
+        return document.documentElement.getAttribute('data-theme');
     };
 
     const logosUrl = {
@@ -31,12 +31,9 @@
         dark: logoDarkUrl,
         light_hc: logoLightUrl,
         dark_hc: logoDarkUrl,
-        deuteranopia: logoLightUrl,
-        tritanopia: logoLightUrl,
-        protanopia: logoLightUrl,
-        acromatopsia: logoLightUrl,
     };
 
+    console.log('Preferred theme:', getPreferredTheme());
     const logoUrl = ref(logosUrl[getPreferredTheme().replace('-', '_')] || logoLightUrl);
 
     const updateLogoUrl = () => {
