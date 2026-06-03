@@ -9,42 +9,44 @@
     import DeleteModal from '../../components/DeleteModal.vue';
     import Table from '../../components/Table.vue';
     import ExcelExport from '../../components/buttons/ExcelExport.vue';
-
+    import { ref } from 'vue';
     import { usePage } from '@inertiajs/vue3';
     
     const links = [
-        { route: 'config.index', name: 'Configuraciones', active: true },
-        { route: 'logs.index', name: 'Logs', active: false },
+        { route: 'config.index', name: 'Configuraciones', active: false },
+        { route: 'logs.index', name: 'Logs', active: true },
     ];
 
-    function showDeleteModal() {
-        let form = document.getElementById('deleteForm');
-        form.action = route('logs.cleanUserLogs');
+    const deleteModalRef = ref(null);
 
-        const modal = new bootstrap.Modal(document.getElementById('delete_modal'));
-        modal.show();
+    function showDeleteModal() {
+        deleteModalRef.value.openDeleteModal(route('logs.cleanUserLogs'));
     }
 </script>
 
 <template>
     <dashboard :appName="'administration_app'">
         <SubNavbar :links="links" />
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Logs</h5>
-                        <div class="d-flex gap-1">
-                            <button class="btn btn-danger" @click="showDeleteModal">
-                                <i class="bi bi-trash"></i> Limpiar Logs
-                            </button>
-                            <ExcelExport :filename="'Logs'" :target="'logs_table'"/>
-                        </div>
+        <div class="container mx-auto px-4">
+            <div class="w-full mt-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 sm:gap-0">
+                    <h5 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Logs</h5>
+                    
+                    <div class="flex items-center gap-2">
+                        <button 
+                            class="inline-flex items-center justify-center px-4 py-2 bg-red-600 hover:bg-red-700 dark:bg-red-700 dark:hover:bg-red-600 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 transition-colors" 
+                            @click="showDeleteModal"
+                        >
+                            <i class="bi bi-trash mr-1.5 text-lg"></i> Limpiar Logs
+                        </button>
+                        
+                        <ExcelExport :filename="'Logs'" :target="'logs_table'"/>
                     </div>
-                    <Table :model="usePage().props.model" :options="['delete']" :id="'logs'"/>
                 </div>
+                
+                <Table :model="usePage().props.model" :options="['delete']" :id="'logs'"/>
             </div>
         </div>
-        <DeleteModal />
+        <DeleteModal ref="deleteModalRef"/>
     </dashboard>
 </template>
