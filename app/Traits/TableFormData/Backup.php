@@ -62,14 +62,14 @@ trait Backup
                 'type' => 'normal-link',
                 'attr' => [
                     'href' => route('backups.download', ['name' => $this->name]),
-                    'class' => 'btn btn-success',
+                    'class' => 'bg-green-100 dark:bg-green-700 text-green-700 dark:text-green-200 hover:bg-green-200 dark:hover:bg-green-600',
                 ],
                 'inner' => '<i class=\'bx bxs-download\'></i>',
             ],
             'delete' => [
                 'type' => 'button',
                 'attr' => [
-                    'class' => 'delete-button btn btn-danger',
+                    'class' => 'bg-red-100 dark:bg-red-700 text-red-700 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-600',
                     'data-url' => route('backups.delete', ['name' => $this->name]),
                 ],
                 'inner' => '<i class=\'bx bxs-trash-alt\'></i>',

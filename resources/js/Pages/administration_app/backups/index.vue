@@ -73,7 +73,7 @@
             <div class="mt-8">
                 <h5 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Respaldos</h5>
                 <div class="w-full overflow-x-auto">
-                    <!-- <Table :model="usePage().props.model" :options="['delete']" :id="'backups'"/> -->
+                    <Table :model="usePage().props.model" :options="['delete']" :id="'backups'"/>
                 </div>
             </div>
         </div>
