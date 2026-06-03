@@ -31,7 +31,7 @@
 <template>
     <a
         aria-label="imprimir"
-        class="btn btn-secondary"
+        class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded transition-colors excel_api_export"
         href="#"
         @click.prevent="openPrintWindow()"
     >
