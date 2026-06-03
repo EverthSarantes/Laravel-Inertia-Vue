@@ -29,6 +29,10 @@
             required: false,
             default: null,
         },
+        showSubmitButton: {
+            type: Boolean,
+            default: true,
+        },
     });
 
     const form = props.form ?? reactive({});
@@ -63,6 +67,14 @@
         });
     };
 
+    function submitFormData() {
+        document.getElementById('form-' + props.id).dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+
+    defineExpose({
+        submitFormData,
+    });
+
 </script>
 
 <template>
@@ -83,6 +95,7 @@
 
             <div class="w-full px-2 mt-5 flex justify-between items-center">
                 <button 
+                    v-if="props.showSubmitButton"
                     type="submit" 
                     class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
                 >
