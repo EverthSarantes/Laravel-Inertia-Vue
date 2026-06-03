@@ -29,11 +29,8 @@
     const logosUrl = {
         light: logoLightUrl,
         dark: logoDarkUrl,
-        light_hc: logoLightUrl,
-        dark_hc: logoDarkUrl,
     };
 
-    console.log('Preferred theme:', getPreferredTheme());
     const logoUrl = ref(logosUrl[getPreferredTheme().replace('-', '_')] || logoLightUrl);
 
     const updateLogoUrl = () => {
