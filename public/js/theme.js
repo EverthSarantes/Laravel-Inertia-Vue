@@ -17,10 +17,16 @@ window.getPreferredTheme = () => {
 }
 
 window.setTheme = theme => {
-    if (theme === 'auto') {
-        document.documentElement.setAttribute('data-bs-theme', (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'))
+    const isDark = theme === 'auto' 
+        ? window.matchMedia('(prefers-color-scheme: dark)').matches 
+        : theme === 'dark';
+        
+    if (isDark) {
+        document.documentElement.classList.add('dark');
+        document.documentElement.setAttribute('data-theme', 'dark');
     } else {
-        document.documentElement.setAttribute('data-bs-theme', theme)
+        document.documentElement.classList.remove('dark');
+        document.documentElement.setAttribute('data-theme', 'light');
     }
 }
 

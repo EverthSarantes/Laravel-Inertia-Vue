@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-bs-font-size="medium">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="antialiased">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="/css/bootstrap.css" rel="stylesheet">
     <link href="/css/boxicons.min.css" rel="stylesheet">
     <script src="/js/theme.js"></script>
     <title>{{ config('app.name') }}</title>
@@ -75,48 +74,45 @@
         }
 
         function showToast(message = '') {
-            let toast = document.getElementById('liveToast');
+            let toastContainer = document.getElementById('toast-container');
 
-            if(!toast){
+            if (!toastContainer) {
                 let html = `
-                        <div class="toast-container position-fixed bottom-0 end-0 p-3">
-                            <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
-                                <div class="toast-header d-flex justify-content-end">
-                                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-                                </div>
-                                <div class="toast-body">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-
+                    <div id="toast-container" class="fixed bottom-0 right-0 p-4 z-50 flex flex-col gap-2">
+                    </div>
+                `;
                 let element = document.createElement('div');
                 element.innerHTML = html;
-                document.body.appendChild(element);
-                toast = document.getElementById('liveToast');
+                document.body.appendChild(element.firstElementChild);
+                toastContainer = document.getElementById('toast-container');
             }
+
+            const toastId = 'toast-' + Math.random().toString(36).substr(2, 9);
+            const toastHtml = `
+                <div id="${toastId}" class="bg-gray-800 text-white px-4 py-3 rounded shadow-lg flex justify-between items-center transition-opacity duration-300">
+                    <span>${message}</span>
+                    <button onclick="document.getElementById('${toastId}').remove()" class="ml-4 text-gray-400 hover:text-white">&times;</button>
+                </div>
+            `;
             
-            const toast_bootstrap = bootstrap.Toast.getOrCreateInstance(toast);
+            toastContainer.insertAdjacentHTML('beforeend', toastHtml);
 
-            toast.querySelector('.toast-body').innerText = message;
-
-            toast_bootstrap.show();
+            setTimeout(() => {
+                const toastEl = document.getElementById(toastId);
+                if (toastEl) toastEl.remove();
+            }, 3000);
         }
 
         function closeToast() {
-            let toast = document.getElementById('liveToast');
-            if(toast){
-                const toast_bootstrap = bootstrap.Toast.getOrCreateInstance(toast);
-                toast_bootstrap.hide();
-            }
+            const toastContainer = document.getElementById('toast-container');
+            if (toastContainer) toastContainer.innerHTML = '';
         }
 
     </script>
-    @vite('resources/js/app.js')
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     @routes
 </head>
-<body id="body-pd">
+<body id="body-pd" class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 transition-colors duration-300">
     @inertia
 </body>
-<script src="/js/bootstrap.bundle.js"></script>
 </html>
