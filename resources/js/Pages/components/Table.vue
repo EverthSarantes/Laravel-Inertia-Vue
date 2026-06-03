@@ -140,6 +140,19 @@
         let modalInstance = new bootstrap.Modal(document.getElementById('delete_modal'));
         modalInstance.show();
     }
+
+    function resolveField(row, field){
+        const parts = field.split('.');
+        if(parts.length > 1){
+            const f = parts[parts.length - 1];
+            const relation = parts.slice(0, parts.length - 1).join('.');
+            const relationData = row[relation];
+            if(relationData){
+                return relationData[f] || '';
+            }
+        }
+        return row[field] || '';
+    }
 </script>
 
 <template>
@@ -281,7 +294,7 @@
                             <FormattedDate v-if="props.model.table_fields_types && props.model.table_fields_types[field] === 'formatted_date'" :date="row[field]" />
 
                             <template v-else>
-                                {{ row[field] }}
+                                {{ resolveField(row, field) }}
                             </template>
                         </td>
                         
