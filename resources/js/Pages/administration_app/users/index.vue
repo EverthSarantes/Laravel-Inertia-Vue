@@ -12,7 +12,7 @@
     import ExcelExport from '../../components/buttons/ExcelExport.vue';
     import Print from '../../components/buttons/Print.vue';
     import SearchSelect from '../../components/inputs/searchSelect.vue';
-
+    import Modal from '../../components/Modal.vue';
     import { usePage } from '@inertiajs/vue3';
     import { computed, onMounted, ref, reactive, watch } from 'vue';
     
@@ -20,6 +20,9 @@
         { route: 'users.index', name: 'Usuarios', active: true },
         { route: 'users.templates.index', name: 'Plantillas de Usuarios', active: false },
     ];
+
+    const modalRef = ref(null);
+    const userForm = ref(null);
 
     const form_modules = computed(() => {
         return usePage().props.form_modules;
@@ -80,148 +83,145 @@
             });
         });
     });
+
+    function callback(){
+        userForm.value.submitFormData();
+    }
 </script>
 
 <template>
     <dashboard :appName="'administration_app'">
         <SubNavbar :links="links" />
-        <div class="container">
-
-            <div class="modal fade" tabindex="-1" id="AddUserModal">
-                <div class="modal-dialog modal-lg modal-dialog-scrollable">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Crear Usuario</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        <div class="container px-4 pt-4">
+            <Modal :title="'Crear Usuario'" :id="'AddUserModal'" ref="modalRef" :accept-callback="callback">
+                <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="modalRef" :show-submit-button="false" ref="userForm">
+                    <template #extraContent>
+                        <div class="w-full px-2 mt-4">
+                            <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Usar Plantilla de Usuario</label>
+                            <select name="user_template" class="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm transition-colors" v-model="user_template">
+                                <option :value="false">No</option>
+                                <option :value="true">Sí</option>
+                            </select>
                         </div>
-                        <div class="modal-body">
-                        <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="true">
-                            <template #extraContent>
-                                <div class="mt-3 col-md-12 mt-3">
-                                    <label for="role">Usar Plantilla de Usuario</label>
-                                    <select name="user_template" class="form-select" v-model="user_template">
-                                        <option :value="false">No</option>
-                                        <option :value="true">Sí</option>
-                                    </select>
-                                </div>
 
-                                <div class="mt-3 col-md-12 mt-3" v-if="user_template">
-                                    <searchSelect 
-                                        name="Plantilla de Usuario" 
-                                        input-name="user_template_id" 
-                                        :model="'UserTemplate'" 
-                                        :required="true" 
-                                        select_name="user_template_id" 
-                                        v-model:select_value="form.user_template_id"
-                                    />
-                                </div>
+                        <div class="w-full px-2 mt-4" v-if="user_template">
+                            <searchSelect 
+                                name="Plantilla de Usuario" 
+                                input-name="user_template_id" 
+                                :model="'UserTemplate'" 
+                                :required="true" 
+                                select_name="user_template_id" 
+                                v-model:select_value="form.user_template_id"
+                            />
+                        </div>
 
-                                <div class="mt-3 col-md-12 mt-3" id="modules" v-show="role == 1 && !user_template">
-                                    <h6>Módulos</h6>
-                                    <div class="row user-select-none">
-                                        <template v-for="(module, index) in form_modules" :key="index">
-                                            <div class="col-md-12">
-                                                <div class="form-check">
-                                                    <label class="form-check-label d-flex gap-1">
-                                                        <input type="checkbox" name="selected_modules[]" 
-                                                            :id="'module_' + module.id"
-                                                            :value="module.id"
-                                                            v-model="modules.selected_modules"
-                                                            class="form-check checkbox-modules">
-
-                                                        <small>{{module.name}}</small>
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div class="col-md-12" v-show="modules.selected_modules.includes(module.id)">
-                                                <div class="row">
-                                                    <div class="col-md-2">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label d-flex gap-1">
-                                                                <input type="checkbox"
-                                                                    value="create"
-                                                                    :module-id="module.id"
-                                                                    class="form-check checkbox-modules-actions">
-                                                                <small>Crear</small>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label d-flex gap-1">
-                                                                <input type="checkbox"
-                                                                    value="read"
-                                                                    :module-id="module.id"
-                                                                    class="form-check checkbox-modules-actions">
-                                                                <small>Leer</small>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label d-flex gap-1">
-                                                            <input type="checkbox"
-                                                                value="search"
-                                                                :module-id="module.id"
-                                                                class="form-check checkbox-modules-actions">
-                                                            <small>Busqueda</small>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label d-flex gap-1">
-                                                                <input type="checkbox"
-                                                                    value="update"
-                                                                    :module-id="module.id"
-                                                                    class="form-check checkbox-modules-actions">
-                                                                <small>Actualizar</small>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-2">
-                                                        <div class="form-check">
-                                                            <label class="form-check-label d-flex gap-1">
-                                                                <input type="checkbox"
-                                                                    value="delete"
-                                                                    :module-id="module.id"
-                                                                    class="form-check checkbox-modules-actions">
-                                                                <small>Eliminar</small>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <hr class="my-1">
-                                            </div>
-                                        </template>
+                        <div class="w-full px-2 mt-6" id="modules" v-show="role == 1 && !user_template">
+                            <h6 class="text-base font-semibold text-gray-900 dark:text-gray-100 mb-3 border-b border-gray-200 dark:border-gray-700 pb-2">
+                                Módulos
+                            </h6>
+                            
+                            <div class="flex flex-wrap -mx-2 select-none">
+                                <template v-for="(module, index) in form_modules" :key="index">
+                                    
+                                    <div class="w-full px-2 mb-2">
+                                        <label class="inline-flex items-center gap-2 cursor-pointer">
+                                            <input type="checkbox" name="selected_modules[]" 
+                                                :id="'module_' + module.id"
+                                                :value="module.id"
+                                                v-model="modules.selected_modules"
+                                                class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules transition-colors">
+                                            <span class="text-sm font-medium text-gray-800 dark:text-gray-200">{{ module.name }}</span>
+                                        </label>
                                     </div>
-                                </div>
-                            </template>
-                        </Form>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
 
-            <div class="row">
-                <div class="col-lg-12 mt-4">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h5>Usuarios</h5>
-                        <div class="d-flex gap-1">
-                            <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
-                            <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true, 'openInNewTab': true, 'loadBootstrap': true}" :params="{}"/>
-                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#AddUserModal" aria-label="Agregar Usuario">
-                                <i class='bx bx-plus'></i>
-                            </button>
+                                    <div class="w-full px-2 mb-4" v-show="modules.selected_modules.includes(module.id)">
+                                        <div class="flex flex-wrap gap-4 pl-6">
+                                            
+                                            <div>
+                                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        value="create"
+                                                        :module-id="module.id"
+                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules-actions transition-colors">
+                                                    <span class="text-sm text-gray-600 dark:text-gray-400">Crear</span>
+                                                </label>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        value="read"
+                                                        :module-id="module.id"
+                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules-actions transition-colors">
+                                                    <span class="text-sm text-gray-600 dark:text-gray-400">Leer</span>
+                                                </label>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        value="search"
+                                                        :module-id="module.id"
+                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules-actions transition-colors">
+                                                    <span class="text-sm text-gray-600 dark:text-gray-400">Búsqueda</span>
+                                                </label>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        value="update"
+                                                        :module-id="module.id"
+                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules-actions transition-colors">
+                                                    <span class="text-sm text-gray-600 dark:text-gray-400">Actualizar</span>
+                                                </label>
+                                            </div>
+                                            
+                                            <div>
+                                                <label class="inline-flex items-center gap-2 cursor-pointer">
+                                                    <input type="checkbox"
+                                                        value="delete"
+                                                        :module-id="module.id"
+                                                        class="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500 dark:bg-gray-900 dark:border-gray-600 dark:checked:bg-blue-500 checkbox-modules-actions transition-colors">
+                                                    <span class="text-sm text-gray-600 dark:text-gray-400">Eliminar</span>
+                                                </label>
+                                            </div>
+
+                                        </div>
+                                        
+                                        <hr class="mt-3 mb-1 border-t border-gray-200 dark:border-gray-700">
+                                    </div>
+                                    
+                                </template>
+                            </div>
                         </div>
+                    </template>
+                </Form>
+            </Modal>
+
+            <div class="w-full mt-4">
+                <div class="flex flex-col sm:flex-row justify-between items-center mb-4 gap-4 sm:gap-0">
+                    <h5 class="text-xl font-semibold text-gray-900 dark:text-gray-100">Usuarios</h5>
+                    
+                    <div class="flex items-center gap-2">
+                        <ExcelExport :filename="'Usuarios'" :target="'users_table'"/>
+                        
+                        <Print :view-name="'users.print.index'" :title="'Usuarios'" :page-properties="{'pagedjs': true, 'pagecounter': true, 'openInNewTab': true, 'loadBootstrap': true}" :params="{}"/>
+                        
+                        <button 
+                            type="button" 
+                            class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded transition-colors" 
+                            @click="$refs.modalRef.openModal()"
+                            aria-label="Agregar Usuario"
+                        >
+                            <i class='bx bx-plus'></i>
+                        </button>
                     </div>
-                    <Table :model="usePage().props.model" :options="['delete']" :id="'users'"/>
                 </div>
+                
+                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" :delete-modal="$refs.deleteModal"/>
             </div>
         </div>
-        <DeleteModal />
+        <DeleteModal ref="deleteModal"/>
     </dashboard>
 </template>

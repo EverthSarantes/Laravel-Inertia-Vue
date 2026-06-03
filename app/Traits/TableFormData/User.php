@@ -94,14 +94,14 @@ trait User
                 'type' => 'link',
                 'attr' => [
                     'href' => route('users.show', ['user' => $this]),
-                    'class' => 'btn btn-primary',
+                    'class' => 'bg-blue-100 dark:bg-blue-700 text-blue-700 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-600',
                 ],
                 'inner' => '<i class=\'bx bxs-show\'></i>',
             ],
             'delete' => [
                 'type' => 'button',
                 'attr' => [
-                    'class' => 'delete-button btn btn-danger',
+                    'class' => 'bg-red-100 dark:bg-red-700 text-red-700 dark:text-red-200 hover:bg-red-200 dark:hover:bg-red-600',
                     'data-url' => route('users.delete', ['user' => $this]),
                 ],
                 'inner' => '<i class=\'bx bxs-trash-alt\'></i>',
