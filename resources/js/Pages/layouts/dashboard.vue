@@ -56,40 +56,44 @@
     <PremonishHandler />
     <TemeHandler />
     <PersistentTabs />
-    <header class="header d-flex justify-content-end" id="header">
+    
+    <header class="fixed top-0 right-0 w-full h-[calc(var(--header-height)+1rem)] bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex justify-end items-center px-4 z-40 transition-all duration-300 shadow-sm" id="header">
         <UserConfig :userName="userName" />
     </header>
 
-    <div class="l-navbar" id="nav-bar">
-        <nav class="nav">
-
+    <div class="fixed top-0 left-0 w-16 md:w-[250px] h-screen bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 z-50 transition-all duration-300" id="nav-bar">
+        <nav class="flex flex-col justify-between h-full overflow-hidden">
             <div>
-                <div class="nav_list">
-                    <Link href="/" class="nav_logo logo-toggle nav_module_name" aria-label="Ir a inicio"><Logo/></Link>
+                <div class="pt-4 px-4 flex items-center md:items-start md:px-6">
+                    <Link href="/" class="flex justify-center md:justify-start items-center gap-3 text-decoration-none" aria-label="Ir a inicio">
+                        <Logo class="w-100" />
+                    </Link>
                 </div>
-                <div class="nav_list mt-5">
+                <div class="mt-8 flex flex-col gap-1 px-2">
                     <template v-for="module in modules" :key="module.name">
-                        <Link v-if="module.route" :href="module.route" class="nav_link" aria-label="Ir a {{ module.name }}">
-                            <i :class="`bx ${module.icon} nav_icon`"></i>
-                                <span
-                                    class="nav_name nav_module_name"
-                                    :style="module.name.length > 15 ? 'font-size: 0.85em;' : ''"
-                                >
-                                {{ module.name }}
-                                </span>
-                            </Link>
+                        <Link v-if="module.route" :href="module.route" class="flex items-center gap-3 px-3 py-2 text-gray-700 dark:text-gray-300 rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors group" aria-label="Ir a {{ module.name }}">
+                            <i :class="`bx ${module.icon} text-xl text-green-600 dark:text-green-500 group-hover:scale-110 transition-transform`"></i>
+                            <span
+                                class="hidden md:block font-medium truncate"
+                                :style="module.name.length > 15 ? 'font-size: 0.85em;' : ''"
+                            >
+                            {{ module.name }}
+                            </span>
+                        </Link>
                     </template>
                 </div>
             </div>
 
-            <div class="post_user d-flex justify-content-between align-items-center">
-                <span class="nav_module_name"> {{ userName }} </span>
-                <Link class="d-flex justify-content-between align-items-center text-decoration-none" href="/logout" aria-label="Cerrar sesión"> <i class='bx bxs-x-circle icon_block'></i></Link>
+            <div class="bg-gray-200 dark:bg-gray-800 h-14 flex items-center justify-center md:justify-between px-4">
+                <span class="hidden md:block font-medium text-gray-700 dark:text-gray-300 truncate"> {{ userName }} </span>
+                <Link class="text-grey-500 hover:text-grey-700 dark:text-light-400 dark:hover:text-light-500 text-xl transition-colors" href="/logout" aria-label="Cerrar sesión"> 
+                    <i class='bx bxs-x-circle'></i>
+                </Link>
             </div>
         </nav>
     </div>
 
-    <main class="pt-3 w-100">
+    <main class="w-full h-[calc(100vh-calc(var(--header-height)+1rem))] transition-all duration-300">
         <slot />
     </main>
 
