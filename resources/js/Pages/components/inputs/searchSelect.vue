@@ -210,7 +210,7 @@
                 @mousedown.prevent="selectOption(option)"
             >
                 <span class="dropdown-item">
-                    {{ option.name }}
+                    {{ option.search_name || option.name }}
                 </span>
             </li>   
         </ul>
