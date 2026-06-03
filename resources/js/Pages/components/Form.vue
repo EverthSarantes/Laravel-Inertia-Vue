@@ -22,7 +22,6 @@
             default: () => Math.random().toString(36).substr(2, 9),
         },
         isModal: {
-            type: Boolean,
             default: false,
         },
         callback: {
@@ -48,10 +47,7 @@
             preserveScroll: true,
             onSuccess: (response) => {
                 if(props.isModal) {
-                    let form_element = document.getElementById('form-'+props.id);
-                    let modal = form_element.closest('.modal');
-                    let modalInstance = bootstrap.Modal.getInstance(modal);
-                    modalInstance.hide();
+                    props.isModal.closeModal();
                 }
 
                 if(window.atm_tables && props.callback === null) {
@@ -71,7 +67,8 @@
 
 <template>
     <form @submit.prevent="submitForm" class="p-3 mt-2" :id="'form-'+id">
-        <div class="row">
+        <div class="flex flex-wrap -mx-2">
+            
             <input type="hidden" name="_method" :value="props.method">
 
             <template v-for="(field, index) in model.form_fields" :key="index">
@@ -84,12 +81,19 @@
 
             <slot name="extraContent"></slot>
 
-            <div class="col-md-12 mt-2 justify-content-between d-flex">
-                <button type="submit" class="btn btn-primary">Agregar</button>
-                <div class="d-flex gap-2">
+            <div class="w-full px-2 mt-5 flex justify-between items-center">
+                <button 
+                    type="submit" 
+                    class="inline-flex items-center justify-center px-4 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white text-sm font-medium rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+                >
+                    Agregar
+                </button>
+                
+                <div class="flex items-center gap-2">
                     <slot name="secondaryButtons"></slot>
                 </div>
             </div>
+            
         </div>
     </form>
 </template>
