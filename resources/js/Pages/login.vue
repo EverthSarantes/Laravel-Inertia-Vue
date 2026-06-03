@@ -25,43 +25,41 @@
 <template>
     <PremonishHandler />
     <TemeHandler />
-    <div id="login-container">
-        <div class="d-flex justify-content-center" style="max-width: 540px; max-height: 620px;">
-            <div class="bg-white shadow bg-body rounded d-flex flex-column align-items-center p-3">
-                <Logo :with="'300'" :class="'mt-5'"/>
-                <h2 class="mt-5 p-3 ps-0" id="title"><strong>Iniciar Sesión</strong></h2>
+    <div id="login-container" class="min-h-screen flex justify-center pt-12">
+        <div class="flex justify-center max-w-lg w-full px-4">
+            <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg flex flex-col items-center p-6 w-full h-fit border border-transparent [[data-theme=dark-hc]_&]:border-white">
+                <Logo :with="'300'" :class="'mt-12'"/>
+                <h2 class="mt-12 p-4 pl-0 text-2xl font-bold text-gray-900 dark:text-white" id="title">Iniciar Sesión</h2>
 
-                <h4 v-if="errorMessage" class="text-danger">{{ errorMessage }}</h4>
+                <h4 v-if="errorMessage" class="text-red-500 font-medium">{{ errorMessage }}</h4>
 
-                <div class="w-100">
-                    <form class="mt-3" @submit.prevent="submit">
-                        <div class="row justify-content-center align-items-center">
-                            <div class="form-group col-12">
-                                <label for="name"><strong>Usuario</strong></label>
-                                <input v-model="form.name" type="text" id="name" class="form-control mt-2" required :disabled="form.processing">
+                <div class="w-full">
+                    <form class="mt-6" @submit.prevent="submit">
+                        <div class="flex flex-col gap-4">
+                            <div class="w-full">
+                                <label for="name" class="block font-bold text-gray-700 dark:text-gray-300">Usuario</label>
+                                <input v-model="form.name" type="text" id="name" class="mt-2 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white shadow-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50" required :disabled="form.processing">
                             </div>
-                            <div class="form-group col-12">
-                                <label for="password"><strong>Contraseña</strong></label>
-                                <input v-model="form.password" type="password" id="password" class="form-control mt-2" required :disabled="form.processing">
+                            <div class="w-full">
+                                <label for="password" class="block font-bold text-gray-700 dark:text-gray-300">Contraseña</label>
+                                <input v-model="form.password" type="password" id="password" class="mt-2 block w-full rounded-md border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white shadow-sm focus:border-green-500 focus:ring-green-500 disabled:opacity-50" required :disabled="form.processing">
                             </div>
                         </div>
-                        <div class="row justify-content-center align-items-center mt-5">
-                            <div class="col-12">
-                                <button class="btn btn-success w-100" type="submit" :disabled="form.processing">
-                                    Entrar
-                                </button>
-                            </div>
+                        <div class="mt-10">
+                            <button class="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition disabled:opacity-50" type="submit" :disabled="form.processing">
+                                Entrar
+                            </button>
                         </div>
                     </form>
-                    <div class="mt-3" v-if="global_use_social_login">
-                        <h5 class="text-center">O Iniciar Sesión Con</h5>
-                        <div class="d-flex justify-content-center align-items-center gap-2 mt-2">
+                    <div class="mt-6" v-if="global_use_social_login">
+                        <h5 class="text-center text-lg text-gray-700 dark:text-gray-300">O Iniciar Sesión Con</h5>
+                        <div class="flex justify-center items-center gap-2 mt-4">
                             <a :href="route('socialAuth.redirect', {provider: 'google', state: 'login'})"
-                                class="btn btn-danger"><i class='bx bxl-google'></i></a>
+                                class="bg-red-600 hover:bg-red-700 text-white p-2 rounded transition flex items-center justify-center"><i class='bx bxl-google text-xl'></i></a>
                             <a :href="route('socialAuth.redirect', {provider: 'facebook', state: 'login'})"
-                                class="btn btn-info"><i class='bx bxl-facebook-square'></i></a>
+                                class="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded transition flex items-center justify-center"><i class='bx bxl-facebook-square text-xl'></i></a>
                             <a :href="route('socialAuth.redirect', {provider: 'github', state: 'login'})"
-                                class="btn btn-dark"><i class='bx bxl-github'></i></a>
+                                class="bg-gray-800 hover:bg-gray-900 text-white p-2 rounded transition flex items-center justify-center"><i class='bx bxl-github text-xl'></i></a>
                         </div>
                     </div>
                 </div>
@@ -69,18 +67,3 @@
         </div>
     </div>
 </template>
-
-<style>
-    #login-container{
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        padding-top: 50px;
-    }
-
-    [data-bs-theme=dark-hc] {
-        .shadow {
-            border-color: #fff !important;
-        }
-    }
-</style>
