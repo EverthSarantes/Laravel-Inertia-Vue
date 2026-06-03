@@ -181,11 +181,14 @@
 </script>
 
 <template>
-    <div class="mb-3 position-relative">
-        <label class="form-label" v-if="showLabel">
-            {{ name }} <span class="text-danger" v-if="required">*</span>
+    <div class="mb-4 relative">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1" v-if="showLabel">
+            {{ name }} <span class="text-red-500 dark:text-red-400" v-if="required">*</span>
         </label>
-        <input type="text" class="form-control" v-model="searchQuery" autocomplete="off"
+        
+        <input type="text" 
+            class="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm transition-colors" 
+            v-model="searchQuery" autocomplete="off"
             @keydown.enter.prevent="handleEnter"
             @keydown.arrow-down.prevent="highlightedIndex = (highlightedIndex + 1) % options.length"
             @keydown.arrow-up.prevent="highlightedIndex = (highlightedIndex - 1 + options.length) % options.length"
@@ -196,20 +199,22 @@
             ref="inputRef"
         />
 
-        <!-- Lista de opciones -->
-        <ul class="dropdown-menu" 
+        <ul 
+            class="z-50 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg transition-colors" 
             :style="dropdownStyle"
-            :class="{
-                'show': options.length > 0,
-            }"
+            :class="options.length > 0 ? 'block' : 'hidden'"
             ref="listRef"
-            >
+        >
             <li
-                v-for="option in options"
+                v-for="(option, index) in options"
                 :key="option.id"
                 @mousedown.prevent="selectOption(option)"
+                class="cursor-pointer"
             >
-                <span class="dropdown-item">
+                <span 
+                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 transition-colors"
+                    :class="highlightedIndex === index ? 'bg-blue-100 dark:bg-blue-900/50' : 'hover:bg-gray-100 dark:hover:bg-gray-700'"
+                >
                     {{ option.search_name || option.name }}
                 </span>
             </li>   

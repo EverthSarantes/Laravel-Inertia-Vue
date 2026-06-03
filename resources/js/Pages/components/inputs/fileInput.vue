@@ -42,60 +42,46 @@
 </script>
 
 <template>
-    <div class="row">
-        <div class="form-group col-md-6 mt-3">
-            <label :for="field.id">{{ field.label }}</label>
+    <div class="flex flex-wrap -mx-2">
+        
+        <div class="w-full md:w-1/2 px-2 mt-3">
+            <label :for="field.id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                {{ field.label }}
+            </label>
             <input
                 type="file"
                 :name="field.name"
                 :id="field.id"
-                class="form-control"
                 :required="field.required"
                 :readonly="field.readonly"
                 @change="handleFileChange"
                 :multiple="false"
                 :accept="field.accept"
-                
+                class="block w-full text-sm text-gray-900 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-md cursor-pointer bg-gray-50 dark:bg-gray-900 focus:outline-none focus:border-blue-500 focus:ring-blue-500 transition-colors
+                       file:mr-4 file:py-2 file:px-4 file:rounded-l-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-gray-800 dark:file:text-gray-200 dark:hover:file:bg-gray-700"
             />
         </div>
 
-        <div v-if="previewUrl" class="mt-2 col-md-6 preview-container">
+        <div v-if="previewUrl" class="w-full md:w-1/2 px-2 mt-4 md:mt-3 flex justify-center md:justify-start">
+            
+            <div class="w-full max-w-[350px] h-[350px] overflow-hidden rounded-md border border-gray-200 dark:border-gray-700 bg-gray-100 dark:bg-gray-800 flex justify-center items-center shadow-sm transition-colors">
+                
+                <img v-if="fileType.startsWith('image/')" :src="previewUrl" alt="Preview" class="w-full h-full object-contain" />
 
-            <img v-if="fileType.startsWith('image/')" :src="previewUrl" alt="Preview" class="img-fluid rounded preview-img" />
+                <iframe v-else-if="fileType === 'application/pdf'" :src="previewUrl" class="w-full h-full border-none"></iframe>
 
-            <iframe v-else-if="fileType === 'application/pdf'" :src="previewUrl" class="preview-pdf"></iframe>
+                <div v-else-if="fileType.startsWith('text/')" class="w-full h-full">
+                    <iframe :src="previewUrl" class="w-full h-full border-none bg-white dark:bg-white" frameborder="0"></iframe>
+                </div>
 
-            <div v-else-if="fileType.startsWith('text/')" class="preview-text">
-                <iframe :src="previewUrl" class="preview-text" frameborder="0"></iframe>
+                <div v-else class="text-center p-4 text-gray-700 dark:text-gray-300">
+                    <p class="text-sm font-medium">Archivo cargado:</p>
+                    <p class="text-xs truncate w-[300px] mt-1" :title="file?.name">{{ file?.name }}</p>
+                </div>
+                
             </div>
-
-            <div v-else class="text-center">
-                <p>Archivo cargado: {{ file?.name }}</p>
-            </div>
+            
         </div>
+        
     </div>
 </template>
-
-<style scoped>
-    .preview-container {
-        width: 350px;
-        height: 350px;
-        overflow: hidden;
-        border-radius: 4px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-
-    .preview-img {
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-    }
-
-    .preview-pdf, .preview-text {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-</style>

@@ -9,9 +9,19 @@
 </script>
 
 <template>
-    <div class="form-group col-md-6 mt-3">
-        <label :for="field.id">{{field.label}} <span class="text-danger" v-if="field.required">*</span></label>
-        <input :type="field.type" :name="field.name" :id="field.id" class="form-control" :required="field.required" :readonly="field.readonly"
-        v-model="value">
+    <div class="w-full md:w-1/2 mt-3 px-2">
+        <label :for="field.id" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            {{ field.label }} 
+            <span class="text-red-500 dark:text-red-400" v-if="field.required">*</span>
+        </label>
+        <input 
+            :type="field.type" 
+            :name="field.name" 
+            :id="field.id" 
+            :required="field.required" 
+            :readonly="field.readonly"
+            v-model="value"
+            class="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none sm:text-sm read-only:bg-gray-100 dark:read-only:bg-gray-800/50 read-only:text-gray-500 cursor-default transition-colors"
+        >
     </div>
 </template>
