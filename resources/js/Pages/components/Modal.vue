@@ -28,14 +28,9 @@
 </script>
 
 <template>
-    <div v-show="modalState" class="fixed inset-0 z-50 overflow-y-auto" :aria-labelledby="id + 'Label'"
-        role="dialog" aria-modal="true">
-        <div class="flex items-end justify-center min-h-screen text-center sm:block">
-            <div class="fixed inset-0 bg-gray-500/85 transition-opacity z-[-1]" @click="closeModal"
-                aria-hidden="true"></div>
-
-            <div
-                class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
+    <div v-show="modalState" class="fixed inset-0 z-50 overflow-y-auto" :aria-labelledby="id + 'Label'" role="dialog" aria-modal="true">
+        <div class="min-h-screen text-center p-3">
+            <div class="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all w-full max-w-[1200px]">
                 <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4 border-b border-gray-200 dark:border-gray-700">
                     <div class="flex justify-between items-center bg-transparent">
                         <h3 class="text-lg leading-6 font-medium text-gray-900 dark:text-white"
@@ -49,8 +44,7 @@
 
                 <slot></slot>
 
-                <div
-                    class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200 dark:border-gray-700">
+                <div class="px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse border-t border-gray-200 dark:border-gray-700">
                     <button type="button" @click="acceptCallback"
                         class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm">
                         Aceptar
@@ -62,6 +56,8 @@
                     </button>
                 </div>
             </div>
+
+            <div class="fixed inset-0 bg-gray-500/85 transition-opacity z-[-1]" @click="closeModal"aria-hidden="true"></div>
         </div>
     </div>
 </template>
