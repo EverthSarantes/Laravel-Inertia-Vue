@@ -20,7 +20,7 @@
 
 <template>
     <button aria-label="exportar a excel"
-        type="button" class="btn btn-success excel_api_export" 
+        type="button" class="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded transition-colors excel_api_export" 
         :data-filename="filename" 
         :data-target="target" 
         :id="'excel_api_export_'+props.target">
