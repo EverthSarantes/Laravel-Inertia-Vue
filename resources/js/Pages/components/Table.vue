@@ -25,6 +25,9 @@
             type: String,
             default: 'created_at',
         },
+        deleteModal: {
+            default: null,
+        },
     });
 
     const tableData = ref([]);
@@ -136,9 +139,7 @@
     }
 
     function showDeleteModal(url) {
-        document.querySelector('#delete_modal form').action = url;
-        let modalInstance = new bootstrap.Modal(document.getElementById('delete_modal'));
-        modalInstance.show();
+        props.deleteModal.openDeleteModal(url);
     }
 
     function resolveField(row, field){
