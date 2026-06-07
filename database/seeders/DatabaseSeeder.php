@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Asistente IA',
             'internal_name' => 'ai_assistant_app',
             'access_route_name' => 'ai_assistant_app.index',
-            'icon' => 'bx bx-robot fs-1 text-primary',
+            'icon' => 'bx bx-chip fs-1 text-primary',
             'order' => 2,
             'show_in_menu' => true,
         ]);
