@@ -33,7 +33,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Administración',
             'internal_name' => 'administration_app',
             'access_route_name' => 'administration_app.index',
-            'icon' => 'https://placehold.co/600x400',
+            'icon' => 'bx bx-grid-alt fs-1 text-primary',
             'order' => 1,
             'show_in_menu' => true,
         ]);
@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'Asistente IA',
             'internal_name' => 'ai_assistant_app',
             'access_route_name' => 'ai_assistant_app.index',
-            'icon' => 'https://placehold.co/600x400',
+            'icon' => 'bx bx-robot fs-1 text-primary',
             'order' => 2,
             'show_in_menu' => true,
         ]);
