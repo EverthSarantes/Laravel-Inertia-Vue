@@ -219,9 +219,8 @@
                     </div>
                 </div>
                 
-                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" :delete-modal="$refs.deleteModal"/>
+                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" />
             </div>
         </div>
-        <DeleteModal ref="deleteModal"/>
     </dashboard>
 </template>
