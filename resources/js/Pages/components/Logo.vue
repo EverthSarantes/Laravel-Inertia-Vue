@@ -23,7 +23,7 @@
     const logoClass = ref(props.class);
 
     const getPreferredTheme = () => {
-        return document.documentElement.getAttribute('data-theme');
+        return window.localStorage.getItem('theme') || 'light';
     };
 
     const logosUrl = {
@@ -31,24 +31,10 @@
         dark: logoDarkUrl,
     };
 
-    const logoUrl = ref(logosUrl[getPreferredTheme().replace('-', '_')] || logoLightUrl);
+    const logoUrl = ref(logosUrl[getPreferredTheme()] || logoLightUrl);
 
-    const updateLogoUrl = () => {
-        const theme = getPreferredTheme().replace('-', '_');
-        logoUrl.value = logosUrl[theme] || logoLightUrl;
-    };
-
-    const observer = new MutationObserver(() => {
-        updateLogoUrl();
-    });
-
-    observer.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ['data-bs-theme'],
-    });
-
-    watchEffect(() => {
-        updateLogoUrl();
+    window.addEventListener('config-updated', () => {
+        logoUrl.value = logosUrl[getPreferredTheme()] || logoLightUrl;
     });
 </script>
 
