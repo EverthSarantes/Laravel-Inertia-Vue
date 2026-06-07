@@ -1,42 +1,37 @@
 <script setup>
 
-import dashboard from '../../layouts/dashboard.vue';
+    import dashboard from '../../layouts/dashboard.vue';
+    import Tabs from '../../components/Tabs.vue';
 
 </script>
 
 <template>
     <dashboard :appName="'ai_assistant_app'">
-        <div class="container p-3">
-            <ul class="nav nav-tabs flex-row justify-content-end" id="pills-tab" role="tablist" style="border: none;">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-queries-tab" data-bs-toggle="pill" data-bs-target="#pills-queries" type="button" role="tab" aria-controls="pills-queries" aria-selected="true">Consultas</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="pills-reports-tab" data-bs-toggle="pill" data-bs-target="#pills-reports" type="button" role="tab" aria-controls="pills-reports" aria-selected="false">Reportes</button>
-                </li>
-            </ul>
-        </div>
-
-        <div class="tab-content container" id="pills-tabContent">
-            <div class="tab-pane fade" id="pills-queries" role="tabpanel" aria-labelledby="pills-queries-tab">
-                <div class="row">
-                    <div class="col mb-3">
-                        <input type="text" name="query" id="query" class="form-control" placeholder="Escribe tu consulta...">
+        <div class="container mx-auto px-4 mt-8">
+            <Tabs :tabs="[
+                { label: 'Consultas', id: 'queries' },
+                { label: 'Reportes', id: 'reports' }
+            ]" :storage-key="'ia-panel'">
+                <template #queries>
+                    <div class="flex flex-col sm:flex-row gap-3 mb-4">
+                        <div class="flex-grow">
+                            <input type="text" name="query" id="query" class="block w-full rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 shadow-sm focus:border-blue-500 focus:ring-blue-500 focus:outline-none px-4 py-2 sm:text-sm transition-colors" placeholder="Escribe tu consulta...">
+                        </div>
+                        <div class="w-full sm:w-auto flex-shrink-0">
+                            <button class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium rounded-md shadow-sm transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500">Enviar</button>
+                        </div>
                     </div>
-                    <div class="col-2">
-                        <button class="btn btn-primary">Enviar</button>
+
+                    <div class="mt-4 bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 h-[70lvh] overflow-auto transition-colors" style="height: 70lvh;">
+                        <!-- {{ response }} -->
                     </div>
-                </div>
+                </template>
 
-                <div class="m-3 card" style="height: 70lvh;">
-                    <!-- {{ response }} -->
-                </div>
-            </div>
-
-            <div class="tab-pane fade text-primary" id="pills-reports" role="tabpanel" aria-labelledby="pills-reports-tab">
-                <div class="row">
-                </div>
-            </div>
+                <template #reports>
+                    <div class="row">
+                    </div>
+                </template>
+            </Tabs>
         </div>
     </dashboard>
 </template>
