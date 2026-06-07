@@ -409,7 +409,7 @@
         </Modal>
 
         <!-- modal add filter -->
-        <Modal :title="'Añadir Módulo'" :id="'AddFilterModal'" ref="filterModalRef" :accept-callback="submitAddUserModelFilterForm">
+        <Modal :title="'Añadir Filtro'" :id="'AddFilterModal'" ref="filterModalRef" :accept-callback="submitAddUserModelFilterForm">
             <form method="POST" @submit.prevent="submitAddUserModelFilterForm">
                 <div class="w-full">
                     <div class="grid grid-cols-12 gap-4 p-4">
