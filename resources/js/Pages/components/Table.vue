@@ -7,6 +7,9 @@
     import { Link } from '@inertiajs/vue3';
     import FormattedDateInput from './accounting/FormattedDateInput.vue';
     import FormattedDate from './accounting/FormattedDate.vue'; 
+    import DeleteModal from './DeleteModal.vue';
+
+    const deleteModal = ref(null);
 
     const props = defineProps({
         model: Object,
@@ -24,9 +27,6 @@
         defaultOrderByField: {
             type: String,
             default: 'created_at',
-        },
-        deleteModal: {
-            default: null,
         },
     });
 
@@ -139,7 +139,7 @@
     }
 
     function showDeleteModal(url) {
-        props.deleteModal.openDeleteModal(url);
+        deleteModal.value.openDeleteModal(url);
     }
 
     function resolveField(row, field){
@@ -340,4 +340,6 @@
         </div>
         
     </div>
+
+    <DeleteModal ref="deleteModal"/>
 </template>
