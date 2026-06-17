@@ -28,6 +28,10 @@
             type: String,
             default: 'created_at',
         },
+        defaultFilters: {
+            type: Array,
+            default: () => [],
+        },
     });
 
     const tableData = ref([]);
@@ -40,6 +44,15 @@
     const searchOptions = ref([
         { field: props.model.table_fields_searchable?.[0] || '', search_type: 'like', search: '' }
     ]);
+
+    if(props.defaultFilters.length > 0){
+        searchOptions.value = [];
+        searchOptions.value = props.defaultFilters.map(filter => ({
+            field: filter.field || '',
+            search_type: filter.search_type || 'like',
+            search: filter.search || '',
+        }));
+    }
 
     const prevUrl = ref(null);
     const nextUrl = ref(null);
@@ -154,6 +167,15 @@
         }
         return row[field] || '';
     }
+
+    function addSearchOption(field, search_type, search) {
+        searchOptions.value.push({ field, search_type, search });
+        searchData(getUrl());
+    }
+
+    defineExpose({
+        addSearchOption,
+    });
 </script>
 
 <template>
