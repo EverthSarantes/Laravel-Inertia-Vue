@@ -11,6 +11,10 @@
             required: false,
             default: null,
         },
+        tablesToRefresh: {
+            type: Array,
+            default: () => [],
+        },
     });
 
     const form_request = useForm({
@@ -28,9 +32,9 @@
                 form.reset();
                 closeDeleteModal();
 
-                if(window.atm_tables){
-                    window.atm_tables.forEach((table) => {
-                        table.refresh();
+                if(props.tablesToRefresh.length > 0 && props.callback === null) {
+                    props.tablesToRefresh.forEach((tableRef) => {
+                        tableRef?.refresh();
                     });
                 }
 

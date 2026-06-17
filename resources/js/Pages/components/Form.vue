@@ -33,6 +33,10 @@
             type: Boolean,
             default: true,
         },
+        tablesToRefresh: {
+            type: Array,
+            default: () => [],
+        },
     });
 
     const form = props.form ?? reactive({});
@@ -54,9 +58,9 @@
                     props.isModal.closeModal();
                 }
 
-                if(window.atm_tables && props.callback === null) {
-                    window.atm_tables.forEach((table) => {
-                        table.refresh();
+                if(props.tablesToRefresh.length > 0 && props.callback === null) {
+                    props.tablesToRefresh.forEach((tableRef) => {
+                        tableRef?.refresh();
                     });
                 }
                 

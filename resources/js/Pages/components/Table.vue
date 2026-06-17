@@ -3,7 +3,7 @@
 // The table data is fetched from an API, and the component allows adding or removing search options dynamically.
 // It also integrates with global table instances for refreshing and managing data.
 <script setup>
-    import { ref, onMounted, watch, onUnmounted } from 'vue';
+    import { ref, onMounted, watch } from 'vue';
     import { Link } from '@inertiajs/vue3';
     import FormattedDateInput from './accounting/FormattedDateInput.vue';
     import FormattedDate from './accounting/FormattedDate.vue'; 
@@ -94,28 +94,8 @@
         });
     }
 
-    let tableInstance = null;
-
     onMounted(() => {
         searchData(getUrl());
-        tableInstance = {
-            refresh: () => searchData(getUrl()),
-            getData: () => tableData.value,
-            setData: (data) => { tableData.value = data },
-            getPagination: () => pagination.value,
-            setPagination: (value) => { pagination.value = value },
-        };
-        if (!window.atm_tables) {
-            window.atm_tables = [];
-        }
-        window.atm_tables.push(tableInstance);
-    });
-
-    onUnmounted(() => {
-        if (window.atm_tables && tableInstance) {
-            const idx = window.atm_tables.indexOf(tableInstance);
-            if (idx !== -1) window.atm_tables.splice(idx, 1);
-        }
     });
 
     function debounce(fn, delay) {
@@ -168,13 +148,20 @@
         return row[field] || '';
     }
 
+    //funciones publicas
+
     function addSearchOption(field, search_type, search) {
         searchOptions.value.push({ field, search_type, search });
         searchData(getUrl());
     }
 
+    function refresh() {
+        searchData(getUrl());
+    }
+
     defineExpose({
         addSearchOption,
+        refresh,
     });
 </script>
 
@@ -363,5 +350,5 @@
         
     </div>
 
-    <DeleteModal ref="deleteModal"/>
+    <DeleteModal ref="deleteModal" :callback="refresh"/>
 </template>
