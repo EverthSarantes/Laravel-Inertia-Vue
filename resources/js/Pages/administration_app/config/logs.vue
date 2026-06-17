@@ -18,6 +18,7 @@
     ];
 
     const deleteModalRef = ref(null);
+    const logsTable = ref(null);
 
     function showDeleteModal() {
         deleteModalRef.value.openDeleteModal(route('logs.cleanUserLogs'));
@@ -44,9 +45,9 @@
                     </div>
                 </div>
                 
-                <Table :model="usePage().props.model" :options="['delete']" :id="'logs'"/>
+                <Table :model="usePage().props.model" :options="['delete']" :id="'logs'" ref="logsTable"/>
             </div>
         </div>
-        <DeleteModal ref="deleteModalRef"/>
+        <DeleteModal ref="deleteModalRef" :tablesToRefresh="[logsTable]"/>
     </dashboard>
 </template>

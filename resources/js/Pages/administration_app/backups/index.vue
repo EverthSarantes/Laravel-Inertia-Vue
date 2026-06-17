@@ -9,14 +9,13 @@
     import { useForm, usePage } from '@inertiajs/vue3';
 
     const backupform = useForm();
+    const backupTable = ref(null);
 
     const sendBackupForm = () => {
         backupform.post(route('backups.store'), {
             onSuccess: () => {
                 backupform.reset();
-                window.atm_tables?.forEach((table) => {
-                    table.refresh();
-                });
+                backupTable.value?.refresh();
             },
         });
     };
@@ -73,12 +72,10 @@
             <div class="mt-8">
                 <h5 class="text-xl font-bold text-gray-800 dark:text-gray-100 mb-4">Respaldos</h5>
                 <div class="w-full overflow-x-auto">
-                    <Table :model="usePage().props.model" :options="['delete']" :id="'backups'"/>
+                    <Table :model="usePage().props.model" :options="['delete']" :id="'backups'" ref="backupTable"/>
                 </div>
             </div>
         </div>
-        <!-- <DeleteModal /> -->
-
         <!--modal configurar backups-->
         <Modal :title="'Configurar Respaldos'" :id="'configBackupsModal'" ref="modalRef" :accept-callback="submitForm">
             <form class="px-4 pt-5 pb-4 sm:p-6" @submit.prevent="updateSchedule" id="updateScheduleForm">

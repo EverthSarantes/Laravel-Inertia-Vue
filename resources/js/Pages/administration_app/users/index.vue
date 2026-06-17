@@ -23,6 +23,7 @@
 
     const modalRef = ref(null);
     const userForm = ref(null);
+    const tableRef = ref(null);
 
     const form_modules = computed(() => {
         return usePage().props.form_modules;
@@ -94,7 +95,7 @@
         <SubNavbar :links="links" />
         <div class="container px-4 pt-4">
             <Modal :title="'Crear Usuario'" :id="'AddUserModal'" ref="modalRef" :accept-callback="callback">
-                <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="modalRef" :show-submit-button="false" ref="userForm">
+                <Form :route="route('users.store')" :method="'POST'" :model="usePage().props.model" :form="form" :isModal="modalRef" :show-submit-button="false" ref="userForm" :tablesToRefresh="[tableRef]">
                     <template #extraContent>
                         <div class="w-full px-2 mt-4">
                             <label for="role" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Usar Plantilla de Usuario</label>
@@ -219,7 +220,7 @@
                     </div>
                 </div>
                 
-                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" />
+                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" ref="tableRef"/>
             </div>
         </div>
     </dashboard>

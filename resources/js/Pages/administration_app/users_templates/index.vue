@@ -4,7 +4,6 @@
 
     import dashboard from '../../layouts/dashboard.vue';
     import SubNavbar from '../../components/SubNavbar.vue';
-    import DeleteModal from '../../components/DeleteModal.vue';
     import Table from '../../components/Table.vue';
     import Form from '../../components/Form.vue';
     import ExcelExport from '../../components/buttons/ExcelExport.vue';
@@ -19,6 +18,7 @@
 
     const modalRef = ref(null);
     const addTemplateFormRef = ref(null);
+    const tableRef = ref(null);
 
     function callback(){
         addTemplateFormRef.value.submitFormData();
@@ -30,7 +30,7 @@
         <SubNavbar :links="links" />
         <div class="container px-4 pt-4">
             <Modal :title="'Crear Plantilla Usuario'" :id="'AddTemplateModal'" ref="modalRef" :accept-callback="callback">
-                <Form :route="route('users.templates.store')" :method="'POST'" :model="usePage().props.model" :is-modal="modalRef" :show-submit-button="false" ref="addTemplateFormRef"></Form>
+                <Form :route="route('users.templates.store')" :method="'POST'" :model="usePage().props.model" :is-modal="modalRef" :show-submit-button="false" ref="addTemplateFormRef" :tables-to-refresh="[tableRef]"></Form>
             </Modal>
 
             <div class="w-full mt-4">
@@ -45,9 +45,8 @@
                         </button>
                     </div>
                 </div>
-                <Table :model="usePage().props.model" :options="['delete']" :id="'users'"/>
+                <Table :model="usePage().props.model" :options="['delete']" :id="'users'" ref="tableRef"/>
             </div>
         </div>
-        <DeleteModal />
     </dashboard>
 </template>
